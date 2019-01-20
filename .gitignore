@@ -4,3 +4,4 @@
 /.cache
 /uploads
 .env
+package-lock.json
