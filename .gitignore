@@ -1,7 +1,6 @@
-/dist
+/public
 /node_modules
 /.idea
 /.cache
-/uploads
 .env
 package-lock.json
