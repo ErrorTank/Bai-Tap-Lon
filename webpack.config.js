@@ -3,7 +3,7 @@ const path = require("path");
 module.exports = {
   mode: "development",
   entry: {
-    "index": ["babel-polyfill", "./client/loader.js"]
+    "index": ["babel-polyfill", "./client/loader.jsx"]
   },
   output: {
     path: path.join(__dirname, "public/assets/js"),

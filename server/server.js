@@ -1,27 +1,12 @@
 require('dotenv').config({path: '.env'});
-import express from "express";
-import mongoose from "mongoose";
-import path from "path";
-import bodyParser from "body-parser";
 
-const app = express();
-const server = require('http').createServer(app);
+const app = require("./config/express");
+const routerConfig = require('./config/routes');
+const db = null;
 
-
-app.use(express.static(path.resolve(__dirname, "../dev")));
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
-
-
-app.get("*", (req, res ,next) => {
-  if (req.path.match(/^\/api\//)) {
-    next();
-  } else {
-    res.sendFile(path.resolve(__dirname, "../public/index.html"));
-  }
-});
-
-server.listen(process.env.PORT, () => {
-  console.log(`Server running at: ${process.env.PORT}` );
+app.use('/', routerConfig(db));
+app.use(require('./utils/error-handlers'));
+app.listen(process.env.PORT, () => {
+  console.log(`Server running on port: ${process.env.PORT}` );
 });
 

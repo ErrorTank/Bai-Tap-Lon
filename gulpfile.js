@@ -24,7 +24,7 @@ const startServer = () => {
       ".git/",
       "gulpfile.js",
       "client/",
-      "dev/assets",
+      "public/assets",
       "node_modules/"
     ],
     env: {'NODE_ENV': 'development'},
@@ -35,7 +35,7 @@ const startServer = () => {
 
 gulp.task("dev", () => {
   startServer();
-  stylusCompiler.watch("./dev/assets/css");
+  stylusCompiler.watch("./public/assets/css");
   if (!/^win/.test(process.platform)) { // linux
     spawn("webpack", ["--watch"], {stdio: "inherit"});
   } else {
