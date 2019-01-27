@@ -2,6 +2,7 @@ import React from "react";
 import {rolesHelper, userInfo} from "../../common/states/user-info";
 import {Route, Redirect} from "react-router-dom"
 import {LocationTracker} from "../common/location-tracker";
+import {AuthenLayout} from "../layout/authen-layout/authen-layout";
 
 export const toDefaultRoute = () => {
   let role = rolesHelper.getRole();
