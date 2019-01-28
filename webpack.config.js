@@ -3,14 +3,16 @@ const path = require("path");
 module.exports = {
   mode: "development",
   entry: {
-    "index": ["babel-polyfill", "./client/loader.jsx"]
+    loader: ["babel-polyfill", "./client/react/loader.jsx"]
   },
   output: {
-    path: path.join(__dirname, "public/assets/js"),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: "/",
+    path:  path.resolve(__dirname, 'public'),
+
   },
   resolve: {
-    extensions: [".js", ".jsx"]
+    extensions: [".js", ".jsx", ".styl"]
   },
   module: {
     rules: [
@@ -20,7 +22,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ["env", "stage-0", "react"]
+              presets: ["env", "stage-2", "react"]
             }
           }
         ],

@@ -3,6 +3,9 @@ import createBrowserHistory from "history/createBrowserHistory"
 export const customHistory = createBrowserHistory();
 import {Route, Switch, Router, Redirect} from "react-router-dom"
 import {KComponent} from "../common/k-component";
+import {ModalsRegistry} from "../common/modal/modals";
+import {GuestRoute} from "./route-type";
+import {Login} from "./guest-routes/login/login";
 
 
 
@@ -20,8 +23,7 @@ export class MainRoute extends KComponent {
           history={customHistory}
         >
           <Switch>
-
-            <GuestRoute path='' render={(props) => <Redirect to="/login"/>}/>
+            <GuestRoute path='/login' component={Login}/>
           </Switch>
 
         </Router>

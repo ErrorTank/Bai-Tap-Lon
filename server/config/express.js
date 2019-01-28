@@ -12,6 +12,7 @@ app.use(bodyParser.json({
 }));
 
 app.use("/", express.static(process.cwd() + "/" + process.env.STATIC_DIR));
+
 app.use("*", (req, res, next) => {
   if (req.path.match(/^\/api\//)) {
     next();
@@ -21,7 +22,7 @@ app.use("*", (req, res, next) => {
 });
 
 let uploadDir = process.cwd() + "/" + process.env.UPLOAD_DIR;
-console.log(uploadDir);
+
 
 if (!fs.existsSync(uploadDir)){
   fs.mkdirSync(uploadDir);

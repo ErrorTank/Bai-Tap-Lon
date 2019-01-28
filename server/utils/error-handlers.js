@@ -1,8 +1,4 @@
 const handlers = {
-  AuthorizationError: (res, error) => res.status(401).json({
-    message: error.message,
-    extra: error.extra
-  }),
   Error: (res, error) => res.status(400).json({
     message: error.message,
     extra: error.extra

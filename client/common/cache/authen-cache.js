@@ -1,5 +1,6 @@
 import {userInfo} from "../states/user-info";
 import {authenApi} from "../../api/api";
+import {Cache} from "./cache"
 import {authenticationApi} from "../../api/common/authen-api";
 
 
@@ -17,6 +18,9 @@ export const authenCache = (() =>  {
         let info = await authenticationApi.getInfo();
         return userInfo.setState(info);
       }
+    },
+    getAuthen(){
+      return cache.get();
     }
   }
 })();
