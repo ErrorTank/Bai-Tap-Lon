@@ -8,7 +8,8 @@ export class AuthenLayout extends React.Component {
 
   render() {
     return (
-      <div className="authen">
+      <div className="authen-layout">
+        {this.props.children}
       </div>
     );
   }

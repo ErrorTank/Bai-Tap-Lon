@@ -13,7 +13,7 @@ export class Login extends React.Component {
         title="Đăng Nhập"
       >
         <div className="login-route">
-
+          LoginRoute
         </div>
       </PageTitle>
     );
