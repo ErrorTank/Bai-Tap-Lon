@@ -1,8 +1,9 @@
 import {userInfo} from "../states/user-info";
-import {authenApi} from "../../api/api";
 import {Cache} from "./cache"
-import {authenticationApi} from "../../api/common/authen-api";
+
 import Cookies from "js-cookie";
+import {authenticationApi} from "../../api/common/authen-api";
+
 
 const cookiesEngine = {
   getItem: Cookies.get,

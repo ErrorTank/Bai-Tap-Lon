@@ -7,12 +7,11 @@ export const authenLoader = {
   init() {
 
     authenApi.addHeader("Authorization", () => {
-      let {access_token} = userInfo.getState();
+      let {access_token} = authenCache.getAuthen();
       return access_token ? `Bearer ${access_token}` : null;
     });
-    userInfo.onChange((authen)=> {
-      authenCache.setAuthen(authen);
-    });
+
+
 
     return authenCache.loadAuthen();
   }
