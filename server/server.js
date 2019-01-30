@@ -6,7 +6,7 @@ const initializeDb = require("./config/db");
 
 initializeDb().then((db) => {
   app.use('/', routerConfig(db));
-  app.use(require('./utils/error-handlers'));
+  app.use(require('./utils/error/error-handlers'));
   app.listen(process.env.PORT, () => {
     console.log(`Server running on port: ${process.env.PORT}` );
   });

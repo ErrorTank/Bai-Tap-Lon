@@ -2,16 +2,22 @@ import {userInfo} from "../states/user-info";
 import {authenApi} from "../../api/api";
 import {Cache} from "./cache"
 import {authenticationApi} from "../../api/common/authen-api";
+import Cookies from "js-cookie";
 
+const cookiesEngine = {
+  getItem: Cookies.get,
+  setItem: Cookies.set,
+  removeItem: Cookies.remove
+};
 
 export const authenCache = (() =>  {
-  const cache = new Cache();
+  const cache = new Cache(cookiesEngine);
   return {
     clearAuthen(){
-      cache.setItem(null, "k-token");
+      cache.setItem(null, "k-authen");
     },
     async loadAuthen(){
-      let authen = cache.get("k-token");
+      let authen = cache.get("k-authen");
       if(!authen){
         return false;
       }else{
@@ -20,7 +26,7 @@ export const authenCache = (() =>  {
       }
     },
     getAuthen(){
-      return cache.get();
+      return cache.get("k-authen")
     }
   }
 })();

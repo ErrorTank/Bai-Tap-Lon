@@ -1,4 +1,4 @@
-const initializeDb = require("../server/config/db");
+const initializeDb = require("../config/db");
 
 const dbUtils = [
    {

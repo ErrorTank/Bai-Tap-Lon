@@ -2,7 +2,10 @@ import {sendRequest} from "./ajax-config";
 import forIn from "lodash/forIn";
 
 export const apiFactory = {
-  createApi: ({hostURL, headers, beforeSend}) => {
+  createApi: ({hostURL, beforeSend}) => {
+    let headers = {
+
+    };
     const withPayload = method => (url, data) => {
       return sendRequest({
         url: hostURL + url,
@@ -22,6 +25,9 @@ export const apiFactory = {
     };
 
     return {
+      addHeader: (key, getHeader) => {
+        headers[key] = getHeader;
+      },
       get: withoutPayload("GET"),
       post: withPayload("POST"),
       put: withPayload("PUT"),
