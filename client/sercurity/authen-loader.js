@@ -11,7 +11,7 @@ export const authenLoader = {
       return access_token ? `Bearer ${access_token}` : null;
     });
     userInfo.onChange((authen)=> {
-      authenCache.set(authen, "k-authen");
+      authenCache.setAuthen(authen);
     });
 
     return authenCache.loadAuthen();

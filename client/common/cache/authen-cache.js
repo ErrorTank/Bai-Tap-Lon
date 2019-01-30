@@ -27,6 +27,9 @@ export const authenCache = (() =>  {
     },
     getAuthen(){
       return cache.get("k-authen")
+    },
+    setAuthen(authen){
+      cache.setItem(authen, "k-authen");
     }
   }
 })();
