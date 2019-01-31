@@ -8,27 +8,26 @@ export class InputBase extends React.Component {
   }
 
   render() {
-    const {className, success = false, fail = false, label = null, value = '', notify = null, helper = null, ...others} = this.props;
+    const {className, success = false, error = false, label = null,   helper = null, id, ...others} = this.props;
     return (
       <div className={classnames(
         "form-group m-form__group",
         className,
         {
           "has-success": success,
-          "has-danger": fail
+          "has-danger": error
         },
       )}>
         {label && (
-          <label className="form-control-label" htmlFor="input">{label}</label>
+          <label className="form-control-label" htmlFor={id}>{label}</label>
         )}
         <input type="text"
                className="form-control m-input"
-               id="input"
-               value={value}
+               id={id}
                {...others}
         />
-        {(notify && (fail || success)) && (
-          <div className="form-control-feedback">{notify}</div>
+        {(error) && (
+          <div className="form-control-feedback">{error.message}</div>
         )}
         {helper && (
           <span className="m-form__help">{helper}</span>

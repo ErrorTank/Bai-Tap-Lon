@@ -2,34 +2,34 @@ import React from "react";
 import {PageTitle} from "../../../common/page-title/page-title";
 import {GetLocation} from "../../../common/location-tracker";
 import {InputBase} from "../../../common/base-input/base-input";
-import {simpleValidator} from "../../../common/form-validator/simple-validator/simple-validator";
-import {haveChar, haveNumber, maxLength, minLength, onlyWord, exclude} from "../../../common/form-validator/simple-validator/validator";
+import {createSimpleForm} from "../../../common/form-validator/form-validator"
+import * as yup from "yup"
+import {KComponent} from "../../../common/k-component";
 
+const loginSchema = yup.object().shape({
+  username: yup.string().
+  min(6, "Tên đăng nhập lớn hơn 6 kí tự").
+  max(20, "Tên đăng nhập nhỏ hơn 20 kí tự").
+  onlyWord("Tên đăng nhập không được có kí tự đặc biệt").
+  haveChar("Tên đăng nhập phải có kí tự alphabet").
+  haveNumber("Tên đăng nhập phải có chữ số"),
+  password: yup.string().min(6, "Mật khẩu bắt buộc từ 6 ký tự trở lên").onlyWord("Mật khẩu không được có kí tự đặc biệt")
+});
 
-export class Login extends React.Component {
+export class Login extends KComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      username: "",
-      password: ""
-    };
-    this.validator = simpleValidator({
-      username: {
-        arr: [onlyWord, haveChar, haveNumber, minLength(5), maxLength(50)],
-        label: "Tên đăng nhập"
-      },
-      password: {
-        arr: [onlyWord, minLength(6) ,exclude(["-"])],
-        label: "Mật khẩu"
+    this.form = createSimpleForm(loginSchema, {
+      initData: {
+        username: "",
+        password: ""
       }
     });
+    this.onUnmount(this.form.on("change", () => this.forceUpdate()));
   };
 
   render() {
-    let {username, password} = this.state;
-    let result = this.validator();
-    console.log(result.getInvalids())
-    let canLogin = result.getInvalids().length === 0;
+    const canLogin = this.form.getInvalidPaths().length;
     return (
       <PageTitle
         title="Đăng Nhập"
@@ -40,33 +40,33 @@ export class Login extends React.Component {
             return (
               <div className="login-route">
                 <div className="login-panel-wrap">
-                  <div className="login-panel">
+                  <div className="login-panel m-form m-form--state">
                     <div className="panel-header">
                       <div className="app-logo">
-                        <img src="./assets/logo.png"/>
+                        <img src="./assets/img/Framelogo.svg"/>
                       </div>
                     </div>
                     <div className="panel-body">
-                      {result.validateComp(({msg, validateField}) => (
+                      {this.form.enhanceComponent("username", ({error, ...others}) => (
                         <InputBase
                           className="login-input"
-                          fail={!!msg}
-                          value={username}
+                          error={error}
+                          id={"username"}
+                          type={"text"}
                           label={"Tên đăng nhập"}
-                          notify={msg}
-                          onChange={e => validateField(e.target.value, (val) => this.setState({username: val}))}
+                          {...others}
                         />
-                      ), "username")}
-                      {result.validateComp(({msg, validateField}) => (
+                      ), true)}
+                      {this.form.enhanceComponent("password", ({error, ...others}) => (
                         <InputBase
                           className="login-input"
-                          fail={!!msg}
-                          value={password}
+                          error={error}
+                          id={"password"}
+                          type={"password"}
                           label={"Mật khẩu"}
-                          notify={msg}
-                          onChange={e => validateField(e.target.value, (val) => this.setState({password: val}))}
+                          {...others}
                         />
-                      ), "password")}
+                      ), true)}
                     </div>
                     <div className="panel-footer">
                       <button type="button" className="btn btn-info" disabled={!canLogin}>Đăng nhập</button>
