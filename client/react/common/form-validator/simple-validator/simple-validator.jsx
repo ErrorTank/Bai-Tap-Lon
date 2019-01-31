@@ -1,30 +1,39 @@
+import omit from "lodash/omit"
 
 export const simpleValidator = (schema) => {
-  return (data) => {
-    let wrongs = [];
-    let dataKeys = Object.keys(data);
-    for(let item of dataKeys){
-      if(schema.hasOwnProperty(item)){
-        let value = data[item];
-        let validators = schema[item].arr;
-        for(let vld of validators){
+  let wrongs = {};
+  return () => {
+    console.log(wrongs)
+    const validateField = (key, value) =>  {
+      if (schema.hasOwnProperty(key)) {
+        let validators = schema[key].arr;
+        for (let vld of validators) {
           let res = vld(value);
-          if(!res.result){
-            wrongs.push({key: item, msg: res.msg(schema[item].label)});
-            break;
+          console.log(res);
+          if (!res.result) {
+            wrongs = Object.assign(wrongs, {[key]: res.msg(schema[key].label)});
+            return;
           }
         }
+        wrongs = omit(wrongs, key)
       }
 
-
-    }
+    };
     return {
-      validateComp(render, key){
-        return render(wrongs.find(err => err.key === key))
+      validateComp(render, key) {
+
+        return render({
+            res: wrongs[key], validateField: (value, callback) => {
+              validateField(key, value);
+              callback(value);
+            }
+          }
+        )
       },
-      getInvalids(){
-        return wrongs;
+      getInvalids() {
+        return Object.keys(wrongs);
       }
     }
   }
+
 };

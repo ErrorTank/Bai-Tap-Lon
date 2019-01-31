@@ -27,7 +27,7 @@ export class InputBase extends React.Component {
                value={value}
                {...others}
         />
-        {(notify && (fail || success)) (
+        {(notify && (fail || success)) && (
           <div className="form-control-feedback">{notify}</div>
         )}
         {helper && (

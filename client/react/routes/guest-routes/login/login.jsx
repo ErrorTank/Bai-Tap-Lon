@@ -19,7 +19,7 @@ export class Login extends React.Component {
         label: "Tên đăng nhập"
       },
       password: {
-        arr: [onlyWord, exclude(["-"])],
+        arr: [onlyWord, minLength(6) ,exclude(["-"])],
         label: "Mật khẩu"
       }
     });
@@ -27,12 +27,9 @@ export class Login extends React.Component {
 
   render() {
     let {username, password} = this.state;
-
-    let result = this.validator({
-      username,
-      password
-    });
-    let canLogin = result.getInvalids().length() === 0;
+    let result = this.validator();
+    console.log(result.getInvalids())
+    let canLogin = result.getInvalids().length === 0;
     return (
       <PageTitle
         title="Đăng Nhập"
@@ -50,24 +47,24 @@ export class Login extends React.Component {
                       </div>
                     </div>
                     <div className="panel-body">
-                      {result.validateComp((res) => (
+                      {result.validateComp(({msg, validateField}) => (
                         <InputBase
                           className="login-input"
-                          fail={!res.result}
+                          fail={!!msg}
                           value={username}
                           label={"Tên đăng nhập"}
-                          notify={res.msg}
-                          onChange={e => this.setState({username: e.target.value})}
+                          notify={msg}
+                          onChange={e => validateField(e.target.value, (val) => this.setState({username: val}))}
                         />
                       ), "username")}
-                      {result.validateComp((res) => (
+                      {result.validateComp(({msg, validateField}) => (
                         <InputBase
                           className="login-input"
-                          fail={!res.result}
+                          fail={!!msg}
                           value={password}
                           label={"Mật khẩu"}
-                          notify={res.msg}
-                          onChange={e => this.setState({password: e.target.value})}
+                          notify={msg}
+                          onChange={e => validateField(e.target.value, (val) => this.setState({password: val}))}
                         />
                       ), "password")}
                     </div>

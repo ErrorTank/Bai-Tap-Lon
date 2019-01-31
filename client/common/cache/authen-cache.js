@@ -19,7 +19,6 @@ export const authenCache = (() =>  {
     },
     async loadAuthen(){
       let authen = cache.get("k-authen");
-      console.log(authen)
       if(!authen){
         return false;
       }else{
