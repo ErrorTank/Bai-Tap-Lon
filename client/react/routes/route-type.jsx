@@ -1,7 +1,7 @@
 import React from "react";
 import {rolesHelper, userInfo} from "../../common/states/user-info";
 import {Route, Redirect} from "react-router-dom"
-import {LocationTracker} from "../common/location-tracker";
+import {TrackLocation} from "../common/location-tracker";
 import {AuthenLayout} from "../layout/authen-layout/authen-layout";
 
 export const toDefaultRoute = () => {
@@ -26,7 +26,7 @@ export const GuestRoute = ({render, component: Component, ...rest}) => (
   <Route
     {...rest}
     render={props => (
-      <LocationTracker
+      <TrackLocation
         location={props.location}
         render={() => {
           return !userInfo.getState() ? render ? render(props) : (
@@ -52,7 +52,7 @@ export const AuthenRoute = ({component: Component, ...rest}) => {
     }
 
     return (
-      <LocationTracker
+      <TrackLocation
         location={props.location}
         render={() => (
           <AuthenLayout location={props.location} match={props.match}>

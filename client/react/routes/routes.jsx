@@ -7,7 +7,7 @@ import {ModalsRegistry} from "../common/modal/modals";
 import {GuestRoute, toDefaultRoute} from "./route-type";
 import {Login} from "./guest-routes/login/login";
 import {userInfo} from "../../common/states/user-info";
-import {LocationTracker} from "../common/location-tracker";
+
 import {AuthenLayout} from "../layout/authen-layout/authen-layout";
 import {NotFoundPage} from "./not-found/not-found";
 
@@ -37,7 +37,9 @@ const NotFoundRoute = () => {
 export class MainRoute extends KComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+
+    };
   };
 
   render() {
