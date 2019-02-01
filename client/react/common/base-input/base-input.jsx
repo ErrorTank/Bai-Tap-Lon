@@ -11,7 +11,7 @@ export class InputBase extends React.Component {
     const {className, success = false, error = false, label = null,   helper = null, id, ...others} = this.props;
     return (
       <div className={classnames(
-        "form-group m-form__group",
+        "form-group m-form__group base-input",
         className,
         {
           "has-success": success,
