@@ -47,7 +47,7 @@ const dbUtils = [
     name: "Create supervisory table",
     query: "CREATE TABLE `olympic`.`supervisory` ( `ID` VARCHAR(10) NOT NULL , `supervisoryID` VARCHAR(10) NOT NULL , `name` VARCHAR(50) NOT NULL , `email` VARCHAR(100) NOT NULL , `phone` VARCHAR(20) NOT NULL , `address` VARCHAR(200) NOT NULL , PRIMARY KEY (`ID`), UNIQUE (`supervisoryID`)) ENGINE = InnoDB;"
   }, {
-    name: "Create supervisory table",
+    name: "Create contest - candidate table",
     query: "CREATE TABLE `olympic`.`contest - candidate`(`ID` VARCHAR(10) NOT NULL, `contestID` VARCHAR(10) NOT NULL, `candidateID` VARCHAR(10) NOT NULL, PRIMARY KEY(`ID`, `contestID`)) ENGINE = InnoDB;"
   }
   
