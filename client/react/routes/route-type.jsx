@@ -6,7 +6,7 @@ import {AuthenLayout} from "../layout/authen-layout/authen-layout";
 
 export const toDefaultRoute = () => {
   let role = rolesHelper.getRole();
-  if(role === null)
+  if (role === null)
     return "/login";
   switch (role.role) {
     case 0:
@@ -25,19 +25,12 @@ export const toDefaultRoute = () => {
 export const GuestRoute = ({render, component: Component, ...rest}) => (
   <Route
     {...rest}
-    render={props => (
-      <TrackLocation
-        location={props.location}
-        render={() => {
-          return !userInfo.getState() ? render ? render(props) : (
-            <Component {...props} />
-          ) : (
-            <Redirect
-              to={{
-                pathname: toDefaultRoute(),
-              }}
-            />
-          )
+    render={props => !userInfo.getState() ? render ? render(props) : (
+      <Component {...props} />
+    ) : (
+      <Redirect
+        to={{
+          pathname: toDefaultRoute(),
         }}
       />
     )}

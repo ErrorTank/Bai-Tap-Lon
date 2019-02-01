@@ -10,6 +10,7 @@ import {userInfo} from "../../common/states/user-info";
 
 import {AuthenLayout} from "../layout/authen-layout/authen-layout";
 import {NotFoundPage} from "./not-found/not-found";
+import {ForgotPassword} from "./guest-routes/forgot-password/forgot-password";
 
 const NotFoundRoute = () => {
   let getComp = (props) => {
@@ -52,6 +53,7 @@ export class MainRoute extends KComponent {
           <Switch>
             <GuestRoute exact path='/' render={props => <Redirect to="/login"/>}/>
             <GuestRoute exact path='/login' component={Login}/>
+            <GuestRoute exact path='/forgot-password' component={ForgotPassword}/>
             <NotFoundRoute/>
           </Switch>
 

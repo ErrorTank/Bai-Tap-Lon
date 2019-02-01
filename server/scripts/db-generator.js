@@ -38,7 +38,7 @@ const dbUtils = [
     name: "Create manager table",
     query: "CREATE TABLE `olympic`.`manager` ( `managerID` VARCHAR(10) NOT NULL , `name` VARCHAR(50) NOT NULL , `email` VARCHAR(100) NOT NULL , `phone` VARCHAR(20) NOT NULL, PRIMARY KEY (`managerID`)) ENGINE = InnoDB;"
   },
-  
+
 ];
 
 const queryController = (util, db) => new Promise((res, rej) => {
@@ -63,8 +63,7 @@ const dbGenerator = (() => {
       .catch(err => {
         console.log(err);
       })
-  }).catch(err => {
-    console.log("Cannot initialize DB: ");
+  }).catch(err => {console.log("Cannot initialize DB: ");
     console.log(err);
   })
 })();
