@@ -35,7 +35,7 @@ const startServer = () => {
 
 gulp.task("dev", () => {
   startServer();
-  stylusCompiler.watch("./public");
+  stylusCompiler.watch("./public/bundle");
   if (!/^win/.test(process.platform)) { // linux
     spawn("webpack", ["--watch"], {stdio: "inherit"});
   } else {
