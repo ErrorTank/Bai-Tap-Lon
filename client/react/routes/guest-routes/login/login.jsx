@@ -28,8 +28,13 @@ export class Login extends KComponent {
     this.onUnmount(this.form.on("change", () => this.forceUpdate()));
   };
 
+  componentDidMount(){
+    this.form.validateData();
+  }
+
   render() {
-    const canLogin = this.form.getInvalidPaths().length;
+    let canLogin = this.form.getInvalidPaths().length === 0;
+
     return (
       <PageTitle
         title="Đăng Nhập"
@@ -59,7 +64,7 @@ export class Login extends KComponent {
                       ), true)}
                       {this.form.enhanceComponent("password", ({error, ...others}) => (
                         <InputBase
-                          className="login-input"
+                          className="login-input pt-0"
                           error={error}
                           id={"password"}
                           type={"password"}
@@ -69,6 +74,9 @@ export class Login extends KComponent {
                       ), true)}
                     </div>
                     <div className="panel-footer">
+                      <div className="forgot-password">
+                      <span>Quên mật khẩu?</span>
+                      </div>
                       <button type="button" className="btn btn-info" disabled={!canLogin}>Đăng nhập</button>
                     </div>
                   </div>

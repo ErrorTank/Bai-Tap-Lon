@@ -1,5 +1,5 @@
 class Account {
-  constructor(){
+  constructor(username, password, email){
 
   }
 }
