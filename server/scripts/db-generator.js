@@ -37,7 +37,19 @@ const dbUtils = [
   },{
     name: "Create manager table",
     query: "CREATE TABLE `olympic`.`manager` ( `managerID` VARCHAR(10) NOT NULL , `name` VARCHAR(50) NOT NULL , `email` VARCHAR(100) NOT NULL , `phone` VARCHAR(20) NOT NULL, PRIMARY KEY (`managerID`)) ENGINE = InnoDB;"
-  },
+  }, {
+    name: "Create report card table",
+    query: "CREATE TABLE `olympic`.`report card` ( `reportCardID` VARCHAR(10) NOT NULL , `mark` REAL NOT NULL , `subjectID` VARCHAR(10) NOT NULL , `universityID` VARCHAR(10) NOT NULL , `candidateID` VARCHAR(10) NOT NULL , PRIMARY KEY (`reportCardID`)) ENGINE = InnoDB;"
+  }, {
+    name: "Create contest - room table",
+    query: "CREATE TABLE `olympic`.`contest - room` ( `roomID` VARCHAR(10) NOT NULL , `subjectID` VARCHAR(10) NOT NULL , `supervisoryID` VARCHAR(10) NOT NULL , PRIMARY KEY (`roomID`, `subjectID`)) ENGINE = InnoDB;"
+  }, {
+    name: "Create supervisory table",
+    query: "CREATE TABLE `olympic`.`supervisory` ( `ID` VARCHAR(10) NOT NULL , `supervisoryID` VARCHAR(10) NOT NULL , `name` VARCHAR(50) NOT NULL , `email` VARCHAR(100) NOT NULL , `phone` VARCHAR(20) NOT NULL , `address` VARCHAR(200) NOT NULL , PRIMARY KEY (`ID`), UNIQUE (`supervisoryID`)) ENGINE = InnoDB;"
+  }, {
+    name: "Create supervisory table",
+    query: "CREATE TABLE `olympic`.`contest - candidate`(`ID` VARCHAR(10) NOT NULL, `contestID` VARCHAR(10) NOT NULL, `candidateID` VARCHAR(10) NOT NULL, PRIMARY KEY(`ID`, `contestID`)) ENGINE = InnoDB;"
+  }
   
 ];
 
