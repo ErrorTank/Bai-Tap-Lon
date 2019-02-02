@@ -11,6 +11,14 @@ const handlers = {
     message: error.message,
     extra: error.extra
   }),
+  JWTError: (res, error) => res.status(400).json({
+    message: error.message,
+    extra: error.extra
+  }),
+  TokenExpiredError: (res, error) => res.status(400).json({
+    message: "token_expired",
+    extra: error.extra
+  })
 };
 
 module.exports = (err, req, res, next) => {

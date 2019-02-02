@@ -14,7 +14,7 @@ app.use(bodyParser.json({
 app.use("/", express.static(process.cwd() + "/" + process.env.STATIC_DIR));
 
 app.use("*", (req, res, next) => {
-  if (req.path.match(/^\/api\//)) {
+  if (/^\/api\//.test(req.originalUrl)) {
     next();
   } else {
     res.sendFile(process.cwd() + "/" + process.env.HTML_DIR);

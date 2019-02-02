@@ -7,23 +7,46 @@ import * as yup from "yup"
 import {KComponent} from "../../../common/k-component";
 import {Registration} from "../../../layout/registration/registration";
 import {customHistory} from "../../routes";
+import {LoadingInline} from "../../../common/loading-inline/loading-inline";
+import {authenticationApi} from "../../../../api/common/authen-api";
+import {userInfo} from "../../../../common/states/user-info";
+import {authenCache} from "../../../../common/cache/authen-cache";
+import {toDefaultRoute} from "../../route-type";
+import {parseQueryString} from "../../../../common/string-utils";
 
 const loginSchema = yup.object().shape({
-  username: yup.string().
-  min(6, "Tên đăng nhập lớn hơn 6 kí tự").
-  max(20, "Tên đăng nhập nhỏ hơn 20 kí tự").
-  onlyWord("Tên đăng nhập không được có kí tự đặc biệt").
-  haveChar("Tên đăng nhập phải có kí tự alphabet").
-  haveNumber("Tên đăng nhập phải có chữ số"),
+  username: yup.string().min(6, "Tên đăng nhập lớn hơn 6 kí tự").max(20, "Tên đăng nhập nhỏ hơn 20 kí tự").onlyWord("Tên đăng nhập không được có kí tự đặc biệt").haveChar("Tên đăng nhập phải có kí tự alphabet").haveNumber("Tên đăng nhập phải có chữ số"),
   password: yup.string().min(6, "Mật khẩu bắt buộc từ 6 ký tự trở lên").onlyWord("Mật khẩu không được có kí tự đặc biệt")
 });
+
+const loginErrs = {
+  "not_existed": "Tài khoản không tồn tại, vui lòng đăng nhập lại.",
+  "password_wrong": "Sai mật khẩu, vui lòng đăng nhập lại hoặc đổi mật khẩu mới.",
+  "token_expired": "Phiên đăng nhập hết hạn, vui lòng đăng nhập lại."
+};
+
+let getExternalError = (err) => {
+  console.log(err);
+
+  if(loginErrs.hasOwnProperty(err)){
+    return loginErrs[err];
+  }
+  return "Đã có lỗi xảy ra, vui lòng thử lại sau."
+};
+
+let getError = (search) => {
+  let params = parseQueryString(search);
+  return params.hasOwnProperty("error") ? loginErrs.hasOwnProperty(params.error) ? getExternalError(params.error) : "" : "";
+};
 
 export class Login extends KComponent {
   constructor(props) {
     super(props);
     this.state = {
-      error: ""
+      error: getError(props.location.search),
+      loading: false
     };
+    console.log(props);
     this.form = createSimpleForm(loginSchema, {
       initData: {
         username: "",
@@ -33,9 +56,32 @@ export class Login extends KComponent {
     this.onUnmount(this.form.on("change", () => this.forceUpdate()));
   };
 
-  componentDidMount(){
+  componentDidMount() {
     this.form.validateData();
   }
+
+
+
+  prepareInstance = (res, prevLocation) => {
+    authenCache.setAuthen(res.token);
+    userInfo.setState({...res.info})
+      .then(() => {
+        let newRoute = toDefaultRoute();
+        customHistory.push(prevLocation || newRoute);
+      })
+      .catch(err => console.log(err))
+  };
+
+  handleLogin = (prevLocation = null) => {
+    this.setState({loading: true});
+    let data = this.form.getData();
+    authenticationApi.login(data).then((res) => {
+      this.prepareInstance(res, prevLocation);
+
+    }, (err) => {
+      this.setState({error: getExternalError(err.message), loading: false});
+    })
+  };
 
   render() {
     let canLogin = this.form.getInvalidPaths().length === 0;
@@ -53,22 +99,30 @@ export class Login extends KComponent {
                   serverError={this.state.error}
                   renderBody={() => (
                     <Fragment>
-                      {this.form.enhanceComponent("username", ({error, ...others}) => (
+                      {this.form.enhanceComponent("username", ({error, onChange, ...others}) => (
                         <InputBase
-                          className="registration-input"
+                          className="registration-input pt-0"
                           error={error}
                           id={"username"}
                           type={"text"}
                           label={"Tên đăng nhập"}
+                          onChange={e => {
+                            this.setState({error: ""});
+                            onChange(e);
+                          }}
                           {...others}
                         />
                       ), true)}
-                      {this.form.enhanceComponent("password", ({error, ...others}) => (
+                      {this.form.enhanceComponent("password", ({error, onChange, ...others}) => (
                         <InputBase
                           className="registration-input pt-0 pb-0"
                           error={error}
                           id={"password"}
                           type={"password"}
+                          onChange={e => {
+                            this.setState({error: ""});
+                            onChange(e);
+                          }}
                           label={"Mật khẩu"}
                           {...others}
                         />
@@ -80,7 +134,19 @@ export class Login extends KComponent {
                       <div className="forgot-password">
                         <span onClick={() => customHistory.push("/forgot-password")}>Quên mật khẩu?</span>
                       </div>
-                      <button type="button" className="btn btn-info" disabled={!canLogin}>Đăng nhập</button>
+                      <button type="button" className="btn btn-info registration-btn"
+                              disabled={!canLogin || this.state.loading}
+                              onClick={() => this.handleLogin(prevLocation)}
+                      >
+                        {this.state.loading ? (
+                          <LoadingInline
+                            className={"registration-loading"}
+                          />
+                        ) : "Đăng nhập"
+
+                        }
+
+                      </button>
                     </Fragment>
                   )}
                 />

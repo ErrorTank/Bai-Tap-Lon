@@ -28,5 +28,6 @@ module.exports = {
   AuthorizationError: CustomError("AuthorizationError"),
   ApplicationError: CustomError("ApplicationError"),
   OperatorError: CustomError("OperatorError"),
-  DBError: CustomError("DBError")
+  DBError: CustomError("DBError"),
+  JWTError: CustomError("JWTError")
 };

@@ -4,13 +4,14 @@ export const customHistory = createBrowserHistory();
 import {Route, Switch, Router, Redirect} from "react-router-dom"
 import {KComponent} from "../common/k-component";
 import {ModalsRegistry} from "../common/modal/modals";
-import {GuestRoute, toDefaultRoute} from "./route-type";
+import {AuthenRoute, GuestRoute, toDefaultRoute} from "./route-type";
 import {Login} from "./guest-routes/login/login";
 import {userInfo} from "../../common/states/user-info";
 
 import {AuthenLayout} from "../layout/authen-layout/authen-layout";
 import {NotFoundPage} from "./not-found/not-found";
 import {ForgotPassword} from "./guest-routes/forgot-password/forgot-password";
+import {AdminDashboard} from "./authen-routes/admin-dashboard/admin-dashboard";
 
 const NotFoundRoute = () => {
   let getComp = (props) => {
@@ -53,6 +54,7 @@ export class MainRoute extends KComponent {
           <Switch>
             <GuestRoute exact path='/' render={props => <Redirect to="/login"/>}/>
             <GuestRoute exact path='/login' component={Login}/>
+            <AuthenRoute exact path='/dashboard' component={AdminDashboard}/>
             <GuestRoute exact path='/forgot-password' component={ForgotPassword}/>
             <NotFoundRoute/>
           </Switch>

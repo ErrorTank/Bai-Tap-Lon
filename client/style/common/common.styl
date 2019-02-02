@@ -75,6 +75,7 @@ ul{
     padding 0
   }
 }
+
 scrollStyle(grey)
 @keyframes spinner{
   from{
@@ -83,6 +84,9 @@ scrollStyle(grey)
   to{
     transform rotateZ(360deg)
   }
+}
+.spin{
+  animation spinner 1s linear forwards infinite
 }
 @keyframes move{
   from {

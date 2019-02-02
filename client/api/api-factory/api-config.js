@@ -2,9 +2,20 @@ import {sendRequest} from "./ajax-config";
 import forIn from "lodash/forIn";
 
 export const apiFactory = {
-  createApi: ({hostURL, beforeSend}) => {
+  createApi: ({hostURL, beforeSend, onErrors}) => {
     let headers = {
 
+    };
+    let onError = (json) => {
+      if(json && json.hasOwnProperty("message")){
+        let key = json['message'];
+        if(onErrors.hasOwnProperty(key)){
+          onErrors[key]();
+        }
+      }
+      if(onErrors.hasOwnProperty("default")){
+        onErrors.default();
+      }
     };
     const withPayload = method => (url, data) => {
       return sendRequest({
@@ -12,7 +23,8 @@ export const apiFactory = {
         data,
         type: method,
         beforeSend,
-        headers
+        headers,
+        onError
       });
     };
     const withoutPayload = method => url => {
@@ -20,7 +32,8 @@ export const apiFactory = {
         url: hostURL + url,
         type: method,
         beforeSend,
-        headers
+        headers,
+        onError
       });
     };
 
@@ -63,8 +76,8 @@ export const apiFactory = {
             success: (data) => {
               resolve(data);
             },
-            error: (resp, status, error) => {
-              reject(error);
+            error: (rsp, status, error) => {
+              reject({rsp: rsp.responseJSON}, status, error);
             }
           });
         });

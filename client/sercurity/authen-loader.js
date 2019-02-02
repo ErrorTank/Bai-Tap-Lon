@@ -8,12 +8,12 @@ export const authenLoader = {
   init() {
 
     authenApi.addHeader("Authorization", () => {
-      let {access_token} = authenCache.getAuthen();
-      return access_token ? `Bearer ${access_token}` : null;
+      let token = authenCache.getAuthen();
+      return token ? `Bearer ${token}` : null;
     });
 
 
 
-    return authenCache.loadAuthen();
+    return authenCache.loadAuthen().then(() => Promise.resolve(), err => Promise.resolve());
   }
 };
