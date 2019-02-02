@@ -13,7 +13,9 @@ export class AdminDashboard extends React.Component {
       <PageTitle
         title="Trang chủ"
       >
-        Admin
+        <div className="admin-dashboard">
+
+        </div>
       </PageTitle>
     );
   }
