@@ -1,10 +1,12 @@
-import React from "react";
+import React, {Fragment} from "react";
 import {PageTitle} from "../../../common/page-title/page-title";
 import {GetLocation} from "../../../common/location-tracker";
 import {InputBase} from "../../../common/base-input/base-input";
 import {createSimpleForm} from "../../../common/form-validator/form-validator"
 import * as yup from "yup"
 import {KComponent} from "../../../common/k-component";
+import {Registration} from "../../../layout/registration/registration";
+import {customHistory} from "../../routes";
 
 const loginSchema = yup.object().shape({
   username: yup.string().
@@ -19,6 +21,9 @@ const loginSchema = yup.object().shape({
 export class Login extends KComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      error: ""
+    };
     this.form = createSimpleForm(loginSchema, {
       initData: {
         username: "",
@@ -44,17 +49,13 @@ export class Login extends KComponent {
             console.log(prevLocation);
             return (
               <div className="login-route">
-                <div className="login-panel-wrap">
-                  <div className="login-panel m-form m-form--state">
-                    <div className="panel-header">
-                      <div className="app-logo">
-                        <img src="./assets/img/Framelogo.svg"/>
-                      </div>
-                    </div>
-                    <div className="panel-body">
+                <Registration
+                  serverError={this.state.error}
+                  renderBody={() => (
+                    <Fragment>
                       {this.form.enhanceComponent("username", ({error, ...others}) => (
                         <InputBase
-                          className="login-input"
+                          className="registration-input"
                           error={error}
                           id={"username"}
                           type={"text"}
@@ -64,7 +65,7 @@ export class Login extends KComponent {
                       ), true)}
                       {this.form.enhanceComponent("password", ({error, ...others}) => (
                         <InputBase
-                          className="login-input pt-0"
+                          className="registration-input pt-0 pb-0"
                           error={error}
                           id={"password"}
                           type={"password"}
@@ -72,16 +73,20 @@ export class Login extends KComponent {
                           {...others}
                         />
                       ), true)}
-                    </div>
-                    <div className="panel-footer">
+                    </Fragment>
+                  )}
+                  renderFooter={() => (
+                    <Fragment>
                       <div className="forgot-password">
-                      <span>Quên mật khẩu?</span>
+                        <span onClick={() => customHistory.push("/forgot-password")}>Quên mật khẩu?</span>
                       </div>
                       <button type="button" className="btn btn-info" disabled={!canLogin}>Đăng nhập</button>
-                    </div>
-                  </div>
-                </div>
+                    </Fragment>
+                  )}
+                />
               </div>
+
+
             )
           }}
         />
