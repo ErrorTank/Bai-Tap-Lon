@@ -15,7 +15,7 @@ const orgLocationSql = (db) => {
     var id = uniqid();
     this.locationID = id.slice(-6,-1)+id.slice(-1);
 
-    var createInfo = `INSERT INTO orgLocation (orgLocationID, name, content) VALUES(${locationID}, ${name}, ${address})`;
+    var createInfo = `INSERT INTO orgLocation (orgLocationID, name, address) VALUES(${locationID}, ${name}, ${address})`;
     return new Promise((resolve, reject) =>
         query(createInfo).then((result) => {
           if(result.length){
