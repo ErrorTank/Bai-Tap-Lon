@@ -4,6 +4,7 @@ const app = require("./config/express");
 const routerConfig = require('./config/routes');
 const initializeDb = require("./config/db");
 
+
 initializeDb().then((db) => {
   app.use('/', routerConfig(db));
   app.use(require('./utils/error/error-handlers'));

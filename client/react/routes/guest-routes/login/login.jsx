@@ -46,7 +46,7 @@ export class Login extends KComponent {
       error: getError(props.location.search),
       loading: false
     };
-    console.log(props);
+
     this.form = createSimpleForm(loginSchema, {
       initData: {
         username: "",
