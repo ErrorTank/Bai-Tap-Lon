@@ -1,7 +1,7 @@
 const {DBError} = require("../utils/error/error-types");
 const createQuery = require("../config/query");
 const isNil = require("lodash/isNil");
-const uniqid = require("uniquid");
+const uniquid = require("uniquid");
 
 const orgLocationSql = (db) => {
   const query = createQuery(db);
@@ -9,8 +9,8 @@ const orgLocationSql = (db) => {
   //create location
   const createLocation = (locationObj) => {
     //generate random ID for location
-    var id = uniqid();
-    locationID = id.slice(-6,-1)+id.slice(-1);
+    var id = uniquid();
+    var locationID = id.slice(-6,-1)+id.slice(-1);
 
     //destruct object for further use
     var {name, address} = locationObj;
@@ -27,6 +27,9 @@ const orgLocationSql = (db) => {
 
   //get location
   const getLocation = (locationID) => {
+    if (isNil(locationID)) {
+      Reflect(new Error("Cannot find location with ID" + locationID));
+    } else {
     var getInfo = `SELECT * FROM orgLocation WHERE orgLocationID = '${locationID}'`;
     return new Promise((resolve, reject) =>
         query(getInfo).then((result) => {
@@ -39,6 +42,7 @@ const orgLocationSql = (db) => {
           reject(err)
         })
       )
+    }
   };
 
   //update location's info

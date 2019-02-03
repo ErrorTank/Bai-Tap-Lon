@@ -27,11 +27,11 @@ const roomSql = (db) => {
   };
   const createRoom = (roomObj) => {
     var id = uniquid();
-    roomID = id.slice(-6,-1) + id.slice(-1);
+    var roomID = id.slice(-6,-1) + id.slice(-1);
 
     var {orgLocationID} = roomObj;
 
-    var createInfo = `INSERT INTO room (roomID,orgLocationID) VALUES('${roomID}','${locationID}')`;
+    var createInfo = `INSERT INTO room (roomID,orgLocationID,name) VALUES('${roomID}','${orglocationID}','${name}')`;
     return new Promise((resolve, reject) =>
       query(createInfo).then((result) => {
         resolve();
@@ -42,8 +42,8 @@ const roomSql = (db) => {
   };
 
   const updateRoom = (roomID, roomObj) => {
-    var {orgLocationID} = roomObj;
-    var updateInfo = `UPDATE room SET name = '${name}', address = '${address}' WHERE orgLocationID = '${locationID}'`;
+    var {orgLocationID,name} = roomObj;
+    var updateInfo = `UPDATE room SET name = '${name}' WHERE roomID = '${roomID}'`;
     return new Promise((resolve, reject) =>
       query(updateInfo).then((result) => {
         resolve();
@@ -52,9 +52,22 @@ const roomSql = (db) => {
       })
     )
   };
+  const deleteRoom = (roomID) => {
 
+    var deleteInfo = `DELETE FROM room WHERE roomID = '${roomID}'`;
+    return new Promise((resolve, reject) =>
+      query(deleteInfo).then((result) => {
+        resolve();
+      }).catch(err => {
+        reject(err)
+      })
+    )
+  }
   return {
     getRoom,
+    createRoom,
+    updateRoom,
+    deleteRoom
     //define function name here
   }
 };
