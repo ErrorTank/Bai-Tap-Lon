@@ -54,6 +54,8 @@ export const createSimpleForm = (schema, _options) => {
     }
   };
 
+
+
   const onChange = (path, validateOnChange) => async (e) => {
     const value = e.target && e.type == "change" ? e.target.value : e;
 

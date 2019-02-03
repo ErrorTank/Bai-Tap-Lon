@@ -53,7 +53,10 @@ export class Login extends KComponent {
         password: ""
       }
     });
-    this.onUnmount(this.form.on("change", () => this.forceUpdate()));
+    this.onUnmount((() => {
+      this.form.on("change", () => this.forceUpdate())
+      // this.form.on("enter", () => this.handleLogin())
+    })());
   };
 
   componentDidMount() {
@@ -62,21 +65,21 @@ export class Login extends KComponent {
 
 
 
-  prepareInstance = (res, prevLocation) => {
+  prepareInstance = (res) => {
     authenCache.setAuthen(res.token);
     userInfo.setState({...res.info})
       .then(() => {
         let newRoute = toDefaultRoute();
-        customHistory.push(prevLocation || newRoute);
+        customHistory.push(this.prevLocation || newRoute);
       })
       .catch(err => console.log(err))
   };
 
-  handleLogin = (prevLocation = null) => {
+  handleLogin = () => {
     this.setState({loading: true});
     let data = this.form.getData();
     authenticationApi.login(data).then((res) => {
-      this.prepareInstance(res, prevLocation);
+      this.prepareInstance(res);
 
     }, (err) => {
       this.setState({error: getExternalError(err.message), loading: false});
@@ -92,7 +95,7 @@ export class Login extends KComponent {
       >
         <GetLocation
           render={(prevLocation) => {
-            console.log(prevLocation);
+            this.prevLocation = prevLocation;
             return (
               <div className="login-route">
                 <Registration
@@ -136,7 +139,7 @@ export class Login extends KComponent {
                       </div>
                       <button type="button" className="btn btn-info registration-btn"
                               disabled={!canLogin || this.state.loading}
-                              onClick={() => this.handleLogin(prevLocation)}
+                              onClick={() => this.handleLogin()}
                       >
                         {this.state.loading ? (
                           <LoadingInline
