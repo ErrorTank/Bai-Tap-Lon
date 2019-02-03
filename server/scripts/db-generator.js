@@ -30,7 +30,7 @@ const dbUtils = [
     query: "CREATE TABLE `olympic`.`orgLocation` ( `orgLocationID` VARCHAR(10) NOT NULL , `name` VARCHAR(100) NOT NULL , `address` VARCHAR(200) NOT NULL , PRIMARY KEY (`orgLocationID`)) ENGINE = InnoDB;"
   },{
     name: "Create room table",
-    query: "CREATE TABLE `olympic`.`room` ( `roomID` VARCHAR(10) NOT NULL , `orgLocationID` VARCHAR(10) NOT NULL , PRIMARY KEY (`roomID`)) ENGINE = InnoDB;"
+    query: "CREATE TABLE `olympic`.`room` ( `roomID` VARCHAR(10) NOT NULL , `orgLocationID` VARCHAR(10) NOT NULL ,`name` VARCHAR(50) NOT NULL , PRIMARY KEY (`roomID`)) ENGINE = InnoDB;"
   },{
     name: "Create candidate table",
     query: "CREATE TABLE `olympic`.`candidate`(`CID` VARCHAR(10) NOT NULL, `studentID` VARCHAR(10) NOT NULL, `universityID` VARCHAR(10) NOT NULL, `name` VARCHAR(50) NOT NULL, `phone` VARCHAR(20) NOT NULL, `email` VARCHAR(100) NOT NULL, `dob` DATETIME NOT NULL, PRIMARY KEY(`CID`), UNIQUE(`studentID`)) ENGINE = InnoDB;"
