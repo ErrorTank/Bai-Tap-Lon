@@ -3,8 +3,8 @@ const createQuery = require("../config/query");
 const isNil = require("lodash/isNil");
 
 var prizeObj = {
-  name: '1',
-  content: '2'
+  name: '',
+  content: ''
 };
 
 const prizeSql = (db) => {
@@ -52,7 +52,7 @@ const prizeSql = (db) => {
   const updatePrize = (prizeID, prizeObj) => {
     //
     var {name, address} = prizeObj;
-    
+
     var updateInfo = `UPDATE prize SET name = ${name}, content = ${content} WHERE prizeID = ${prizeID}`;
     return new Promise((resolve, reject) =>
         query(updateInfo).then((result) => {

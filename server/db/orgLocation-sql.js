@@ -3,8 +3,8 @@ const createQuery = require("../config/query");
 const isNil = require("lodash/isNil");
 
 var locationObj = {
-  name: '1',
-  address: '2'
+  name: '',
+  address: ''
 };
 
 const orgLocationSql = (db) => {
@@ -53,7 +53,7 @@ const orgLocationSql = (db) => {
   const updateLocation = (locationID, locationObj) => {
     //destruct obj for further use
     var {name, address} = locationObj;
-    
+
     var updateInfo = `UPDATE orgLocation SET name = ${name}, address = ${address} WHERE orgLocationID = ${locationID}`;
     return new Promise((resolve, reject) =>
         query(updateInfo).then((result) => {
