@@ -22,11 +22,16 @@ export class ForgotPassword extends KComponent {
       }
     });
     this.onUnmount(this.form.on("change", () => this.forceUpdate()));
+    this.onUnmount(this.form.on("enter", () => this.submit()));
   };
 
   componentDidMount(){
     this.form.validateData();
   }
+
+  submit = () => {
+    console.log("dasdsa")
+  };
 
   render() {
     let canLogin = this.form.getInvalidPaths().length === 0;
@@ -42,13 +47,14 @@ export class ForgotPassword extends KComponent {
                 <Registration
                   renderBody={() => (
                     <Fragment>
-                      {this.form.enhanceComponent("email", ({error, ...others}) => (
+                      {this.form.enhanceComponent("email", ({error, onEnter, ...others}) => (
                         <InputBase
                           className="registration-input pt-0 pb-0"
                           error={error}
                           id={"email"}
                           type={"text"}
                           label={"Email"}
+                          onKeyDown={onEnter}
                           {...others}
                         />
                       ), true)}
@@ -59,7 +65,13 @@ export class ForgotPassword extends KComponent {
                       <div className="back-to-login">
                         <span onClick={() => customHistory.push("/login")}>Trở về đăng nhập</span>
                       </div>
-                      <button type="button" className="btn btn-info" disabled={!canLogin}>Xác nhận</button>
+                      <button type="button"
+                              className="btn btn-info"
+                              disabled={!canLogin}
+                              onClick={this.submit}
+                      >
+                        Xác nhận
+                      </button>
                     </Fragment>
                   )}
                 />
