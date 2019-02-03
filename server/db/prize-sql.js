@@ -1,11 +1,7 @@
 const {DBError} = require("../utils/error/error-types");
 const createQuery = require("../config/query");
 const isNil = require("lodash/isNil");
-
-var prizeObj = {
-  name: '',
-  content: ''
-};
+const uniqid = require("uniquid");
 
 const prizeSql = (db) => {
   const query = createQuery(db);
@@ -18,14 +14,10 @@ const prizeSql = (db) => {
     //
     var {name, address} = prizeObj;
 
-    var createInfo = `INSERT INTO orgLocation (prizeID, name, content) VALUES(${prizeID}, ${name}, ${content})`;
+    var createInfo = `INSERT INTO orgLocation (prizeID, name, content) VALUES('${prizeID}', '${name}', '${content}')`;
     return new Promise((resolve, reject) =>
         query(createInfo).then((result) => {
-          if(result.length){
-            resolve(result[0]);
-          }else{
-            reject(new Error("Can't create prize"));
-          }
+            resolve();
         }).catch(err => {
           reject(err)
         })
@@ -56,11 +48,7 @@ const prizeSql = (db) => {
     var updateInfo = `UPDATE prize SET name = ${name}, content = ${content} WHERE prizeID = ${prizeID}`;
     return new Promise((resolve, reject) =>
         query(updateInfo).then((result) => {
-          if(result.length){
-            resolve(result[0]);
-          }else{
-            reject(new Error("Can't update prize"));
-          }
+            resolve();
         }).catch(err => {
           reject(err)
         })
@@ -72,11 +60,7 @@ const prizeSql = (db) => {
     var deleteInfo = `DELETE FROM prize WHERE prizeID = ${prizeID}`;
     return new Promise((resolve, reject) =>
         query(deleteInfo).then((result) => {
-          if(result.length){
-            resolve(result[0]);
-          }else{
-            reject(new Error("Can't delete prize"));
-          }
+            resolve();
         }).catch(err => {
           reject(err)
         })
