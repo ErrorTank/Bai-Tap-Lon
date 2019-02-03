@@ -30,7 +30,7 @@ export class UserProfile extends React.Component {
   render() {
 
     let {hover, name, email} = this.state;
-    console.log(hover);
+
     return (
       <div className="user-nav-profile"
            onMouseEnter={() => !hover && this.setState({hover: true})}
