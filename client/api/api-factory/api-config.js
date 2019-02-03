@@ -2,7 +2,7 @@ import {sendRequest} from "./ajax-config";
 import forIn from "lodash/forIn";
 
 export const apiFactory = {
-  createApi: ({hostURL, beforeSend, onErrors}) => {
+  createApi: ({hostURL, beforeSend, onErrors = {}}) => {
     let headers = {
 
     };

@@ -9,7 +9,7 @@ const dbUtils = [
     query: "CREATE TABLE `olympic`.`User` ( `userID` VARCHAR(10) NOT NULL , `name` VARCHAR(50) NOT NULL , `address` VARCHAR(200) NULL , `phone` VARCHAR(50) NULL , `email` VARCHAR(50) NOT NULL , `accountID` VARCHAR(10) NOT NULL , `employeeID` VARCHAR(10) NOT NULL , `CMT` VARCHAR(20) NOT NULL , `gender` INT(1) NOT NULL , PRIMARY KEY (`userID`), UNIQUE (`email`), UNIQUE (`accountID`), UNIQUE (`employeeID`), UNIQUE (`CMT`)) ENGINE = InnoDB;"
   }, {
     name: "Create Admin",
-    query: "INSERT INTO `account` (`accountID`, `email`, `username`, `password`, `role`, `canLogin`) VALUES ('1', 'kappa@gmail.com', 'kappa', '123123qwe', '0', '1');"
+    query: "INSERT INTO `account` (`accountID`, `email`, `username`, `password`, `role`, `canLogin`) VALUES ('1', 'kappa@gmail.com', 'kappa2', '123123qwe', '0', '1');"
   }, {
     name: "Create Admin info",
     query: "INSERT INTO `user` (`userID`, `name`, `address`, `phone`, `email`, `accountID`, `employeeID`, `CMT`, `gender`) VALUES ('1', 'Kappa', 'No fucking where', '0123456789', 'kappa@gmail.com', '1', '1', '123456', '0');"

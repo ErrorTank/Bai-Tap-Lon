@@ -19,7 +19,7 @@ export const sendRequest = ({url, type, data, headers, beforeSend, onError}) => 
     },
     error: (rsp, status, error) => {
       reject(rsp.responseJSON);
-      onError(rsp.responseJSON);
+      onError && onError(rsp.responseJSON);
     }
   };
 

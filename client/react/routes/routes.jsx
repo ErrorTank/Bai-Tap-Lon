@@ -11,7 +11,7 @@ import {userInfo} from "../../common/states/user-info";
 import {AuthenLayout} from "../layout/authen-layout/authen-layout";
 import {NotFoundPage} from "./not-found/not-found";
 import {ForgotPassword} from "./guest-routes/forgot-password/forgot-password";
-import {AdminDashboard} from "./authen-routes/admin-dashboard/admin-dashboard";
+import {AdminDashboard} from "./authen-routes/admin-routes/admin-dashboard/admin-dashboard";
 
 const NotFoundRoute = () => {
   let getComp = (props) => {
