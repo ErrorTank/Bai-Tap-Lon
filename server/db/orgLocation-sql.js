@@ -6,14 +6,18 @@ var locationObj = {
   name: '1',
   address: '2'
 };
-var {name, address} = locationObj;
 
 const orgLocationSql = (db) => {
   const query = createQuery(db);
+
   //create location
   const createLocation = (locationObj) => {
+    //generate random ID for location
     var id = uniqid();
     this.locationID = id.slice(-6,-1)+id.slice(-1);
+
+    //destruct object for further use
+    var {name, address} = locationObj;
 
     var createInfo = `INSERT INTO orgLocation (orgLocationID, name, address) VALUES(${locationID}, ${name}, ${address})`;
     return new Promise((resolve, reject) =>
@@ -47,6 +51,9 @@ const orgLocationSql = (db) => {
 
   //update location's info
   const updateLocation = (locationID, locationObj) => {
+    //destruct obj for further use
+    var {name, address} = locationObj;
+    
     var updateInfo = `UPDATE orgLocation SET name = ${name}, address = ${address} WHERE orgLocationID = ${locationID}`;
     return new Promise((resolve, reject) =>
         query(updateInfo).then((result) => {
