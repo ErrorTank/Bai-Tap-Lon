@@ -1,14 +1,14 @@
 const {DBError} = require("../utils/error/error-types");
 const createQuery = require("../config/query");
 const isNil = require("lodash/isNil");
-const uniqid = require("uniquid");
+const uniquid = require("uniquid");
 
 const prizeSql = (db) => {
   const query = createQuery(db);
   //create prize
   const createPrize = (prizeObj) => {
     //create random ID for prize
-    var id = uniqid();
+    var id = uniquid();
     this.prizeID = id.slice(-6,-1)+id.slice(-1);
 
     //

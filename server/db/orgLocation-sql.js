@@ -1,7 +1,7 @@
 const {DBError} = require("../utils/error/error-types");
 const createQuery = require("../config/query");
 const isNil = require("lodash/isNil");
-const uniqid = require("uniquid");
+const uniquid = require("uniquid");
 
 const orgLocationSql = (db) => {
   const query = createQuery(db);
@@ -9,7 +9,7 @@ const orgLocationSql = (db) => {
   //create location
   const createLocation = (locationObj) => {
     //generate random ID for location
-    var id = uniqid();
+    var id = uniquid();
     locationID = id.slice(-6,-1)+id.slice(-1);
 
     //destruct object for further use
