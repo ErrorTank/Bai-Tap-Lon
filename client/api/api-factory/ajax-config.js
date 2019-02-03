@@ -1,4 +1,4 @@
-export const sendRequest = ({url, type, data, headers, beforeSend}) => new Promise((resolve, reject) => {
+export const sendRequest = ({url, type, data, headers, beforeSend, onError}) => new Promise((resolve, reject) => {
   let ajaxConfig = {
     url,
     contentType: "application/json",
@@ -17,8 +17,9 @@ export const sendRequest = ({url, type, data, headers, beforeSend}) => new Promi
     success: (data) => {
       resolve(data);
     },
-    error: (err) => {
-      reject(err);
+    error: (rsp, status, error) => {
+      reject(rsp.responseJSON);
+      onError(rsp.responseJSON);
     }
   };
 
