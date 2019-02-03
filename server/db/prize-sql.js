@@ -3,17 +3,20 @@ const createQuery = require("../config/query");
 const isNil = require("lodash/isNil");
 
 var prizeObj = {
-  name: '1',
-  content: '2'
+  name: '',
+  content: ''
 };
-var {name, address} = prizeObj;
 
 const prizeSql = (db) => {
   const query = createQuery(db);
   //create prize
   const createPrize = (prizeObj) => {
+    //create random ID for prize
     var id = uniqid();
     this.prizeID = id.slice(-6,-1)+id.slice(-1);
+
+    //
+    var {name, address} = prizeObj;
 
     var createInfo = `INSERT INTO orgLocation (prizeID, name, content) VALUES(${prizeID}, ${name}, ${content})`;
     return new Promise((resolve, reject) =>
@@ -47,6 +50,9 @@ const prizeSql = (db) => {
 
   //update location's info
   const updatePrize = (prizeID, prizeObj) => {
+    //
+    var {name, address} = prizeObj;
+
     var updateInfo = `UPDATE prize SET name = ${name}, content = ${content} WHERE prizeID = ${prizeID}`;
     return new Promise((resolve, reject) =>
         query(updateInfo).then((result) => {
