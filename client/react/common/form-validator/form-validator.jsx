@@ -56,7 +56,7 @@ export const createSimpleForm = (schema, _options) => {
 
   const onEnter = path => (e) => {
     if(keyEvents.isEnter(e)){
-      eventManagement.emit("change");
+      eventManagement.emit("enter");
     }
   };
 

@@ -53,13 +53,8 @@ export class Login extends KComponent {
         password: ""
       }
     });
-    // this.onUnmount(() => {
-    //   this.form.on("enter", () => this.handleLogin())
-    // });
-    this.onUnmount(() => {
-      this.form.on("change", () => this.forceUpdate())
-
-    });
+    this.onUnmount(this.form.on("enter", () => this.handleLogin()));
+    this.onUnmount(this.form.on("change", () => this.forceUpdate()));
   };
 
   componentDidMount() {
@@ -110,7 +105,7 @@ export class Login extends KComponent {
                           className="registration-input pt-0"
                           error={error}
                           id={"username"}
-                          // onKeyDown={onEnter}
+                          onKeyDown={onEnter}
                           type={"text"}
                           label={"Tên đăng nhập"}
                           onChange={e => {
@@ -126,7 +121,7 @@ export class Login extends KComponent {
                           error={error}
                           id={"password"}
                           type={"password"}
-                          // onKeyDown={onEnter}
+                          onKeyDown={onEnter}
                           onChange={e => {
                             this.setState({error: ""});
                             onChange(e);
