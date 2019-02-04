@@ -1,7 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import update from "lodash/update";
-import {createEventEmiter} from "../../../common/events/events";
+import {createEventEmiter, keyEvents} from "../../../common/events/events";
 
 require("./yup-configs");
 
@@ -51,6 +51,12 @@ export const createSimpleForm = (schema, _options) => {
       delete errors[path];
     } catch (_e) {
       errors[path] = _e;
+    }
+  };
+
+  const onEnter = path => (e) => {
+    if(keyEvents.isEnter(e)){
+      eventManagement.emit("enter");
     }
   };
 
@@ -126,7 +132,8 @@ export const createSimpleForm = (schema, _options) => {
         value: getPathData(path),
         onChange: onChange(path, validateOnChange),
         onBlur: onBlur(path),
-        error: touched[path] ? errors[path] : null
+        error: touched[path] ? errors[path] : null,
+        onEnter: onEnter(path)
       })
     }
   }
