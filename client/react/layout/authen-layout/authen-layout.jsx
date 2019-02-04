@@ -2,6 +2,7 @@ import React from "react";
 import {NavBar} from "./nav-bar/nav-bar";
 import {MenuBar} from "./menu-bar/menu-bar";
 
+
 export class AuthenLayout extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +14,10 @@ export class AuthenLayout extends React.Component {
       <div className="authen-layout">
         <NavBar/>
         <MenuBar/>
-        {this.props.children}
+        <div className="authen-body">
+          {this.props.children}
+        </div>
+
       </div>
     );
   }
