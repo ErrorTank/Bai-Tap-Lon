@@ -1,5 +1,6 @@
 import React from "react";
 import {NavBar} from "./nav-bar/nav-bar";
+import {MenuBar} from "./menu-bar/menu-bar";
 
 export class AuthenLayout extends React.Component {
   constructor(props) {
@@ -11,6 +12,7 @@ export class AuthenLayout extends React.Component {
     return (
       <div className="authen-layout">
         <NavBar/>
+        <MenuBar/>
         {this.props.children}
       </div>
     );

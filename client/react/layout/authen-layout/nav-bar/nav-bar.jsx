@@ -17,7 +17,7 @@ export class NavBar extends React.Component {
           <a className="navbar-brand"
              onClick={() => customHistory.push("/dashboard")}
           >
-            <img src="./assets/img/Framelogo.svg"/>
+            {/*<img src="./assets/img/Framelogo.svg"/>*/}
           </a>
           <div className="nav-items" id="navbarText">
             <ul className="navbar-nav ml-auto ">
