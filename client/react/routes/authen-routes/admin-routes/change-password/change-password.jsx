@@ -48,10 +48,12 @@ export class ChangePassword extends KComponent {
   };
 
   handleChangePassword = () => {
-    this.setState({loading: true})
+    this.setState({loading: true});
     let {accountID} = userInfo.getState();
-    userApi.changePassword(accountID).then(() => {
-
+    let {oldPassword, password} = this.form.getData();
+    userApi.changePassword(accountID, {oldPassword, password}).then(() => {
+      this.setState({error: "", loading: false});
+      return this.form.resetData();
     }, err => {
       this.setState({error: getExternalError(err.message), loading: false})
     })
@@ -63,7 +65,6 @@ export class ChangePassword extends KComponent {
 
   render() {
     let canSubmit = this.form.getInvalidPaths().length === 0;
-
     let {error, loading} = this.state;
     return (
       <PageTitle

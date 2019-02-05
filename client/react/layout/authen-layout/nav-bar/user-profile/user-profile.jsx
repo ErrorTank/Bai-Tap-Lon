@@ -74,12 +74,14 @@ export class UserProfile extends React.Component {
                       Thông tin cá nhân
                     </div>
                   </div>
-                  <div className="body-item">
+                  <div className="body-item"
+                       onClick={this.changePassword}
+                  >
                     <div className="icon">
                       <i className="fas fa-key"></i>
                     </div>
                     <div className="label"
-                         onClick={this.changePassword}
+
                     >
                       Đổi mật khẩu
                     </div>

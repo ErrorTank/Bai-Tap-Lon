@@ -5,7 +5,7 @@ export const userApi = {
   get(userID) {
     return authenApi.get("/user/" + userID);
   },
-  changePassword(accountID, newPassword){
-    return authenApi.put(`/account/${accountID}/change-password`, newPassword);
+  changePassword(accountID, obj){
+    return authenApi.put(`/account/${accountID}/change-password`, obj);
   }
 };

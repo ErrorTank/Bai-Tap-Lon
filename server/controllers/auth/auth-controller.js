@@ -27,15 +27,13 @@ module.exports = (db) => {
     });
 
   });
-  router.put("/account/:accountID/change-password", authMiddleware, (req,res, next) =>{
+  router.put("/account/:accountID/change-password", authMiddleware, (req,res, next) => {
     accManager.getAccount(req.params.accountID).then(account => {
-      let newPassword = req.body;
-      console.log(newPassword)
-      console.log(req.params.accountID)
-      if(newPassword !== account.password){
+      let oldPassword = req.body.oldPassword;
+      if(oldPassword !== account.password){
         next(new Error("wrong_password"));
       }else{
-        accManager.updateAccount(req.params.accountID, Object.assign({}, account, {password: req.body})).then(() => {
+        accManager.updateAccount(req.params.accountID, Object.assign({}, account, {password: req.body.password})).then(() => {
           res.status(200).end();
         }).catch(err => next(err));
       }

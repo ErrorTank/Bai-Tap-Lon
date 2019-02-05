@@ -64,9 +64,9 @@ const accountSql = (db) => {
   };
   const updateAccount = (accountID, accountObj) => {
     //
-    let {name, email, username, password, role, canLogin} = accountObj;
+    let {email, username, password, role, canLogin} = accountObj;
 
-    let updateInfo = `UPDATE account SET name = ${name}, email = ${email}, username = ${username}, password = ${password}, role = ${role}, canLogin = ${canLogin} WHERE accountID = ${accountID}`;
+    let updateInfo = `UPDATE account SET  email = '${email}', username = '${username}', password = '${password}', role = '${role}', canLogin = '${canLogin}' WHERE accountID = '${accountID}'`;
     return new Promise((resolve, reject) =>
       query(updateInfo).then((result) => {
         resolve();
