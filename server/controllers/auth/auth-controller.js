@@ -10,7 +10,10 @@ const authMiddleware = authorization(getPublicKey(), {expiresIn: "1h", algorithm
 module.exports = (db) => {
   let accManager = accountSql(db);
   router.get("/auth", authMiddleware, (req, res) => {
-    res.status(200).json(omit(req.user, ['exp', 'iat']));
+    accManager.getClientUserCache(req.user.accountID).then(info => {
+      res.status(200).json(omit(info, 'password'));
+    }).catch(err => next(err));
+
   });
   router.post("/login", (req, res, next) => {
     accManager.checkLogin(req.body).then((data) => {
@@ -23,6 +26,22 @@ module.exports = (db) => {
       next(err);
     });
 
+  });
+  router.put("/account/:accountID/change-password", authMiddleware, (req,res, next) =>{
+    accManager.getAccount(req.params.accountID).then(account => {
+      let newPassword = req.body;
+      console.log(newPassword)
+      console.log(req.params.accountID)
+      if(newPassword !== account.password){
+        next(new Error("wrong_password"));
+      }else{
+        accManager.updateAccount(req.params.accountID, Object.assign({}, account, {password: req.body})).then(() => {
+          res.status(200).end();
+        }).catch(err => next(err));
+      }
+
+
+    }).catch(err => next(err))
   });
   return router;
 };

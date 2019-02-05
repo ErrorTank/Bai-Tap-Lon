@@ -14,5 +14,6 @@ module.exports = (db) => {
       res.status(200).json(omit(user, "password"));
     }).catch(err => next(err))
   });
+
   return router;
 };

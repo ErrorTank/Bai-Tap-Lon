@@ -53,7 +53,7 @@ const prizeSql = (db) => {
           reject(err)
         })
       )
-  }
+  };
 
   //delete location
   const deletePrize = (prizeID) => {

@@ -29,3 +29,31 @@ yup.addMethod(yup.string, "haveNumber", function (message) {
     return /\d/gi.test(val) === true
   })
 });
+
+yup.addMethod(yup.string, "equalTo", function (ref, message) {
+  return this.test({
+    name: "equalTo",
+    exclusive: false,
+    message,
+    params: {
+      reference: ref.path
+    },
+    test: function (val) {
+      return val === this.resolve(ref);
+    }
+  })
+});
+
+yup.addMethod(yup.string, "notEqualTo", function (ref, message) {
+  return this.test({
+    name: "notEqualTo",
+    exclusive: false,
+    message,
+    params: {
+      reference: ref.path
+    },
+    test: function (val) {
+      return val !== this.resolve(ref);
+    }
+  })
+});
