@@ -27,6 +27,10 @@ export class UserProfile extends React.Component {
 
   };
 
+  changePassword = () => {
+    customHistory.push("/change-password");
+  };
+
   render() {
 
     let {hover, name, email} = this.state;
@@ -70,11 +74,15 @@ export class UserProfile extends React.Component {
                       Thông tin cá nhân
                     </div>
                   </div>
-                  <div className="body-item">
+                  <div className="body-item"
+                       onClick={this.changePassword}
+                  >
                     <div className="icon">
                       <i className="fas fa-key"></i>
                     </div>
-                    <div className="label">
+                    <div className="label"
+
+                    >
                       Đổi mật khẩu
                     </div>
                   </div>

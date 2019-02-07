@@ -5,11 +5,11 @@ const isNil = require("lodash/isNil");
 const userSql = (db) => {
   const query = createQuery(db);
   const getUser = (userID) => {
-    if(isNil(userID)){
-      reject(new Error("Cannot find user with ID: " + userID));
-    }else{
-      const getInfo = `SELECT * FROM user where userID = '${userID}'`;
-      return new Promise((resolve, reject) =>
+    return new Promise((resolve, reject) => {
+      if(isNil(userID)){
+        reject(new Error("Cannot find user with ID: " + userID));
+      }else{
+        const getInfo = `SELECT * FROM user where userID = '${userID}'`;
         query(getInfo).then((result) => {
           if(result.length){
             resolve(result[0]);
@@ -19,12 +19,17 @@ const userSql = (db) => {
         }).catch(err => {
           reject(err)
         })
-      )
-    }
+      }
+
+    });
+
+
 
   };
+
   return {
-    getUser
+    getUser,
+
   }
 };
 module.exports = userSql;

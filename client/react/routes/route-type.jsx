@@ -51,7 +51,7 @@ export const AuthenRoute = ({component: Component, ...rest}) => {
 
     return (
       <AuthenLayout location={props.location} match={props.match}>
-        <Component {...props} />
+        <Component {...props}/>
       </AuthenLayout>
     )
   };

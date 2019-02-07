@@ -14,13 +14,13 @@ export const createSimpleForm = (schema, _options) => {
 
   const options = Object.assign({}, defaultOptions, _options);
 
-  let state = options.initData;
+
+  let state = {...options.initData};
   let errors = {};
   let touched = {};
   let eventManagement = createEventEmiter();
 
   const getPathData = (path) => {
-
     return get(state, path);
   }
 
@@ -73,7 +73,10 @@ export const createSimpleForm = (schema, _options) => {
       if (!touched[path]) {
         touched[path] = true;
       }
-      await validatePath(path);
+      if(_options.validateAll){
+        await validateData()
+      }else
+        await validatePath(path);
 
       eventManagement.emit("change", state);
     }
@@ -108,9 +111,11 @@ export const createSimpleForm = (schema, _options) => {
       await validatePath(path);
       eventManagement.emit("change", state);
     },
-    resetData: async (data) => {
-      state = Object.assign({}, data);
+    resetData: async (data = {}) => {
+      state = Object.assign({}, data, _options.initData);
+
       await validateData();
+      touched = {};
       eventManagement.emit("change", state);
     },
     updateData: async (data) => {
