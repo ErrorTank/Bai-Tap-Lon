@@ -12,6 +12,11 @@ yup.addMethod(yup.object, "notEmpty", function (message = "no data") {
     return !isEmpty(val)
   })
 });
+yup.addMethod(yup.string, "isPhone", function (message = "no data") {
+  return this.test("isPhone", message, function (val) {
+    return /\D/gi.test(val) === false
+  })
+});
 yup.addMethod(yup.string, "onlyWord", function (message) {
   return this.test("onlyWord", message, function (val) {
     return /\W/gi.test(val) === false

@@ -12,11 +12,9 @@ export const toDefaultRoute = () => {
   switch (role) {
     case 0:
     case 1:
+      return `/dashboard`;
     case 2:
     case 3:
-    case 4:
-      return `/dashboard`;
-    case 5:
       return `/info`;
 
     default:
@@ -41,14 +39,26 @@ export const GuestRoute = ({render, component: Component, ...rest}) => {
     />
   );
 };
-export const AuthenRoute = ({component: Component, ...rest}) => {
+export const AuthenRoute = ({component: Component, excludeRoles = null, ...rest}) => {
   let getComp = (props) => {
+    let info = userInfo.getState();
     if (!authenCache.getAuthen()) {
       return (
         <Redirect to={{pathname: "/login"}}/>
       )
     }
+    if(info && excludeRoles && excludeRoles.length){
 
+      if(excludeRoles.includes(info.role)){
+        return (
+          <Redirect
+            to={{
+              pathname: toDefaultRoute(),
+            }}
+          />
+        )
+      }
+    }
     return (
       <AuthenLayout location={props.location} match={props.match}>
         <Component {...props}/>

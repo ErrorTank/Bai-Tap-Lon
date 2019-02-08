@@ -1,13 +1,15 @@
 import React from "react";
-import {PageTitle} from "../../../../common/page-title/page-title";
-import {RouteTitle} from "../../../../layout/route-title/route-title";
-import {InputBase} from "../../../../common/base-input/base-input";
-import {createSimpleForm} from "../../../../common/form-validator/form-validator";
+import {PageTitle} from "../../../common/page-title/page-title";
+import {RouteTitle} from "../../../layout/route-title/route-title";
+import {InputBase} from "../../../common/base-input/base-input";
+import {createSimpleForm} from "../../../common/form-validator/form-validator";
 import * as yup from "yup";
-import {KComponent} from "../../../../common/k-component";
-import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
-import {userApi} from "../../../../../api/common/user-api";
-import {userInfo} from "../../../../../common/states/user-info";
+import {KComponent} from "../../../common/k-component";
+import {LoadingInline} from "../../../common/loading-inline/loading-inline";
+import {userApi} from "../../../../api/common/user-api";
+import {userInfo} from "../../../../common/states/user-info";
+import {appModal} from "../../../common/modal/modals";
+
 
 const changePasswordSchema = yup.object().shape({
   oldPassword: yup.string().min(6, "Mật khẩu bắt buộc từ 6 ký tự trở lên").onlyWord("Mật khẩu không được có kí tự đặc biệt"),
@@ -20,7 +22,6 @@ const loginErrs = {
 };
 
 let getExternalError = (err) => {
-  console.log(err);
 
   if(loginErrs.hasOwnProperty(err)){
     return loginErrs[err];
@@ -45,18 +46,28 @@ export class ChangePassword extends KComponent {
     });
     this.onUnmount(this.form.on("enter", () => this.handleChangePassword()));
     this.onUnmount(this.form.on("change", () => this.forceUpdate()));
+
   };
 
-  handleChangePassword = () => {
+  changePassword = () => {
     this.setState({loading: true});
     let {accountID} = userInfo.getState();
     let {oldPassword, password} = this.form.getData();
-    userApi.changePassword(accountID, {oldPassword, password}).then(() => {
+    return userApi.changePassword(accountID, {oldPassword, password})
+  };
+
+  handleChangePassword = () => {
+    this.changePassword().then(() => {
       this.setState({error: "", loading: false});
-      return this.form.resetData();
+      this.form.resetData();
+      appModal.alert({
+        text: "Mật khẩu đã được thay đổi thành công!",
+        title: "Thông báo"
+      });
     }, err => {
       this.setState({error: getExternalError(err.message), loading: false})
-    })
+    });
+
   };
 
   componentDidMount() {
@@ -97,7 +108,7 @@ export class ChangePassword extends KComponent {
                         id={"oldPassword"}
                         onKeyDown={onEnter}
                         onChange={e => {
-                          error && this.setState({error: ""});
+                          this.setState({error: ""});
                           onChange(e);
                         }}
                         type={"password"}
@@ -110,7 +121,7 @@ export class ChangePassword extends KComponent {
                         className="cp-input pt-0"
                         error={error}
                         onChange={e => {
-                          error && this.setState({error: ""});
+                          this.setState({error: ""});
                           onChange(e);
                         }}
                         id={"password"}
@@ -127,7 +138,7 @@ export class ChangePassword extends KComponent {
                         id={"retype"}
                         onKeyDown={onEnter}
                         onChange={e => {
-                          error && this.setState({error: ""});
+                          this.setState({error: ""});
                           onChange(e);
                         }}
                         type={"password"}

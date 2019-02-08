@@ -27,8 +27,25 @@ export class UserProfile extends React.Component {
 
   };
 
+  viewProfile = () => {
+    this.setState({hover: false});
+    customHistory.push(this.getUrl());
+  };
+
   changePassword = () => {
+    this.setState({hover: false});
     customHistory.push("/change-password");
+  };
+
+  getUrl = () =>{
+    let info = userInfo.getState();
+    if([0, 1].includes(info.role)){
+      return `/user/${info.role}`
+    }else if(info.role === 2){
+      return `/school/${info.role}`
+    }else if(info.role === 3){
+      return `/profile`;
+    }
   };
 
   render() {
@@ -66,7 +83,9 @@ export class UserProfile extends React.Component {
 
                 </div>
                 <div className="detail-body">
-                  <div className="body-item">
+                  <div className="body-item"
+                       onClick={this.viewProfile}
+                  >
                     <div className="icon">
                       <i className="far fa-user-circle"></i>
                     </div>

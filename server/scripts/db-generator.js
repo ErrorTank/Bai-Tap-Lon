@@ -6,7 +6,7 @@ const dbUtils = [
     query: "CREATE TABLE `olympic`.`Account` ( `accountID` VARCHAR(10) NOT NULL , `email` VARCHAR(50) NOT NULL , `username` VARCHAR(50) NOT NULL , `password` VARCHAR(50) NOT NULL , `role` INT(11) NOT NULL , `canLogin` BOOLEAN NOT NULL , PRIMARY KEY (`accountID`), UNIQUE (`email`), UNIQUE (`username`)) ENGINE = InnoDB;"
   }, {
     name: "Create User Table",
-    query: "CREATE TABLE `olympic`.`User` ( `userID` VARCHAR(10) NOT NULL , `name` VARCHAR(50) NOT NULL , `address` VARCHAR(200) NULL , `phone` VARCHAR(50) NULL , `email` VARCHAR(50) NOT NULL , `accountID` VARCHAR(10) NOT NULL , `employeeID` VARCHAR(10) NOT NULL , `CMT` VARCHAR(20) NOT NULL , `gender` INT(1) NOT NULL , PRIMARY KEY (`userID`), UNIQUE (`email`), UNIQUE (`accountID`), UNIQUE (`employeeID`), UNIQUE (`CMT`)) ENGINE = InnoDB;"
+    query: "CREATE TABLE `olympic`.`User` ( `userID` VARCHAR(10) NOT NULL , `name` VARCHAR(50) NOT NULL , `address` VARCHAR(200) NULL , `phone` VARCHAR(50) NULL , `email` VARCHAR(50) NOT NULL , `accountID` VARCHAR(10) NOT NULL , `employeeID` VARCHAR(10) NOT NULL , `gender` INT(1) NOT NULL , PRIMARY KEY (`userID`), UNIQUE (`email`), UNIQUE (`accountID`), UNIQUE (`employeeID`), UNIQUE (`CMT`)) ENGINE = InnoDB;"
   }, {
     name: "Create Admin",
     query: "INSERT INTO `account` (`accountID`, `email`, `username`, `password`, `role`, `canLogin`) VALUES ('1', 'kappa@gmail.com', 'kappa2', '123123qwe', '0', '1');"
@@ -34,9 +34,6 @@ const dbUtils = [
   },{
     name: "Create candidate table",
     query: "CREATE TABLE `olympic`.`candidate`(`CID` VARCHAR(10) NOT NULL, `studentID` VARCHAR(10) NOT NULL, `universityID` VARCHAR(10) NOT NULL, `name` VARCHAR(50) NOT NULL, `phone` VARCHAR(20) NOT NULL, `email` VARCHAR(100) NOT NULL, `dob` DATETIME NOT NULL, PRIMARY KEY(`CID`), UNIQUE(`studentID`)) ENGINE = InnoDB;"
-  },{
-    name: "Create manager table",
-    query: "CREATE TABLE `olympic`.`manager` ( `managerID` VARCHAR(10) NOT NULL , `name` VARCHAR(50) NOT NULL , `email` VARCHAR(100) NOT NULL , `phone` VARCHAR(20) NOT NULL, PRIMARY KEY (`managerID`)) ENGINE = InnoDB;"
   }, {
     name: "Create report card table",
     query: "CREATE TABLE `olympic`.`report card` ( `reportCardID` VARCHAR(10) NOT NULL , `mark` REAL NOT NULL , `subjectID` VARCHAR(10) NOT NULL , `universityID` VARCHAR(10) NOT NULL , `candidateID` VARCHAR(10) NOT NULL , PRIMARY KEY (`reportCardID`)) ENGINE = InnoDB;"

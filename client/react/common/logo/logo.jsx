@@ -13,7 +13,7 @@ export class Logo extends React.Component {
         {src ? (
           <img src={src} className="logo-img"/>
         ) : (
-          <img src={"./assets/img/icons8-customer-400.png"} className="logo-img"/>
+          <img src={"/assets/img/icons8-customer-400.png"} className="logo-img"/>
         )}
       </div>
     );

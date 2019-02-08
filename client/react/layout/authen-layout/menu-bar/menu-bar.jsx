@@ -14,7 +14,7 @@ export class MenuBar extends React.Component {
           <div className="menu-brand"
                onClick={() => customHistory.push("/dashboard")}
           >
-            <img src="./assets/img/Framelogo.svg"/>
+            <img src="/assets/img/Framelogo.svg"/>
           </div>
         </div>
 

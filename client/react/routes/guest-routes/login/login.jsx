@@ -109,7 +109,7 @@ export class Login extends KComponent {
                           type={"text"}
                           label={"Tên đăng nhập"}
                           onChange={e => {
-                            error && this.setState({error: ""});
+                            this.setState({error: ""});
                             onChange(e);
                           }}
                           {...others}
@@ -123,7 +123,7 @@ export class Login extends KComponent {
                           type={"password"}
                           onKeyDown={onEnter}
                           onChange={e => {
-                            error && this.setState({error: ""});
+                            this.setState({error: ""});
                             onChange(e);
                           }}
                           label={"Mật khẩu"}

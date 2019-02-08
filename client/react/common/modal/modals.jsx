@@ -1,9 +1,10 @@
 import React, {Fragment} from "react";
 import {Modal} from "./modal";
-import _ from "lodash";
+import {CSSTransition, TransitionGroup} from "react-transition-group";
+import remove from "lodash/remove";
 
 export const appModal = {
-  alert({text, title, btnText = "Confirm"}) {
+  alert({text, title, btnText = "OK"}) {
     const modal = modals.openModal({
       content: (
         <div className="alert-modal">
@@ -16,12 +17,10 @@ export const appModal = {
             />
           </div>
           <div className="modal-body">
-            {text}
+            <p>{text}</p>
           </div>
           <div className="modal-footer">
-            <button className="btn modal-btn confirm-btn"
-                    onClick={() => modal.close()}
-            >
+            <button type="button" className="btn btn-primary" onClick={() => modal.close()}>
               {btnText}
             </button>
           </div>
@@ -97,13 +96,13 @@ export class ModalsRegistry extends React.Component {
   }
 
   dismiss(modal) {
-    _.remove(this.state.modalList, modal);
+    remove(this.state.modalList, modal);
     modal.resolve();
     this.forceUpdate();
   }
 
   close(modal, result) {
-    _.remove(this.state.modalList, modal);
+    remove(this.state.modalList, modal);
     modal.resolve(result);
     this.forceUpdate();
   }
@@ -113,17 +112,23 @@ export class ModalsRegistry extends React.Component {
 
 
     return (
-      <Fragment>
+      <TransitionGroup className="modals">
         {modalList.map((modal, i) => (
-          <Modal
+          <CSSTransition
             key={i}
-            isStack={modalList.length > 1}
-            className={modal.options.className}
-            content={modal.options.content}
-            onDismiss={() => this.dismiss(modal)}
-          />
+            timeout={300}
+            classNames={"slideIn"}
+          >
+            <Modal
+              key={i}
+              isStack={modalList.length > 1}
+              className={modal.options.className}
+              content={modal.options.content}
+              onDismiss={() => this.dismiss(modal)}
+            />
+          </CSSTransition>
         ))}
-      </Fragment>
+      </TransitionGroup>
     );
   }
 }

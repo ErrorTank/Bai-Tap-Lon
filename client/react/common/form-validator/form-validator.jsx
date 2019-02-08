@@ -73,7 +73,7 @@ export const createSimpleForm = (schema, _options) => {
       if (!touched[path]) {
         touched[path] = true;
       }
-      if(_options.validateAll){
+      if(_options && _options.validateAll){
         await validateData()
       }else
         await validatePath(path);

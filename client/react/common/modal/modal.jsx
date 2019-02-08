@@ -1,36 +1,42 @@
 import React from "react";
+import classnames from "classnames"
 
 export class Modal extends React.Component {
+  overlayElem = null;
+  constructor(props) {
+    super(props);
 
-    constructor(props) {
-        super(props);
+    this.state = {};
 
-        this.state = {};
+    document.body.style.overflowY = "hidden";
+  };
 
-        document.body.style.overflowY = "hidden";
-    };
-
-    componentWillUnmount() {
-        setTimeout(()=> {
-            document.body.style.overflowY = null;
-        }, 300);
-    }
+  componentWillUnmount() {
+    setTimeout(() => {
+      document.body.style.overflowY = null;
+    }, 300);
+  }
 
 
-    render() {
-        const {className, onDismiss, content} = this.props;
+  render() {
+    const {className, onDismiss, content} = this.props;
 
-        return (
-            <div className="my-modal">
-                <div
-                    className="modal-overlay"
-                    onMouseDown={(e) => e.target === this.overlayElem && onDismiss()}
-                    ref={(elem) => this.overlayElem = elem}
-                >
-                    { content }
+    return (
+      <div className={classnames("modal k-modal", className)}
+           onMouseDown={(e) => e.target === this.overlayElem && onDismiss()}
+           ref={(elem) => this.overlayElem = elem}
+      >
+        <div
+          className="modal-dialog modal-dialog-centered"
 
-                </div>
-            </div>
-        );
-    }
+        >
+          <div className="modal-content">
+            {content}
+          </div>
+
+
+        </div>
+      </div>
+    );
+  }
 }
