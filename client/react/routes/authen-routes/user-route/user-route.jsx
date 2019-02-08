@@ -15,6 +15,7 @@ import * as yup from "yup";
 import {createSimpleForm} from "../../../common/form-validator/form-validator";
 import {KComponent} from "../../../common/k-component";
 import pick from "lodash/pick"
+import isEqual from "lodash/isEqual"
 
 const userSchema = yup.object().shape({
   name: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
@@ -31,7 +32,8 @@ export class UserRoute extends KComponent {
     this.state = {
       activeTab: this.tabs[0],
       loading: true,
-      saving: false
+      saving: false,
+      draft: {}
     };
 
     this.form = createSimpleForm(userSchema);
@@ -43,15 +45,18 @@ export class UserRoute extends KComponent {
       customHistory.push(toDefaultRoute());
     } else {
       userApi.get(userID).then(info => {
-        this.setState({loading: false});
-        this.form.updateData({...info});
+        this.form.updateData({...info}).then(() =>  this.setState({loading: false, draft: {...info}}));
       })
     }
 
   };
 
+  componentDidMount(){
+    this.form.validateData();
+  }
+
   editUser = () => {
-    this.setState({saving: true})
+    this.setState({saving: true});
     let user = pick(this.form.getData(), ["name", "gender", "address", "phone", "email", "CMT"]);
     userApi.update(user).then(() => {
       this.forceUpdate();
@@ -79,7 +84,9 @@ export class UserRoute extends KComponent {
   };
 
   render() {
-    let {activeTab, info, loading} = this.state;
+    let {activeTab, loading, saving, draft} = this.state;
+    let canSave = !this.form.getInvalidPaths().length && !saving && !isEqual(draft, this.form.getData());
+    console.log(this.form.getInvalidPaths());
     return (
       <PageTitle
         title="Thông tin người dùng"
@@ -96,7 +103,7 @@ export class UserRoute extends KComponent {
               <div className="row">
                 <div className="col-xl-3 col-lg-4">
                   <UserViewCol
-                    info={info}
+                    info={draft}
                     utils={[
                       {
                         label: "Đăng xuất",
@@ -119,8 +126,11 @@ export class UserRoute extends KComponent {
                         <button type="button" className="btn btn-metal">Hủy bỏ</button>
                         <button type="button"
                                 className="btn btn-primary"
-                                disabled={}
+                                disabled={!canSave}
                         >
+                          {saving && (
+                            <LoadingInline/>
+                          )}
                           Lưu thay đổi
 
                         </button>
