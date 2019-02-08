@@ -26,10 +26,26 @@ const userSql = (db) => {
 
 
   };
+  const updateUser = (userID, user) => {
+    return new Promise((resolve, reject) => {
+      if(isNil(userID)){
+        reject(new Error("Cannot find user with ID: " + userID));
+      }else{
+        let {name, gender, address, phone, email, CMT}  = user;
+        const getInfo = `UPDATE user SET name = '${name}', email = '${email}', phone = '${phone}', gender = '${gender}', address = '${address}', CMT = '${CMT}' WHERE userID = '${userID}'`;
+        query(getInfo).then(() => {
+          resolve();
+        }).catch(err => {
+          reject(err)
+        })
+      }
+
+    });
+  };
 
   return {
     getUser,
-
+    updateUser
   }
 };
 module.exports = userSql;

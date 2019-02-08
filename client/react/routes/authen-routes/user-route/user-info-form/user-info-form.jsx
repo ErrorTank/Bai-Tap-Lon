@@ -11,8 +11,7 @@ export class UserInfoForm extends KComponent {
     this.state = {
       loading: false
     };
-    this.onUnmount(props.form.on("enter", () => props.onEdit()));
-    this.onUnmount(props.form.on("change", () => this.forceUpdate()));
+
   };
 
   render() {

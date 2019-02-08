@@ -7,5 +7,8 @@ export const userApi = {
   },
   changePassword(accountID, obj){
     return authenApi.put(`/account/${accountID}/change-password`, obj);
+  },
+  update(user){
+    return authenApi.put(`/user/${user.userID}`, {user});
   }
 };

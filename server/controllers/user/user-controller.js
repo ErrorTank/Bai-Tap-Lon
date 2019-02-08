@@ -14,6 +14,10 @@ module.exports = (db) => {
       res.status(200).json(omit(user, "password"));
     }).catch(err => next(err))
   });
-
+  router.put("/user/:userID", authMiddleware, (req,res, next) =>{
+    userManager.updateUser(req.params.userID, req.body.user).then(() => {
+      res.status(200).end();
+    }).catch(err => next(err))
+  });
   return router;
 };

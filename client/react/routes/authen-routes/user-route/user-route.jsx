@@ -22,7 +22,8 @@ const userSchema = yup.object().shape({
   address: yup.string().max(200, "Địa chỉ không được vượt quá 200 ký tự"),
   phone: yup.string().required("SĐT không được để trống").isPhone("SĐT không hợp lệ"),
   email: yup.string().email("Email không hợp lệ").required("Email không được để trống"),
-  CMT: yup.string().max(20, "CMT không được vượt quá 20 ký tự").onlyWord("CMT không được có ký tự đặc biệt").required("CMT không được để trống")
+  CMT: yup.string().max(20, "CMT không được vượt quá 20 ký tự").onlyWord("CMT không được có ký tự đặc biệt").required("CMT không được để trống"),
+  gender: yup.boolean().required()
 });
 
 export class UserRoute extends KComponent {
@@ -38,13 +39,15 @@ export class UserRoute extends KComponent {
 
     this.form = createSimpleForm(userSchema);
 
-
+    this.onUnmount(this.form.on("enter", () => this.editUser()));
+    this.onUnmount(this.form.on("change", () => this.forceUpdate()));
     let {userID, role} = userInfo.getState();
     console.log(props);
     if (!props.match.params.userID || (role === 1 && userID !== props.params.match.userID)) {
       customHistory.push(toDefaultRoute());
     } else {
-      userApi.get(userID).then(info => {
+      userApi.get(userID).then(data => {
+        let info = pick(data, ["name", "gender", "address", "phone", "email", "CMT", "userID"]);
         this.form.updateData({...info}).then(() =>  this.setState({loading: false, draft: {...info}}));
       })
     }
@@ -57,9 +60,9 @@ export class UserRoute extends KComponent {
 
   editUser = () => {
     this.setState({saving: true});
-    let user = pick(this.form.getData(), ["name", "gender", "address", "phone", "email", "CMT"]);
+    let user = this.form.getData();
     userApi.update(user).then(() => {
-      this.forceUpdate();
+      this.setState({draft: user, saving: false})
     })
   };
 
@@ -69,7 +72,6 @@ export class UserRoute extends KComponent {
       render: () => (
         <UserInfoForm
           form={this.form}
-          onEdit={this.editUser}
         />
       )
     },
@@ -86,7 +88,8 @@ export class UserRoute extends KComponent {
   render() {
     let {activeTab, loading, saving, draft} = this.state;
     let canSave = !this.form.getInvalidPaths().length && !saving && !isEqual(draft, this.form.getData());
-    console.log(this.form.getInvalidPaths());
+    console.log(draft)
+    console.log(this.form.getData());
     return (
       <PageTitle
         title="Thông tin người dùng"
@@ -123,10 +126,11 @@ export class UserRoute extends KComponent {
                     onChangeTab={tab => this.setState({activeTab: tab})}
                     renderActions={() => (
                       <div className="row justify-content-end u-actions">
-                        <button type="button" className="btn btn-metal">Hủy bỏ</button>
+                        <button type="button" className="btn btn-secondary" onClick={() => customHistory.goBack()}>Hủy bỏ</button>
                         <button type="button"
                                 className="btn btn-primary"
                                 disabled={!canSave}
+                                onClick={this.editUser}
                         >
                           {saving && (
                             <LoadingInline/>
