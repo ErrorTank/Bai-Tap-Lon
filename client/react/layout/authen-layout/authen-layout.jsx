@@ -13,7 +13,7 @@ export class AuthenLayout extends React.Component {
     return (
       <div className="authen-layout">
         <NavBar/>
-        <MenuBar/>
+        <MenuBar match={this.props.match}/>
         <div className="authen-body">
           {this.props.children}
         </div>

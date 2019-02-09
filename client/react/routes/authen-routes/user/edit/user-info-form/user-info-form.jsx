@@ -1,7 +1,9 @@
 import React from "react";
-import {InputBase} from "../../../../common/base-input/base-input";
-import {KComponent} from "../../../../common/k-component";
-import {Select} from "../../../../common/select/select";
+import {InputBase} from "../../../../../common/base-input/base-input";
+import {KComponent} from "../../../../../common/k-component";
+import {Select} from "../../../../../common/select/select";
+import {userInfo} from "../../../../../../common/states/user-info";
+import {customHistory} from "../../../../routes";
 
 
 
@@ -16,6 +18,7 @@ export class UserInfoForm extends KComponent {
 
   render() {
     let {form} = this.props;
+    let info = userInfo.getState();
     return (
       <div className="user-info-form">
         <div className="m-form m-form--fit m-form--label-align-right m-form--state">
@@ -137,6 +140,13 @@ export class UserInfoForm extends KComponent {
             </div>
 
           </div>
+          {info.role === 0 && (
+            <div className="row">
+              <div className="col optional-nav">
+                <p onClick={() => customHistory.push(`/account/${info.accountID}`)}>Xem thông tin tài khoản</p>
+              </div>
+            </div>
+          )}
 
         </div>
 

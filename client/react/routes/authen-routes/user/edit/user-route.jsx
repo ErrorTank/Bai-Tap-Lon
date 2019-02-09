@@ -1,19 +1,19 @@
 import React from "react";
-import {PageTitle} from "../../../common/page-title/page-title";
-import {RouteTitle} from "../../../layout/route-title/route-title";
-import {FormTabs} from "../../../common/form-tabs/form-tabs";
-import {UserViewCol} from "../../../common/user-view-col/user-view-col";
-import {customHistory} from "../../routes";
-import {userInfo} from "../../../../common/states/user-info";
-import {authenCache} from "../../../../common/cache/authen-cache";
-import {userApi} from "../../../../api/common/user-api";
-import {toDefaultRoute} from "../../route-type";
+import {PageTitle} from "../../../../common/page-title/page-title";
+import {RouteTitle} from "../../../../layout/route-title/route-title";
+import {FormTabs} from "../../../../common/form-tabs/form-tabs";
+import {UserViewCol} from "../../../../common/user-view-col/user-view-col";
+import {customHistory} from "../../../routes";
+import {userInfo} from "../../../../../common/states/user-info";
+import {authenCache} from "../../../../../common/cache/authen-cache";
+import {userApi} from "../../../../../api/common/user-api";
+import {toDefaultRoute} from "../../../route-type";
 import classnames from "classnames"
 import {UserInfoForm} from "./user-info-form/user-info-form";
-import {LoadingInline} from "../../../common/loading-inline/loading-inline";
+import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
 import * as yup from "yup";
-import {createSimpleForm} from "../../../common/form-validator/form-validator";
-import {KComponent} from "../../../common/k-component";
+import {createSimpleForm} from "../../../../common/form-validator/form-validator";
+import {KComponent} from "../../../../common/k-component";
 import pick from "lodash/pick"
 import isEqual from "lodash/isEqual"
 
@@ -42,14 +42,13 @@ export class UserRoute extends KComponent {
     this.onUnmount(this.form.on("enter", () => this.editUser()));
     this.onUnmount(this.form.on("change", () => this.forceUpdate()));
     let {userID, role} = userInfo.getState();
-    console.log(props);
     if (!props.match.params.userID || (role === 1 && userID !== props.params.match.userID)) {
       customHistory.push(toDefaultRoute());
     } else {
-      userApi.get(userID).then(data => {
-        let info = pick(data, ["name", "gender", "address", "phone", "email", "CMT", "userID"]);
+      userApi.get(props.match.params.userID).then(data => {
+        let info = pick(data, ["name", "gender", "address", "phone", "email", "CMT", "userID", "employeeID"]);
         this.form.updateData({...info}).then(() =>  this.setState({loading: false, draft: {...info}}));
-      })
+      }).catch(err => customHistory.push(toDefaultRoute()))
     }
 
   };
@@ -88,8 +87,6 @@ export class UserRoute extends KComponent {
   render() {
     let {activeTab, loading, saving, draft} = this.state;
     let canSave = !this.form.getInvalidPaths().length && !saving && !isEqual(draft, this.form.getData());
-    console.log(draft)
-    console.log(this.form.getData());
     return (
       <PageTitle
         title="Thông tin người dùng"

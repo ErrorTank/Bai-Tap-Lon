@@ -1,5 +1,6 @@
 import React from "react";
 import {customHistory} from "../../../routes/routes";
+import {Navigations} from "./navigations/navigations";
 
 export class MenuBar extends React.Component {
   constructor(props) {
@@ -19,7 +20,7 @@ export class MenuBar extends React.Component {
         </div>
 
         <div className="menu-body">
-
+          <Navigations match={this.props.match}/>
         </div>
       </div>
     );

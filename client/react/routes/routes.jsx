@@ -13,7 +13,10 @@ import {NotFoundPage} from "./not-found/not-found";
 import {ForgotPassword} from "./guest-routes/forgot-password/forgot-password";
 import {AdminDashboard} from "./authen-routes/admin-dashboard/admin-dashboard";
 import {ChangePassword} from "./authen-routes/change-password/change-password";
-import {UserRoute} from "./authen-routes/user-route/user-route";
+import {UserRoute} from "./authen-routes/user/edit/user-route";
+import {UserListRoute} from "./authen-routes/user/list/user-list-route";
+import {AccountRoute} from "./authen-routes/account/edit/account-route";
+import {AccountListRoute} from "./authen-routes/account/list/account-list-route";
 
 const NotFoundRoute = () => {
   let getComp = (props) => {
@@ -61,6 +64,9 @@ export class MainRoute extends KComponent {
             <AuthenRoute exact path='/school/:schoolID' component={AdminDashboard} excludeRoles={[3]}/>
             <AuthenRoute exact path='/candidate/:candidateID' component={AdminDashboard} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/user/:userID' component={UserRoute} excludeRoles={[2,3]}/>
+            <AuthenRoute exact path='/users' component={UserListRoute} excludeRoles={[2,3]}/>
+            <AuthenRoute exact path='/accounts' component={AccountListRoute} excludeRoles={[2,3]}/>
+            <AuthenRoute exact path='/account/:accountID' component={AccountRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/change-password' component={ChangePassword}/>
             <GuestRoute exact path='/forgot-password' component={ForgotPassword}/>
             <NotFoundRoute/>
