@@ -31,13 +31,23 @@ const userSql = (db) => {
       if(isNil(userID)){
         reject(new Error("Cannot find user with ID: " + userID));
       }else{
+
         let {name, gender, address, phone, email, CMT}  = user;
+        const checkExist = `SELECT email from user where not userID = '${userID}' and (email = '${email}' or CMT = '${CMT}')`;
         const getInfo = `UPDATE user SET name = '${name}', email = '${email}', phone = '${phone}', gender = '${gender}', address = '${address}', CMT = '${CMT}' WHERE userID = '${userID}'`;
-        query(getInfo).then(() => {
-          resolve();
-        }).catch(err => {
-          reject(err)
-        })
+        query(checkExist).then((result) => {
+          if(result && result.length){
+            let msg = result[0].email === email ? "email_existed" : "CMT_existed";
+            reject(new Error(msg));
+          }else{
+            query(getInfo).then(() => {
+              resolve();
+            }).catch(err => {
+              reject(err)
+            })
+          }
+        }).catch(err => reject(err));
+
       }
 
     });

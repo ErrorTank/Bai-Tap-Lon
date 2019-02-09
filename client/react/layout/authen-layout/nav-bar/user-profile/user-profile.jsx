@@ -40,9 +40,9 @@ export class UserProfile extends React.Component {
   getUrl = () =>{
     let info = userInfo.getState();
     if([0, 1].includes(info.role)){
-      return `/user/${info.role}`
+      return `/user/${info.userID}`
     }else if(info.role === 2){
-      return `/school/${info.role}`
+      return `/school/${info.schoolID}`
     }else if(info.role === 3){
       return `/profile`;
     }

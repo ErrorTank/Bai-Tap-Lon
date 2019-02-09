@@ -34,7 +34,8 @@ export class UserRoute extends KComponent {
       activeTab: this.tabs[0],
       loading: true,
       saving: false,
-      draft: {}
+      draft: {},
+      err: ""
     };
 
     this.form = createSimpleForm(userSchema);
@@ -62,6 +63,8 @@ export class UserRoute extends KComponent {
     let user = this.form.getData();
     userApi.update(user).then(() => {
       this.setState({draft: user, saving: false})
+    }).catch(err =>{
+      this.setState({err, saving: false});
     })
   };
 
@@ -71,6 +74,8 @@ export class UserRoute extends KComponent {
       render: () => (
         <UserInfoForm
           form={this.form}
+          err={this.state.err}
+          onChange={() => this.setState({err: ""})}
         />
       )
     },
@@ -85,8 +90,8 @@ export class UserRoute extends KComponent {
   };
 
   render() {
-    let {activeTab, loading, saving, draft} = this.state;
-    let canSave = !this.form.getInvalidPaths().length && !saving && !isEqual(draft, this.form.getData());
+    let {activeTab, loading, saving, draft, err} = this.state;
+    let canSave = !this.form.getInvalidPaths().length && !saving && !isEqual(draft, this.form.getData()) && !err;
     return (
       <PageTitle
         title="Thông tin người dùng"

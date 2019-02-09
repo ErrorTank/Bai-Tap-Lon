@@ -16,12 +16,36 @@ export class UserInfoForm extends KComponent {
 
   };
 
+  generateError =() => {
+    let {err, form} = this.props;
+    let {email, CMT} = form.getData();
+    let msg = {
+      "email_existed": `Email ${email} đã tồn tại!`,
+      "CMT_existed": `CMT ${CMT} đã tồn tại!`
+    };
+    return msg[err.message];
+  };
+
   render() {
-    let {form} = this.props;
+    let {form, err, onChange: propsOnChange} = this.props;
     let info = userInfo.getState();
     return (
       <div className="user-info-form">
         <div className="m-form m-form--fit m-form--label-align-right m-form--state">
+          {err && (
+            <div className="row">
+              <div className="server-error pb-3 col">
+                <p>
+                  {this.generateError()}
+                </p>
+
+              </div>
+            </div>
+          )
+
+          }
+
+
           <div className="row">
             <div className="emp-id-wrap pb-5 col">
               <div>
@@ -40,7 +64,7 @@ export class UserInfoForm extends KComponent {
                   id={"name"}
                   onKeyDown={onEnter}
                   onChange={e => {
-                    this.setState({error: ""});
+                    propsOnChange();
                     onChange(e);
                   }}
                   type={"text"}
@@ -56,7 +80,10 @@ export class UserInfoForm extends KComponent {
                   className="uif-input pt-0"
                   options={[{label: "Nam", value: 0}, {label: "Nữ", value:1}]}
                   value={value}
-                  onChange={e => onChange(e.target.value)}
+                  onChange={e => {
+                    propsOnChange();
+                    onChange(e.target.value)
+                  }}
                   label={"Giới tính"}
                   placeholder="Chọn giới tính"
                 />
@@ -75,7 +102,7 @@ export class UserInfoForm extends KComponent {
                   id={"address"}
                   onKeyDown={onEnter}
                   onChange={e => {
-                    this.setState({error: ""});
+                    propsOnChange();
                     onChange(e);
                   }}
                   type={"text"}
@@ -92,7 +119,7 @@ export class UserInfoForm extends KComponent {
                   id={"phone"}
                   onKeyDown={onEnter}
                   onChange={e => {
-                    this.setState({error: ""});
+                    propsOnChange();
                     onChange(e);
                   }}
                   type={"text"}
@@ -112,7 +139,7 @@ export class UserInfoForm extends KComponent {
                   id={"email"}
                   onKeyDown={onEnter}
                   onChange={e => {
-                    this.setState({error: ""});
+                    propsOnChange();
                     onChange(e);
                   }}
                   type={"text"}
@@ -129,7 +156,7 @@ export class UserInfoForm extends KComponent {
                   id={"cmt"}
                   onKeyDown={onEnter}
                   onChange={e => {
-                    this.setState({error: ""});
+                    propsOnChange();
                     onChange(e);
                   }}
                   type={"text"}
