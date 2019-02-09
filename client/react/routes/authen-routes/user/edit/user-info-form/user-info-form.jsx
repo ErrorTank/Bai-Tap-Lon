@@ -170,7 +170,7 @@ export class UserInfoForm extends KComponent {
           {info.role === 0 && (
             <div className="row">
               <div className="col optional-nav">
-                <p onClick={() => customHistory.push(`/account/${info.accountID}`)}>Xem thông tin tài khoản</p>
+                <p onClick={() => customHistory.push(`/account/${form.getPathData("accountID")}`)}>Xem thông tin tài khoản</p>
               </div>
             </div>
           )}

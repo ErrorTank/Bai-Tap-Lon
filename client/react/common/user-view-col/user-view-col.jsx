@@ -7,7 +7,7 @@ export class UserViewCol extends React.Component {
   };
 
   render() {
-    let {info, utils} = this.props;
+    let {info, utils = []} = this.props;
     return (
       <div className="user-view-col m-portlet">
         <div className="m-portlet__body">

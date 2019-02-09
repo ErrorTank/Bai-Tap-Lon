@@ -27,6 +27,18 @@ const accountSql = (db) => {
           reject(err)
         }))
   };
+  const getUserByAccountID = (accountID) => {
+    const sql = `SELECT * from account where accountID = '${accountID}'`;
+    return new Promise((resolve, reject) => {
+      query(sql).then(result => {
+        if(result.length){
+          resolve(result[0]);
+        }else{
+          reject(new Error("not_found"));
+        }
+      }).catch(err => reject(err));
+    })
+  };
   const getClientUserCache = (accountID) => {
     const sql = `SELECT * FROM ( ( SELECT * FROM ACCOUNT WHERE accountID = '${accountID}' ) AS a INNER JOIN( SELECT * FROM USER ) AS u ) WHERE a.accountID = u.accountID`;
     return new Promise((resolve, reject) => {
@@ -36,7 +48,7 @@ const accountSql = (db) => {
         }else{
           reject(new Error("not_found"));
         }
-      });
+      }).catch(err => reject(err));
     })
 
   };
@@ -79,7 +91,8 @@ const accountSql = (db) => {
     checkLogin,
     updateAccount,
     getAccount,
-    getClientUserCache
+    getClientUserCache,
+    getUserByAccountID
   }
 };
 module.exports = accountSql;

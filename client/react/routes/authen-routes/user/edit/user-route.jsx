@@ -39,15 +39,15 @@ export class UserRoute extends KComponent {
     };
 
     this.form = createSimpleForm(userSchema);
-
     this.onUnmount(this.form.on("enter", () => this.editUser()));
     this.onUnmount(this.form.on("change", () => this.forceUpdate()));
     let {userID, role} = userInfo.getState();
-    if (!props.match.params.userID || (role === 1 && userID !== props.params.match.userID)) {
+    let {userID: alternateUserID} = props.match.params;
+    if (!alternateUserID || (role === 1 && userID !== alternateUserID)) {
       customHistory.push(toDefaultRoute());
     } else {
-      userApi.get(props.match.params.userID).then(data => {
-        let info = pick(data, ["name", "gender", "address", "phone", "email", "CMT", "userID", "employeeID"]);
+      userApi.get(alternateUserID).then(data => {
+        let info = pick(data, ["name", "gender", "address", "phone", "email", "CMT", "userID", "employeeID", "accountID"]);
         this.form.updateData({...info}).then(() =>  this.setState({loading: false, draft: {...info}}));
       }).catch(err => customHistory.push(toDefaultRoute()))
     }
@@ -61,8 +61,12 @@ export class UserRoute extends KComponent {
   editUser = () => {
     this.setState({saving: true});
     let user = this.form.getData();
+    let state = userInfo.getState();
     userApi.update(user).then(() => {
-      this.setState({draft: user, saving: false})
+      this.setState({draft: user, saving: false});
+      if(user.userID === state.userID){
+        userInfo.setState(Object.assign({}, state, {...user}));
+      }
     }).catch(err =>{
       this.setState({err, saving: false});
     })
@@ -81,13 +85,6 @@ export class UserRoute extends KComponent {
     },
   ];
 
-  handleSignout = () => {
-    userInfo.setState(null).then(() => {
-      authenCache.clearAuthen();
-      customHistory.push("/login");
-    });
-
-  };
 
   render() {
     let {activeTab, loading, saving, draft, err} = this.state;
@@ -109,15 +106,6 @@ export class UserRoute extends KComponent {
                 <div className="col-xl-3 col-lg-4">
                   <UserViewCol
                     info={draft}
-                    utils={[
-                      {
-                        label: "Đăng xuất",
-                        icon: className => (
-                          <i className={classnames("fas fa-sign-out-alt", className)}/>
-                        ),
-                        onClick: this.handleSignout
-                      }
-                    ]}
                   />
 
                 </div>

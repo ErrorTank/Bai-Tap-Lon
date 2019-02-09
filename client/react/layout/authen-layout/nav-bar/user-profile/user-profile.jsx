@@ -14,9 +14,7 @@ export class UserProfile extends React.Component {
       hover: false,
 
     };
-    userApi.get(userInfo.getState().accountID).then(result => {
-      this.setState({name: result.name, email: result.email})
-    })
+
   };
 
   handleSignout = () => {
@@ -50,8 +48,8 @@ export class UserProfile extends React.Component {
 
   render() {
 
-    let {hover, name, email} = this.state;
-
+    let {hover} = this.state;
+    let {name, email} = userInfo.getState();
     return (
       <div className="user-nav-profile"
            onMouseEnter={() => !hover && this.setState({hover: true})}
