@@ -8,8 +8,8 @@ export const accountApi = {
   changePassword(accountID, obj){
     return authenApi.put(`/account/${accountID}/change-password`, obj);
   },
-  update(user){
-    return authenApi.put(`/user/${user.userID}`, {user});
+  update(account){
+    return authenApi.put(`/account/${account.accountID}`, {account});
   },
   checkAccountIDInUser({role, accountID}){
     return authenApi.get(`/account/${accountID}/role/${role}/check-in-user`);

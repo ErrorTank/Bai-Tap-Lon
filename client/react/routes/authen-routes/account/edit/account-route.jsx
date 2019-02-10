@@ -2,10 +2,8 @@ import React from "react";
 import {PageTitle} from "../../../../common/page-title/page-title";
 import {RouteTitle} from "../../../../layout/route-title/route-title";
 import {FormTabs} from "../../../../common/form-tabs/form-tabs";
-import {UserViewCol} from "../../../../common/user-view-col/user-view-col";
 import {customHistory} from "../../../routes";
 import {userInfo} from "../../../../../common/states/user-info";
-import {authenCache} from "../../../../../common/cache/authen-cache";
 import {userApi} from "../../../../../api/common/user-api";
 import {toDefaultRoute} from "../../../route-type";
 import classnames from "classnames"
@@ -19,6 +17,7 @@ import {accountApi} from "../../../../../api/common/account-api";
 import {AccountInfoForm} from "./account-info-form/account-info-form";
 import {schoolApi} from "../../../../../api/common/school-api";
 import {candidateApi} from "../../../../../api/common/candidate-api";
+import omit from "lodash/omit"
 
 const accountSchema = yup.object().shape({
   username: yup.string().min(6, "Tên đăng nhập lớn hơn 6 kí tự").max(20, "Tên đăng nhập nhỏ hơn 20 kí tự").onlyWord("Tên đăng nhập không được có kí tự đặc biệt").haveChar("Tên đăng nhập phải có kí tự alphabet").haveNumber("Tên đăng nhập phải có chữ số"),
@@ -36,7 +35,8 @@ export class AccountRoute extends KComponent {
       loading: true,
       saving: false,
       draft: {},
-      inf: {}
+      inf: {},
+      err: ""
     };
 
     this.form = createSimpleForm(accountSchema);
@@ -80,13 +80,24 @@ export class AccountRoute extends KComponent {
 
 
 
+
+
   editAccount = () => {
     this.setState({saving: true});
     let account = this.form.getData();
-
+    let state = userInfo.getState();
     let promises = [accountApi.update(account), this.fetchRefInfo(account.role, account.accountID)];
     Promise.all(promises).then(([ack, inf]) => {
-      this.setState({draft: account, saving: false, inf})
+      this.setState({draft: {...account}, saving: false, inf});
+      if(account.accountID === state.accountID){
+
+        if(account.role !== 0){
+          userInfo.setState(Object.assign({}, state, {...omit(account, "password"), role: Number(account.role)}));
+          customHistory.push(toDefaultRoute())
+        }
+      }
+    }).catch(err =>{
+      this.setState({err, saving: false});
     })
   };
 
@@ -97,6 +108,9 @@ export class AccountRoute extends KComponent {
         <AccountInfoForm
           form={this.form}
           info={this.state.inf}
+          onChange={() => this.setState({err: ""})}
+          draft={this.state.draft}
+          err={this.state.err}
         />
       )
     },
@@ -119,27 +133,32 @@ export class AccountRoute extends KComponent {
                 <LoadingInline/>
               </div>
             ) : (
-              <FormTabs
-                tabs={this.tabs}
-                activeTab={activeTab}
-                onChangeTab={tab => this.setState({activeTab: tab})}
-                renderActions={() => (
-                  <div className="row justify-content-end a-actions">
-                    <button type="button" className="btn btn-secondary" onClick={() => customHistory.goBack()}>Hủy bỏ</button>
-                    <button type="button"
-                            className="btn btn-primary"
-                            disabled={!canSave}
-                            onClick={this.editAccount}
-                    >
-                      {saving && (
-                        <LoadingInline/>
-                      )}
-                      Lưu thay đổi
+              <div className="row justify-content-center">
+                <div className="col-6">
+                  <FormTabs
+                    tabs={this.tabs}
+                    activeTab={activeTab}
+                    onChangeTab={tab => this.setState({activeTab: tab})}
+                    renderActions={() => (
+                      <div className="row justify-content-end a-actions">
+                        <button type="button" className="btn btn-secondary" onClick={() => customHistory.goBack()}>Hủy bỏ</button>
+                        <button type="button"
+                                className="btn btn-primary"
+                                disabled={!canSave}
+                                onClick={this.editAccount}
+                        >
+                          {saving && (
+                            <LoadingInline/>
+                          )}
+                          Lưu thay đổi
 
-                    </button>
-                  </div>
-                )}
-              />
+                        </button>
+                      </div>
+                    )}
+                  />
+                </div>
+              </div>
+
             )
 
             }

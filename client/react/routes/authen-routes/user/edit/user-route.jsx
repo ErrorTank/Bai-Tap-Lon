@@ -63,7 +63,7 @@ export class UserRoute extends KComponent {
     let user = this.form.getData();
     let state = userInfo.getState();
     userApi.update(user).then(() => {
-      this.setState({draft: user, saving: false});
+      this.setState({draft: {...user}, saving: false});
       if(user.userID === state.userID){
         userInfo.setState(Object.assign({}, state, {...user}));
       }

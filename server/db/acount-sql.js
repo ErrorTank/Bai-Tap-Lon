@@ -9,20 +9,20 @@ const accountSql = (db) => {
     const checkCorrect = `SELECT * FROM ( ( SELECT * FROM ACCOUNT WHERE username = '${username}' AND PASSWORD = '${password}' ) AS a INNER JOIN( SELECT * FROM USER ) AS u ) WHERE a.accountID = u.accountID`;
     return new Promise((resolve, reject) =>
       query(checkExist).then((result) => {
-            if(result.length){
-              query(checkCorrect, "password_wrong")
-                .then((data) => {
-                  if(data.length)
-                    resolve(data[0]);
-                  else
-                    reject(new Error("password_wrong"))
-                })
-                .catch(err => reject(err))
-            }
+        if (result.length) {
+          query(checkCorrect, "password_wrong")
+            .then((data) => {
+              if (data.length)
+                resolve(data[0]);
+              else
+                reject(new Error("password_wrong"))
+            })
+            .catch(err => reject(err))
+        }
 
-            else
-              reject(new Error("not_existed"));
-        })
+        else
+          reject(new Error("not_existed"));
+      })
         .catch(err => {
           reject(err)
         }))
@@ -32,9 +32,9 @@ const accountSql = (db) => {
     const sql = `SELECT * FROM ( ( SELECT * FROM ACCOUNT WHERE accountID = '${accountID}' ) AS a INNER JOIN( SELECT * FROM USER ) AS u ) WHERE a.accountID = u.accountID`;
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
-        if(result.length){
+        if (result.length) {
           resolve(result[0]);
-        }else{
+        } else {
           reject(new Error("not_found"));
         }
       }).catch(err => reject(err));
@@ -43,14 +43,14 @@ const accountSql = (db) => {
   };
   const getAccount = (accountID) => {
     return new Promise((resolve, reject) => {
-      if(isNil(accountID)){
+      if (isNil(accountID)) {
         reject(new Error("Cannot find account with ID: " + accountID));
-      }else{
+      } else {
         const getInfo = `SELECT * FROM account where accountID = '${accountID}'`;
         query(getInfo).then((result) => {
-          if(result.length){
+          if (result.length) {
             resolve(result[0]);
-          }else{
+          } else {
             reject(new Error("Account not found"));
           }
         }).catch(err => {
@@ -61,20 +61,31 @@ const accountSql = (db) => {
     });
 
 
-
   };
   const updateAccount = (accountID, accountObj) => {
-    //
-    let {username, password, role, canLogin} = accountObj;
+    return new Promise((resolve, reject) => {
+      if (isNil(accountID)) {
+        reject(new Error("Cannot find account with ID: " + accountID));
+      } else {
 
-    let updateInfo = `UPDATE account SET  username = '${username}', password = '${password}', role = '${role}', canLogin = '${canLogin}' WHERE accountID = '${accountID}'`;
-    return new Promise((resolve, reject) =>
-      query(updateInfo).then((result) => {
-        resolve();
-      }).catch(err => {
-        reject(err)
-      })
-    )
+        let {username, password, role, canLogin} = accountObj;
+        const checkExist = `SELECT username from account where not accountID = '${accountID}' and (username = '${username}')`;
+        const getInfo = `UPDATE account SET  username = '${username}', password = '${password}', role = '${role}', canLogin = '${canLogin}' WHERE accountID = '${accountID}'`;
+        query(checkExist).then((result) => {
+          if (result && result.length) {
+            reject(new Error("username_existed"));
+          } else {
+            query(getInfo).then(() => {
+              resolve();
+            }).catch(err => {
+              reject(err)
+            })
+          }
+        }).catch(err => reject(err));
+
+      }
+
+    });
   };
   return {
     checkLogin,

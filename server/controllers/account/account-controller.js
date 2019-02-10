@@ -16,7 +16,7 @@ module.exports = (db) => {
     let {role, accountID} = req.params;
     let getAccountInfo = () => {
       accountManager.getAccount(accountID).then(account => {
-        res.status(200).json(omit(account, "password"));
+        res.status(200).json(account);
       }).catch(err => next(err))
     };
     if(Number(role) === 1){
@@ -31,6 +31,11 @@ module.exports = (db) => {
       getAccountInfo();
     }
 
+  });
+  router.put("/account/:accountID", authMiddleware, (req,res, next) =>{
+    accountManager.updateAccount(req.params.accountID, req.body.account).then(() => {
+      res.status(200).end();
+    }).catch(err => next(err))
   });
   return router;
 };

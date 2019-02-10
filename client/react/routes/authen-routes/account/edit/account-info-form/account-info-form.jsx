@@ -18,7 +18,7 @@ export class AccountInfoForm extends KComponent {
   };
 
   renderNavigate = (cb) => {
-    let {info, form} = this.props;
+    let {info, draft} = this.props;
 
     let matcher = {
       0: {
@@ -39,14 +39,14 @@ export class AccountInfoForm extends KComponent {
       },
     };
 
-    return cb(matcher[form.getPathData("role")])
+    return cb(matcher[draft.role])
   };
 
   generateError =() => {
     let {err, form} = this.props;
     let {username} = form.getData();
     let msg = {
-      "username_existed": `Email ${username} đã tồn tại!`
+      "username_existed": `Tên đăng nhập ${username} đã tồn tại!`
     };
     return msg[err.message];
   };
