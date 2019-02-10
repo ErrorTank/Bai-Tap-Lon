@@ -81,7 +81,7 @@ const accountSql = (db) => {
     updateAccount,
     getAccount,
     getClientUserCache,
-    getUserByAccountID
+
   }
 };
 module.exports = accountSql;
