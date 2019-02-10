@@ -18,13 +18,8 @@ import {AccountInfoForm} from "./account-info-form/account-info-form";
 import {schoolApi} from "../../../../../api/common/school-api";
 import {candidateApi} from "../../../../../api/common/candidate-api";
 import omit from "lodash/omit"
+import {accountSchema} from "../../schema";
 
-const accountSchema = yup.object().shape({
-  username: yup.string().min(6, "Tên đăng nhập lớn hơn 6 kí tự").max(20, "Tên đăng nhập nhỏ hơn 20 kí tự").onlyWord("Tên đăng nhập không được có kí tự đặc biệt").haveChar("Tên đăng nhập phải có kí tự alphabet").haveNumber("Tên đăng nhập phải có chữ số"),
-  password: yup.string().min(6, "Mật khẩu bắt buộc từ 6 ký tự trở lên").onlyWord("Mật khẩu không được có kí tự đặc biệt"),
-  role: yup.number().required(),
-  canLogin: yup.number().required()
-});
 
 export class AccountRoute extends KComponent {
   constructor(props) {

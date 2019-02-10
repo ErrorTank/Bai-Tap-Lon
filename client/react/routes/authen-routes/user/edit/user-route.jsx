@@ -16,15 +16,8 @@ import {createSimpleForm} from "../../../../common/form-validator/form-validator
 import {KComponent} from "../../../../common/k-component";
 import pick from "lodash/pick"
 import isEqual from "lodash/isEqual"
+import {userSchema} from "../../schema";
 
-const userSchema = yup.object().shape({
-  name: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
-  address: yup.string().max(200, "Địa chỉ không được vượt quá 200 ký tự"),
-  phone: yup.string().required("SĐT không được để trống").isPhone("SĐT không hợp lệ"),
-  email: yup.string().email("Email không hợp lệ").required("Email không được để trống"),
-  CMT: yup.string().max(20, "CMT không được vượt quá 20 ký tự").onlyWord("CMT không được có ký tự đặc biệt").required("CMT không được để trống"),
-  gender: yup.boolean().required()
-});
 
 export class UserRoute extends KComponent {
   constructor(props) {

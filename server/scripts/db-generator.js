@@ -14,12 +14,18 @@ const dbUtils = [
     name: "Create Admin info",
     query: "INSERT INTO `user` (`userID`, `name`, `address`, `phone`, `email`, `accountID`, `employeeID`, `CMT`, `gender`) VALUES ('1', 'Kappa', 'No fucking where', '0123456789', 'kappa@gmail.com', '1', '1', '123456', '0');"
   }, {
-    name: "Create University table",
-    query: "CREATE TABLE `olympic`.`university` ( `UID` VARCHAR(10) NOT NULL ,`accountID` VARCHAR(10) NOT NULL , `universityID` VARCHAR(10) NOT NULL , `name` VARCHAR(100) NOT NULL , `address` VARCHAR(100) NULL , `phone` VARCHAR(20) NOT NULL , `email` VARCHAR(100) NOT NULL , PRIMARY KEY (`UID`),UNIQUE (`universityID`), UNIQUE (`accountID`), UNIQUE (`phone`), UNIQUE (`email`)) ENGINE = InnoDB;"
+    name: "Create school table",
+    query: "CREATE TABLE `olympic`.`school` ( `sID` VARCHAR(10) NOT NULL , `name` VARCHAR(100) NOT NULL , `address` VARCHAR(100) NOT NULL , `phone` VARCHAR(20) NOT NULL , `email` VARCHAR(100) NOT NULL , PRIMARY KEY (`sID`), UNIQUE (`email`)) ENGINE = InnoDB;"
+  }, {
+    name: "Create school presenter table",
+    query: "CREATE TABLE `olympic`.`schoolPresenter` ( `spID` VARCHAR(10) NOT NULL , `sID` VARCHAR(10) NOT NULL , `name` VARCHAR(100) NOT NULL , `address` VARCHAR(100) NULL , `phone` VARCHAR(20) NOT NULL , `email` VARCHAR(100) NOT NULL , PRIMARY KEY (`spID`),  UNIQUE (`email`)) ENGINE = InnoDB;"
   }, {
     name: "Create contest table",
-    query: "CREATE TABLE `olympic`.`contest` ( `contestID` VARCHAR(10) NOT NULL , `start` DATE NOT NULL , `stop` DATE NOT NULL , `fee` VARCHAR(20) NOT NULL , `subjectID` VARCHAR(10) NOT NULL , PRIMARY KEY (`contestID`), UNIQUE (`subjectID`)) ENGINE = InnoDB;"
+    query: "CREATE TABLE `olympic`.`contest` ( `contestID` VARCHAR(10) NOT NULL , `start` DATE NOT NULL , `stop` DATE NOT NULL , `fee` VARCHAR(20) NOT NULL,  PRIMARY KEY (`contestID`)) ENGINE = InnoDB;"
   }, {
+    name: "Create contest - subject table",
+    query: "CREATE TABLE `olympic`.`contestSubject` ( `contestID` VARCHAR(10) NOT NULL , `subjectID` VARCHAR(10) NOT NULL, PRIMARY KEY (`contestID`, `subjectID`)) ENGINE = InnoDB;"
+  },{
     name: "Create subject table",
     query: "CREATE TABLE `olympic`.`subject` ( `subjectID` VARCHAR(10) NOT NULL , `name` VARCHAR(50) NOT NULL , PRIMARY KEY (`subjectID`)) ENGINE = InnoDB;"
   },{
@@ -33,19 +39,19 @@ const dbUtils = [
     query: "CREATE TABLE `olympic`.`room` ( `roomID` VARCHAR(10) NOT NULL , `orgLocationID` VARCHAR(10) NOT NULL ,`name` VARCHAR(50) NOT NULL , PRIMARY KEY (`roomID`)) ENGINE = InnoDB;"
   },{
     name: "Create candidate table",
-    query: "CREATE TABLE `olympic`.`candidate`(`CID` VARCHAR(10) NOT NULL, `accountID` VARCHAR(10) NOT NULL , `studentID` VARCHAR(10) NOT NULL, `universityID` VARCHAR(10) NOT NULL, `name` VARCHAR(50) NOT NULL, `phone` VARCHAR(20) NOT NULL, `email` VARCHAR(100) NOT NULL, `dob` DATETIME NOT NULL, PRIMARY KEY(`CID`), UNIQUE (`accountID`), UNIQUE(`studentID`)) ENGINE = InnoDB;"
+    query: "CREATE TABLE `olympic`.`candidate`(`cID` VARCHAR(10) NOT NULL, `accountID` VARCHAR(10) NOT NULL , `address` VARCHAR(200) NOT NULL, `sID` VARCHAR(10) NOT NULL, `name` VARCHAR(50) NOT NULL, `phone` VARCHAR(20) NOT NULL, `email` VARCHAR(100) NOT NULL, `CMT` VARCHAR(20) NOT NULL , `gender` INT(1) NOT NULL  ,  `dob` DATETIME NOT NULL, PRIMARY KEY(`cID`), UNIQUE (`accountID`), UNIQUE (`CMT`)) ENGINE = InnoDB;"
   }, {
     name: "Create report card table",
-    query: "CREATE TABLE `olympic`.`report card` ( `reportCardID` VARCHAR(10) NOT NULL , `mark` REAL NOT NULL , `subjectID` VARCHAR(10) NOT NULL , `universityID` VARCHAR(10) NOT NULL , `candidateID` VARCHAR(10) NOT NULL , PRIMARY KEY (`reportCardID`)) ENGINE = InnoDB;"
+    query: "CREATE TABLE `olympic`.`reportCard` ( `reportCardID` VARCHAR(10) NOT NULL , `mark` REAL NOT NULL , `subjectID` VARCHAR(10) NOT NULL , `contestID` VARCHAR(10) NOT NULL , `candidateID` VARCHAR(10) NOT NULL , PRIMARY KEY (`reportCardID`)) ENGINE = InnoDB;"
   }, {
     name: "Create contest - room table",
-    query: "CREATE TABLE `olympic`.`contest - room` ( `roomID` VARCHAR(10) NOT NULL , `subjectID` VARCHAR(10) NOT NULL , `supervisoryID` VARCHAR(10) NOT NULL , PRIMARY KEY (`roomID`, `subjectID`)) ENGINE = InnoDB;"
+    query: "CREATE TABLE `olympic`.`contestRoom` ( `roomID` VARCHAR(10) NOT NULL , `subjectID` VARCHAR(10) NOT NULL , `supervisoryID` VARCHAR(10) NOT NULL , PRIMARY KEY (`roomID`, `subjectID`)) ENGINE = InnoDB;"
   }, {
     name: "Create supervisory table",
-    query: "CREATE TABLE `olympic`.`supervisory` ( `SID` VARCHAR(10) NOT NULL , `supervisoryID` VARCHAR(10) NOT NULL , `name` VARCHAR(50) NOT NULL , `email` VARCHAR(100) NOT NULL , `phone` VARCHAR(20) NOT NULL , `address` VARCHAR(200) NOT NULL , PRIMARY KEY (`SID`), UNIQUE (`supervisoryID`)) ENGINE = InnoDB;"
+    query: "CREATE TABLE `olympic`.`supervisory` ( `sID` VARCHAR(10) NOT NULL , `supervisoryID` VARCHAR(10) NOT NULL , `name` VARCHAR(50) NOT NULL , `email` VARCHAR(100) NOT NULL , `phone` VARCHAR(20) NOT NULL , `address` VARCHAR(200) NOT NULL , PRIMARY KEY (`sID`), UNIQUE (`supervisoryID`)) ENGINE = InnoDB;"
   }, {
     name: "Create contest - candidate table",
-    query: "CREATE TABLE `olympic`.`contest - candidate`(`CID` VARCHAR(10) NOT NULL, `contestID` VARCHAR(10) NOT NULL, `candidateID` VARCHAR(10) NOT NULL, PRIMARY KEY(`CID`, `contestID`)) ENGINE = InnoDB;"
+    query: "CREATE TABLE `olympic`.`contestCandidate`(`cID` VARCHAR(10) NOT NULL, `contestID` VARCHAR(10) NOT NULL, `participantID` VARCHAR(10) not null ,`candidateID` VARCHAR(10) NOT NULL, PRIMARY KEY(`cID`, `contestID`)) ENGINE = InnoDB;"
   }
 
 ];
