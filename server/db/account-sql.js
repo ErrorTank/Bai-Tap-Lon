@@ -1,3 +1,4 @@
+const uniquid = require("uniquid");
 const {DBError} = require("../utils/error/error-types");
 const isNil = require("lodash/isNil");
 const createQuery = require("../config/query");
