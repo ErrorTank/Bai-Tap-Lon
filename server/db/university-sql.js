@@ -74,7 +74,7 @@ const universitySql = (db) => {
   }
 
   //get university by ID
-  const getUniversityByUID = (UID) => {
+  const getSchoolByAccountID = (UID) => {
     const sql = `SELECT * from university where UID = '${UID}'`;
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
@@ -92,7 +92,7 @@ const universitySql = (db) => {
     getUniverisity,
     updateUniversity,
     deleteUniversity,
-    getUniversityByUID
+    getSchoolByAccountID
     //define function name here
   }
 };

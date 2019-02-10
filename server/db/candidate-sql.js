@@ -73,7 +73,7 @@ const candidateSql = (db) => {
   }
 
   //get candidate by ID
-  const getCandidateByCID = (CID) => {
+  const getCandidateByAccountID = (CID) => {
     const sql = `SELECT * from candidate where CID = '${CID}'`;
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
@@ -91,7 +91,7 @@ const candidateSql = (db) => {
     getCandidate,
     updateCandidate,
     deleteCandidate,
-    getCandidateByCID
+    getCandidateByAccountID
     //define function name here
   }
 };
