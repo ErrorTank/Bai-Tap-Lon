@@ -79,7 +79,7 @@ const accountSql = (db) => {
   const getAccountByRole = (Role) => {
     let getInfo = `SELECT * FROM Account WHERE role = '${Role}'`;
     return new Promise((resolve, reject) => {
-      query(sql).then(result => {
+      query(getInfo).then(result => {
         if(result.length){
           resolve(result);
         }else{
@@ -87,14 +87,13 @@ const accountSql = (db) => {
         }
       }).catch(err => reject(err));
     })
-  };
   };
   
   //get account by canLogin
   const getAccountByCanLogin = (canLogin) => {
     let getInfo = `SELECT * FROM Account WHERE canLogin = '${canLogin}'`;
     return new Promise((resolve, reject) => {
-      query(sql).then(result => {
+      query(getInfo).then(result => {
         if(result.length){
           resolve(result);
         }else{
@@ -103,7 +102,7 @@ const accountSql = (db) => {
       }).catch(err => reject(err));
     })
   };
-  };
+
   return {
     checkLogin,
     updateAccount,
@@ -113,4 +112,6 @@ const accountSql = (db) => {
     getAccountByCanLogin
   }
 };
+
 module.exports = accountSql;
+
