@@ -75,7 +75,6 @@ const candidateSql = (db) => {
   //get candidate by ID
   const getCandidateByAccountID = (accountID) => {
     const sql = `SELECT * from candidate where accountID = '${accountID}'`;
-    return new Promise((resolve, reject) => {
       query(sql).then(result => {
         if(result.length){
           resolve(result[0]);
@@ -83,7 +82,6 @@ const candidateSql = (db) => {
           reject(new Error("not_found"));
         }
       }).catch(err => reject(err));
-    })
   };
 
   return {

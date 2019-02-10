@@ -73,18 +73,16 @@ const universitySql = (db) => {
       )
   }
 
-  //get university by ID
+  //get university by accountID
   const getSchoolByAccountID = (accountID) => {
     const sql = `SELECT * from university where accountID = '${accountID}'`;
-    return new Promise((resolve, reject) => {
       query(sql).then(result => {
         if(result.length){
-          resolve(result[0]);
+          resolve(result);
         }else{
           reject(new Error("not_found"));
         }
       }).catch(err => reject(err));
-    })
   };
 
   return {
