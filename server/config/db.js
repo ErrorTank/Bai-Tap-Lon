@@ -12,12 +12,12 @@ const config = {
 
 module.exports = () => new Promise((resolve, reject) => {
   const pool = mysql.createPool(config);
-  pool.getConnection((err, connection) => {
+  pool.getConnection((err, db) => {
     if (err) {
       throw new DBError("Cannot create db connection");
     }else{
       console.log("You are now connected!");
-      resolve(connection);
+      resolve(db);
     }
 
   })
