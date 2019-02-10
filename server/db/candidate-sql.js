@@ -73,8 +73,8 @@ const candidateSql = (db) => {
   }
 
   //get candidate by ID
-  const getCandidateByAccountID = (CID) => {
-    const sql = `SELECT * from candidate where CID = '${CID}'`;
+  const getCandidateByAccountID = (accountID) => {
+    const sql = `SELECT * from candidate where accountID = '${accountID}'`;
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
         if(result.length){

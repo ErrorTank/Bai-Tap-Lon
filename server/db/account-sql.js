@@ -80,7 +80,7 @@ const accountSql = (db) => {
     let getInfo = `SELECT * FROM Account WHERE role = '${Role}'`;
     query(getInfo).then((result) => {
       if(result.length){
-        resolve(result[0]);
+        resolve(result);
       }else{
         reject(new Error("Account not found"));
       }
@@ -94,7 +94,7 @@ const accountSql = (db) => {
     let getInfo = `SELECT * FROM Account WHERE canLogin = '${canLogin}'`;
     query(getInfo).then((result) => {
       if(result.length){
-        resolve(result[0]);
+        resolve(result);
       }else{
         reject(new Error("Account not found"));
       }

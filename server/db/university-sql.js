@@ -74,8 +74,8 @@ const universitySql = (db) => {
   }
 
   //get university by ID
-  const getSchoolByAccountID = (UID) => {
-    const sql = `SELECT * from university where UID = '${UID}'`;
+  const getSchoolByAccountID = (accountID) => {
+    const sql = `SELECT * from university where accountID = '${accountID}'`;
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
         if(result.length){
