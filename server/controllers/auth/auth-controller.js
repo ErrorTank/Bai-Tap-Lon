@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {authorization, createAuthToken} = require("../../authorization/auth");
-const accountSql = require("../../db/acount-sql");
+const accountSql = require("../../db/account-sql");
 const omit = require("lodash/omit");
 const {getPublicKey, getPrivateKey} = require("../../authorization/keys/keys");
 

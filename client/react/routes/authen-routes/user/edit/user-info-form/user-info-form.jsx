@@ -27,8 +27,7 @@ export class UserInfoForm extends KComponent {
   };
 
   render() {
-    let {form, err, onChange: propsOnChange} = this.props;
-    let info = userInfo.getState();
+    let {form, err, onChange: propsOnChange, renderNavigate} = this.props;
     return (
       <div className="user-info-form">
         <div className="m-form m-form--fit m-form--label-align-right m-form--state">
@@ -167,13 +166,7 @@ export class UserInfoForm extends KComponent {
             </div>
 
           </div>
-          {info.role === 0 && (
-            <div className="row">
-              <div className="col optional-nav">
-                <p onClick={() => customHistory.push(`/account/${form.getPathData("accountID")}`)}>Xem thông tin tài khoản</p>
-              </div>
-            </div>
-          )}
+          {renderNavigate()}
 
         </div>
 
