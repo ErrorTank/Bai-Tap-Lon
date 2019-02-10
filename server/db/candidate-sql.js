@@ -62,8 +62,7 @@ const candidateSql = (db) => {
 
   //delete location
   const deleteCandidate = (candidateID) => {
-    
-    var deleteInfo = `DELETE FROM candidate WHERE UID = '${candidateID}'`;
+    var deleteInfo = `DELETE FROM candidate WHERE CID = '${candidateID}'`;
     return new Promise((resolve, reject) =>
         query(deleteInfo).then((result) => {
             resolve();
@@ -73,11 +72,26 @@ const candidateSql = (db) => {
       )
   }
 
+  //get candidate by ID
+  const getCandidateByAccountID = (CID) => {
+    const sql = `SELECT * from candidate where CID = '${CID}'`;
+    return new Promise((resolve, reject) => {
+      query(sql).then(result => {
+        if(result.length){
+          resolve(result[0]);
+        }else{
+          reject(new Error("not_found"));
+        }
+      }).catch(err => reject(err));
+    })
+  };
+
   return {
     createCandidate,
     getCandidate,
     updateCandidate,
-    deleteCandidate
+    deleteCandidate,
+    getCandidateByAccountID
     //define function name here
   }
 };
