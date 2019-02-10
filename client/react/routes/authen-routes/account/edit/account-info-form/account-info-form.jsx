@@ -4,6 +4,7 @@ import {KComponent} from "../../../../../common/k-component";
 import {Select} from "../../../../../common/select/select";
 import {Roles, userInfo} from "../../../../../../common/states/user-info";
 import {customHistory} from "../../../../routes";
+import {userApi} from "../../../../../../api/common/user-api";
 
 
 
@@ -14,6 +15,31 @@ export class AccountInfoForm extends KComponent {
       loading: false
     };
 
+  };
+
+  renderNavigate = (cb) => {
+    let {info, form} = this.props;
+
+    let matcher = {
+      0: {
+        url: `/user/${info.userID}`,
+        text: "Xem thông tin admin"
+      },
+      1: {
+        url: `/user/${info.userID}`,
+        text: "Xem thông tin người dùng"
+      },
+      2: {
+        url: `/school/${info.schoolID}`,
+        text: "Xem thông tin trường"
+      },
+      3: {
+        url: `/candidate/${info.candidateID}`,
+        text: "Xem thông tin thí sinh"
+      },
+    };
+
+    return cb(matcher[form.getPathData("role")])
   };
 
   generateError =() => {
@@ -103,7 +129,7 @@ export class AccountInfoForm extends KComponent {
             <div className="row">
               <div className="col optional-nav">
                 {this.renderNavigate(({url, text}) => (
-                  <p onClick={() => customHistory.push(url)}>${text}</p>
+                  <p onClick={() => customHistory.push(url)}>{text}</p>
                 ))
 
                 }

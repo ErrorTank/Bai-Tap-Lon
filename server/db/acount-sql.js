@@ -28,7 +28,7 @@ const accountSql = (db) => {
         }))
   };
   const getUserByAccountID = (accountID) => {
-    const sql = `SELECT * from account where accountID = '${accountID}'`;
+    const sql = `SELECT * from user where accountID = '${accountID}'`;
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
         if(result.length){

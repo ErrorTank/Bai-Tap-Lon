@@ -17,6 +17,8 @@ import pick from "lodash/pick"
 import isEqual from "lodash/isEqual"
 import {accountApi} from "../../../../../api/common/account-api";
 import {AccountInfoForm} from "./account-info-form/account-info-form";
+import {schoolApi} from "../../../../../api/common/school-api";
+import {candidateApi} from "../../../../../api/common/candidate-api";
 
 const accountSchema = yup.object().shape({
   username: yup.string().min(6, "Tên đăng nhập lớn hơn 6 kí tự").max(20, "Tên đăng nhập nhỏ hơn 20 kí tự").onlyWord("Tên đăng nhập không được có kí tự đặc biệt").haveChar("Tên đăng nhập phải có kí tự alphabet").haveNumber("Tên đăng nhập phải có chữ số"),
@@ -33,7 +35,8 @@ export class AccountRoute extends KComponent {
       activeTab: this.tabs[0],
       loading: true,
       saving: false,
-      draft: {}
+      draft: {},
+      inf: {}
     };
 
     this.form = createSimpleForm(accountSchema);
@@ -43,20 +46,47 @@ export class AccountRoute extends KComponent {
     let {role} = userInfo.getState();
     accountApi.checkAccountIDInUser({role, accountID: props.match.params.accountID}).then((data) => {
       let info = pick(data, ["username", "password", "role", "canLogin", "accountID"]);
-      this.form.updateData({...info}).then(() =>  this.setState({loading: false, draft: {...info}}));
+      this.fetchRefInfo(info.role, info.accountID).then(inf => {
+        this.form.updateData({...info}).then(() =>  this.setState({inf, loading: false, draft: {...info}}));
+      });
+
     }).catch(err => customHistory.push(toDefaultRoute()));
 
   };
 
   componentDidMount(){
     this.form.validateData();
-  }
+  };
+
+  fetchRefInfo = async (role, accountID) => {
+
+    let matcher = {
+      0: async () => {
+        return await userApi.getUserByAccountID(accountID);
+      },
+      1: async () => {
+        return await userApi.getUserByAccountID(accountID);
+      },
+      2: async () => {
+        return await schoolApi.getSchoolByAccountID(accountID);
+      },
+      3: async () => {
+        return await candidateApi.getCandidateByAccountID(accountID);
+      },
+    };
+
+    return this.state.inf.role === role ? this.state.inf : await matcher[role]();
+  };
+
+
 
   editAccount = () => {
     this.setState({saving: true});
     let account = this.form.getData();
-    accountApi.update(account).then(() => {
-      this.setState({draft: account, saving: false})
+
+    let promises = [accountApi.update(account), this.fetchRefInfo(account.role, account.accountID)];
+    Promise.all(promises).then(([ack, inf]) => {
+      this.setState({draft: account, saving: false, inf})
     })
   };
 
@@ -66,6 +96,7 @@ export class AccountRoute extends KComponent {
       render: () => (
         <AccountInfoForm
           form={this.form}
+          info={this.state.inf}
         />
       )
     },
@@ -93,7 +124,7 @@ export class AccountRoute extends KComponent {
                 activeTab={activeTab}
                 onChangeTab={tab => this.setState({activeTab: tab})}
                 renderActions={() => (
-                  <div className="row justify-content-end u-actions">
+                  <div className="row justify-content-end a-actions">
                     <button type="button" className="btn btn-secondary" onClick={() => customHistory.goBack()}>Hủy bỏ</button>
                     <button type="button"
                             className="btn btn-primary"

@@ -1,9 +1,9 @@
 
 import {authenApi} from "../api";
 
-export const userApi = {
-  get(userID) {
-    return authenApi.get("/user/" + userID);
+export const schoolApi = {
+  get(schoolID) {
+    return authenApi.get("/school/" + schoolID);
   },
   changePassword(accountID, obj){
     return authenApi.put(`/account/${accountID}/change-password`, obj);
@@ -11,7 +11,7 @@ export const userApi = {
   update(user){
     return authenApi.put(`/user/${user.userID}`, {user});
   },
-  getUserByAccountID(accountID){
-    return authenApi.get(`/user/account/${accountID}`);
+  getSchoolByAccountID(accountID){
+    return authenApi.get(`/school/account/${accountID}`);
   }
 };

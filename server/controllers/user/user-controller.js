@@ -5,13 +5,21 @@ const {getPublicKey} = require("../../authorization/keys/keys");
 const authMiddleware = authorization(getPublicKey(), {expiresIn: "1h", algorithm: ["RS256"]});
 const omit = require("lodash/omit");
 const userSql = require("../../db/user-sql");
+const accountSql = require("../../db/acount-sql");
+
 
 
 module.exports = (db) => {
   const userManager = userSql(db);
+  const accountManager = accountSql(db);
   router.get("/user/:userID", authMiddleware, (req,res, next) =>{
     userManager.getUser(req.params.userID).then(user => {
       res.status(200).json(omit(user, "password"));
+    }).catch(err => next(err))
+  });
+  router.get("/user/account/:accountID", authMiddleware, (req,res, next) =>{
+    accountManager.getUserByAccountID(req.params.accountID).then(user => {
+      res.status(200).json(user);
     }).catch(err => next(err))
   });
   router.put("/user/:userID", authMiddleware, (req,res, next) =>{
