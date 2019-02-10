@@ -71,12 +71,12 @@ const userSql = (db) => {
   const createUser = (userObj) => {
     //generate random ID for location
     var id = uniquid();
-    var UserID = id.slice(-6,-1)+id.slice(-1);
+    var userID = id.slice(-6,-1)+id.slice(-1);
 
     //destruct object for further use
     var {name, CMT, address, phone, email, accountID, employeeID, gender} = userObj;
 
-    var createInfo = `INSERT INTO User (userID, name, CMT, address, phone, email, accountID, employeeID, gender) VALUES('${userObj}', '${name}', '${CMT}', '${address}, '${phone}', '${email}', '${accountID}', '${employeeID}', '${gender}')`;
+    var createInfo = `INSERT INTO User (userID, name, CMT, address, phone, email, accountID, employeeID, gender) VALUES('${userID}', '${name}', '${CMT}', '${address}, '${phone}', '${email}', '${accountID}', '${employeeID}', '${gender}')`;
     return new Promise((resolve, reject) =>
         query(createInfo).then((result) => {
             resolve();
