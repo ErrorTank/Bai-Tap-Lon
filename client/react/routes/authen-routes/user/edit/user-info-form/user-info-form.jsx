@@ -27,7 +27,7 @@ export class UserInfoForm extends KComponent {
   };
 
   render() {
-    let {form, err, onChange: propsOnChange, renderNavigate} = this.props;
+    let {form, err, onChange: propsOnChange, renderNavigate = () => null} = this.props;
     return (
       <div className="user-info-form">
         <div className="m-form m-form--fit m-form--label-align-right m-form--state">
