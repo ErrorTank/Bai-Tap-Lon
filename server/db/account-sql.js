@@ -29,11 +29,11 @@ const accountSql = (db) => {
         )
   };
 
-  const creatAccount = (accountObj) => {
+  const createAccount = (accountObj) => {
     var id = uniquid();
     var accountID = id.slice(-6,-1) + id.slide(-1);
 
-    var{username, password, role, canLogin} = accountID;
+    var {username, password, role, canLogin} = accountObj;
 
     var createInfo = `INSERT INTO account (accountID, username, password, role, canLogin) VALUES('${accountID}, '${username}', '${password}', '${role}', '${canLogin}')`;
     return new Promise((resolve, reject) => 
