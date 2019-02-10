@@ -1,6 +1,7 @@
 const {DBError} = require("../utils/error/error-types");
 const createQuery = require("../config/query");
 const isNil = require("lodash/isNil");
+const uniquid = require("uniquid");
 
 const userSql = (db) => {
   const query = createQuery(db);
