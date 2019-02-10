@@ -17,16 +17,22 @@ export const authenCache = (() =>  {
     clearAuthen(){
       cache.set(null, "k-authen");
     },
-    async loadAuthen(){
-      let authen = cache.get("k-authen");
-      if(!authen){
-        return false;
-      }else{
-        let info = await authenticationApi.getInfo();
-        if(!info)
-          return;
-        return userInfo.setState(info);
-      }
+    loadAuthen(){
+      return new Promise((resolve, reject) => {
+        let authen = cache.get("k-authen");
+        if(!authen){
+          reject();
+        }else{
+          authenticationApi.getInfo().then(info => {
+            if(!info)
+              reject();
+            else
+              resolve(userInfo.setState(info));
+          });
+
+        }
+      });
+
     },
     getAuthen(){
       return cache.get("k-authen")
