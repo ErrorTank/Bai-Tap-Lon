@@ -78,29 +78,31 @@ const accountSql = (db) => {
   //get account by role
   const getAccountByRole = (Role) => {
     let getInfo = `SELECT * FROM Account WHERE role = '${Role}'`;
-    query(getInfo).then((result) => {
-      if(result.length){
-        resolve(result);
-      }else{
-        reject(new Error("Account not found"));
-      }
-    }).catch(err => {
-      reject(err)
+    return new Promise((resolve, reject) => {
+      query(sql).then(result => {
+        if(result.length){
+          resolve(result);
+        }else{
+          reject(new Error("not_found"));
+        }
+      }).catch(err => reject(err));
     })
+  };
   };
   
   //get account by canLogin
   const getAccountByCanLogin = (canLogin) => {
     let getInfo = `SELECT * FROM Account WHERE canLogin = '${canLogin}'`;
-    query(getInfo).then((result) => {
-      if(result.length){
-        resolve(result);
-      }else{
-        reject(new Error("Account not found"));
-      }
-    }).catch(err => {
-      reject(err)
+    return new Promise((resolve, reject) => {
+      query(sql).then(result => {
+        if(result.length){
+          resolve(result);
+        }else{
+          reject(new Error("not_found"));
+        }
+      }).catch(err => reject(err));
     })
+  };
   };
   return {
     checkLogin,
