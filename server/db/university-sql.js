@@ -6,7 +6,7 @@ const uniquid = require("uniquid");
 const universitySql = (db) => {
   const query = createQuery(db);
 
-  //create location
+  //create university
   const createUniversity = (universityObj) => {
     //generate random ID for location
     var id = uniquid();
@@ -25,7 +25,7 @@ const universitySql = (db) => {
       )
   };
 
-  //get location
+  //get university
   const getUniverisity = (universityID) => {
     if (isNil(universityID)) {
       Reflect(new Error("Cannot find univerisyt with ID" + universityID));
@@ -45,7 +45,7 @@ const universitySql = (db) => {
     }
   };
 
-  //update location's info
+  //update university's info
   const updateUniversity = (UID, universityObj) => {
     //destruct obj for further use
     var {universityID, name, address, phone, email} = universityObj;
@@ -60,7 +60,7 @@ const universitySql = (db) => {
       )
   }
 
-  //delete location
+  //delete university
   const deleteUniversity = (universityID) => {
     
     var deleteInfo = `DELETE FROM university WHERE UID = '${universityID}'`;
@@ -73,11 +73,26 @@ const universitySql = (db) => {
       )
   }
 
+  //get university by ID
+  const getUniversityByUID = (UID) => {
+    const sql = `SELECT * from university where UID = '${UID}'`;
+    return new Promise((resolve, reject) => {
+      query(sql).then(result => {
+        if(result.length){
+          resolve(result[0]);
+        }else{
+          reject(new Error("not_found"));
+        }
+      }).catch(err => reject(err));
+    })
+  };
+
   return {
     createUniversity,
     getUniverisity,
     updateUniversity,
-    deleteUniversity
+    deleteUniversity,
+    getUniversityByUID
     //define function name here
   }
 };
