@@ -39,8 +39,8 @@ const accountSql = (db) => {
         }
       }).catch(err => reject(err));
     })
-
   };
+  
   const getAccount = (accountID) => {
     return new Promise((resolve, reject) => {
       if(isNil(accountID)){
