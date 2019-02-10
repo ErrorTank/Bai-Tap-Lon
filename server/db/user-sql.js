@@ -4,6 +4,8 @@ const isNil = require("lodash/isNil");
 
 const userSql = (db) => {
   const query = createQuery(db);
+
+  //get user
   const getUser = (userID) => {
     return new Promise((resolve, reject) => {
       if(isNil(userID)){
@@ -20,12 +22,10 @@ const userSql = (db) => {
           reject(err)
         })
       }
-
     });
-
-
-
   };
+
+  //get user by account id
   const getUserByAccountID = (accountID) => {
     const sql = `SELECT * from user where accountID = '${accountID}'`;
     return new Promise((resolve, reject) => {
@@ -38,6 +38,8 @@ const userSql = (db) => {
       }).catch(err => reject(err));
     })
   };
+
+  //update user
   const updateUser = (userID, user) => {
     return new Promise((resolve, reject) => {
       if(isNil(userID)){
@@ -65,10 +67,30 @@ const userSql = (db) => {
     });
   };
 
+  //create user
+  const createUser = (userObj) => {
+    //generate random ID for location
+    var id = uniquid();
+    var userID = id.slice(-6,-1)+id.slice(-1);
+
+    //destruct object for further use
+    var {name, CMT, address, phone, email, accountID, employeeID, gender} = userObj;
+
+    var createInfo = `INSERT INTO User (userID, name, CMT, address, phone, email, accountID, employeeID, gender) VALUES('${userID}', '${name}', '${CMT}', '${address}, '${phone}', '${email}', '${accountID}', '${employeeID}', '${gender}')`;
+    return new Promise((resolve, reject) =>
+        query(createInfo).then((result) => {
+            resolve();
+        }).catch(err => {
+          reject(err)
+        })
+      )
+  };
+
   return {
     getUser,
     updateUser,
-    getUserByAccountID
+    getUserByAccountID,
+    createUser
   }
 };
 module.exports = userSql;
