@@ -12,7 +12,14 @@ export class Cache {
     if (vStr == null) {
       return null;
     }
-    return typeof vStr === "object" ? JSON.parse(vStr) : null;
+    let ret;
+    try{
+      ret = JSON.parse(vStr);
+    }catch(err){
+      console.log(err);
+      ret = null;
+    }
+    return ret;
   };
 
   set = (value, key) => {
