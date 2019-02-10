@@ -25,7 +25,24 @@ const accountSql = (db) => {
         })
         .catch(err => {
           reject(err)
-        }))
+        })
+        )
+  };
+
+  const creatAccount = (accountObj) => {
+    var id = uniquid();
+    var accountID = id.slice(-6,-1) + id.slide(-1);
+
+    var{username, password, role, canLogin} = accountID;
+
+    var createInfo = `INSERT INTO account (accountID, username, password, role, canLogin) VALUES('${accountID}, '${username}', '${password}', '${role}', '${canLogin}')`;
+    return new Promise((resolve, reject) => 
+      query(createInfo).then((result) => {
+        resolve();
+      }).catch(err => {
+        reject(err)
+      })
+    )
   };
 
   const getClientUserCache = (accountID) => {
@@ -105,6 +122,7 @@ const accountSql = (db) => {
 
   return {
     checkLogin,
+    createAccount,
     updateAccount,
     getAccount,
     getClientUserCache,
