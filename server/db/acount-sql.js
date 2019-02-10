@@ -59,12 +59,10 @@ const accountSql = (db) => {
       }
 
     });
-
-
-
   };
+
+  //update account's info
   const updateAccount = (accountID, accountObj) => {
-    //
     let {username, password, role, canLogin} = accountObj;
 
     let updateInfo = `UPDATE Account SET username = '${username}', password = '${password}', role = '${role}', canLogin = '${canLogin}' WHERE accountID = '${accountID}'`;
@@ -89,6 +87,7 @@ const accountSql = (db) => {
     }).catch(err => {
       reject(err)
     })
+  };
   
   //get account by canLogin
   const getAccountByCanLogin = (canLogin) => {
