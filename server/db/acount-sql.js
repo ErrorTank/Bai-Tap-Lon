@@ -5,8 +5,8 @@ const createQuery = require("../config/query");
 const accountSql = (db) => {
   const query = createQuery(db);
   const checkLogin = ({username, password}) => {
-    const checkExist = `SELECT * FROM account where username = '${username}'`;
-    const checkCorrect = `SELECT * FROM ( ( SELECT * FROM ACCOUNT WHERE username = '${username}' AND PASSWORD = '${password}' ) AS a INNER JOIN( SELECT * FROM USER ) AS u ) WHERE a.accountID = u.accountID`;
+    const checkExist = `SELECT * FROM Account where username = '${username}'`;
+    const checkCorrect = `SELECT * FROM ( ( SELECT * FROM Account WHERE username = '${username}' AND PASSWORD = '${password}' ) AS a INNER JOIN( SELECT * FROM USER ) AS u ) WHERE a.accountID = u.accountID`;
     return new Promise((resolve, reject) =>
       query(checkExist).then((result) => {
             if(result.length){
@@ -29,7 +29,7 @@ const accountSql = (db) => {
   };
 
   const getClientUserCache = (accountID) => {
-    const sql = `SELECT * FROM ( ( SELECT * FROM ACCOUNT WHERE accountID = '${accountID}' ) AS a INNER JOIN( SELECT * FROM USER ) AS u ) WHERE a.accountID = u.accountID`;
+    const sql = `SELECT * FROM ( ( SELECT * FROM Account WHERE accountID = '${accountID}' ) AS a INNER JOIN( SELECT * FROM USER ) AS u ) WHERE a.accountID = u.accountID`;
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
         if(result.length){
@@ -46,7 +46,7 @@ const accountSql = (db) => {
       if(isNil(accountID)){
         reject(new Error("Cannot find account with ID: " + accountID));
       }else{
-        const getInfo = `SELECT * FROM account where accountID = '${accountID}'`;
+        const getInfo = `SELECT * FROM Account where accountID = '${accountID}'`;
         query(getInfo).then((result) => {
           if(result.length){
             resolve(result[0]);
@@ -67,7 +67,7 @@ const accountSql = (db) => {
     //
     let {username, password, role, canLogin} = accountObj;
 
-    let updateInfo = `UPDATE account SET  username = '${username}', password = '${password}', role = '${role}', canLogin = '${canLogin}' WHERE accountID = '${accountID}'`;
+    let updateInfo = `UPDATE Account SET username = '${username}', password = '${password}', role = '${role}', canLogin = '${canLogin}' WHERE accountID = '${accountID}'`;
     return new Promise((resolve, reject) =>
       query(updateInfo).then((result) => {
         resolve();
@@ -79,7 +79,7 @@ const accountSql = (db) => {
 
   //get account by role
   const getAccountByRole = (Role) => {
-    let getInfo = `GET * FROM Account WHERE role = '${Role}'`;
+    let getInfo = `SELECT * FROM Account WHERE role = '${Role}'`;
     query(getInfo).then((result) => {
       if(result.length){
         resolve(result[0]);
@@ -92,7 +92,7 @@ const accountSql = (db) => {
   
   //get account by canLogin
   const getAccountByCanLogin = (canLogin) => {
-    let getInfo = `GET * FROM Account WHERE canLogin = '${canLogin}'`;
+    let getInfo = `SELECT * FROM Account WHERE canLogin = '${canLogin}'`;
     query(getInfo).then((result) => {
       if(result.length){
         resolve(result[0]);
