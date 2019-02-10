@@ -5,10 +5,12 @@ const {getPublicKey} = require("../../authorization/keys/keys");
 const authMiddleware = authorization(getPublicKey(), {expiresIn: "1h", algorithm: ["RS256"]});
 const omit = require("lodash/omit");
 const accountSql = require("../../db/acount-sql");
+const userSql = require("../../db/user-sql");
 
 
 module.exports = (db) => {
   const accountManager = accountSql(db);
+  const userManager = userSql(db);
   router.get("/account/:accountID/role/:role/check-in-user", authMiddleware, (req,res, next) =>{
 
     let {role, accountID} = req.params;
@@ -18,7 +20,7 @@ module.exports = (db) => {
       }).catch(err => next(err))
     };
     if(Number(role) === 1){
-      accountManager.getUserByAccountID(accountID).then((result) => {
+      userManager.getUserByAccountID(accountID).then((result) => {
         next(new Error("Manager cannot see user account info!"))
       }).catch(err => {
         if(err.message === "not_found"){

@@ -26,6 +26,18 @@ const userSql = (db) => {
 
 
   };
+  const getUserByAccountID = (accountID) => {
+    const sql = `SELECT * from user where accountID = '${accountID}'`;
+    return new Promise((resolve, reject) => {
+      query(sql).then(result => {
+        if(result.length){
+          resolve(result[0]);
+        }else{
+          reject(new Error("not_found"));
+        }
+      }).catch(err => reject(err));
+    })
+  };
   const updateUser = (userID, user) => {
     return new Promise((resolve, reject) => {
       if(isNil(userID)){
@@ -55,7 +67,8 @@ const userSql = (db) => {
 
   return {
     getUser,
-    updateUser
+    updateUser,
+    getUserByAccountID
   }
 };
 module.exports = userSql;
