@@ -92,15 +92,16 @@ const accountSql = (db) => {
   const getAccountByRole = (Role) => {
     let getInfo = `GET * FROM Account WHERE role = '${Role}'`;
     query(getInfo).then((result) => {
-      if(result.length){
+      if (result.length) {
         resolve(result[0]);
-      }else{
+      } else {
         reject(new Error("Account not found"));
       }
     }).catch(err => {
       reject(err)
     })
-  
+  }
+
   //get account by canLogin
   const getAccountByCanLogin = (canLogin) => {
     let getInfo = `GET * FROM Account WHERE canLogin = '${canLogin}'`;

@@ -78,7 +78,30 @@ export class AccountRoute extends KComponent {
     return this.state.inf.role === role ? this.state.inf : await matcher[role]();
   };
 
+  getNavigateInfo = (cb) => {
+    let {inf: info, draft} = this.state;
 
+    let matcher = {
+      0: {
+        url: `/user/${info.userID}`,
+        text: "Xem thông tin admin"
+      },
+      1: {
+        url: `/user/${info.userID}`,
+        text: "Xem thông tin người dùng"
+      },
+      2: {
+        url: `/school/${info.schoolID}`,
+        text: "Xem thông tin trường"
+      },
+      3: {
+        url: `/candidate/${info.candidateID}`,
+        text: "Xem thông tin thí sinh"
+      },
+    };
+
+    return cb(matcher[draft.role])
+  };
 
 
 
@@ -107,10 +130,23 @@ export class AccountRoute extends KComponent {
       render: () => (
         <AccountInfoForm
           form={this.form}
-          info={this.state.inf}
           onChange={() => this.setState({err: ""})}
-          draft={this.state.draft}
           err={this.state.err}
+          renderNavigate={() => {
+            let state = userInfo.getState();
+            return (state.role === 0 || (state.role === 1 && ![0, 1].includes(this.state.draft.role))) ? (
+              <div className="row">
+                <div className="col optional-nav">
+                  {this.getNavigateInfo(({url, text}) => (
+                    <p onClick={() => customHistory.push(url)}>{text}</p>
+                  ))
+
+                  }
+
+                </div>
+              </div>
+            ) : null
+          }}
         />
       )
     },

@@ -17,30 +17,7 @@ export class AccountInfoForm extends KComponent {
 
   };
 
-  renderNavigate = (cb) => {
-    let {info, draft} = this.props;
 
-    let matcher = {
-      0: {
-        url: `/user/${info.userID}`,
-        text: "Xem thông tin admin"
-      },
-      1: {
-        url: `/user/${info.userID}`,
-        text: "Xem thông tin người dùng"
-      },
-      2: {
-        url: `/school/${info.schoolID}`,
-        text: "Xem thông tin trường"
-      },
-      3: {
-        url: `/candidate/${info.candidateID}`,
-        text: "Xem thông tin thí sinh"
-      },
-    };
-
-    return cb(matcher[draft.role])
-  };
 
   generateError =() => {
     let {err, form} = this.props;
@@ -52,7 +29,7 @@ export class AccountInfoForm extends KComponent {
   };
 
   render() {
-    let {form, err, onChange: propsOnChange} = this.props;
+    let {form, err, onChange: propsOnChange, renderNavigate} = this.props;
     let info = userInfo.getState();
     return (
       <div className="account-info-form">
@@ -124,19 +101,7 @@ export class AccountInfoForm extends KComponent {
             </div>
 
           </div>
-
-          {info.role === 0 && (
-            <div className="row">
-              <div className="col optional-nav">
-                {this.renderNavigate(({url, text}) => (
-                  <p onClick={() => customHistory.push(url)}>{text}</p>
-                ))
-
-                }
-
-              </div>
-            </div>
-          )}
+          {renderNavigate()}
 
         </div>
 
