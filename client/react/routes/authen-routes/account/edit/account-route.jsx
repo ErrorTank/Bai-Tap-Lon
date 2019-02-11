@@ -19,6 +19,7 @@ import {schoolApi} from "../../../../../api/common/school-api";
 import {candidateApi} from "../../../../../api/common/candidate-api";
 import omit from "lodash/omit"
 import {accountSchema} from "../../schema";
+import {authenCache} from "../../../../../common/cache/authen-cache";
 
 
 export class AccountRoute extends KComponent {
@@ -108,8 +109,12 @@ export class AccountRoute extends KComponent {
     Promise.all(promises).then(([ack, inf]) => {
       this.setState({draft: {...account}, saving: false, inf});
       if(account.accountID === state.accountID){
-
-        if(account.role !== 0){
+        if(!account.canLogin){
+          userInfo.setState(null);
+          authenCache.clearAuthen();
+          customHistory.push("/login")
+        }
+        else if(account.role !== 0){
           userInfo.setState(Object.assign({}, state, {...omit(account, "password"), role: Number(account.role)}));
           customHistory.push(toDefaultRoute())
         }

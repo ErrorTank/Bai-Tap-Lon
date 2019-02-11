@@ -4,7 +4,7 @@ import {RouteTitle} from "../../../../layout/route-title/route-title";
 import {KComponent} from "../../../../common/k-component";
 import * as yup from "yup";
 import {createSimpleForm} from "../../../../common/form-validator/form-validator";
-import {accountSchema, schoolPresenterSchema, userSchema} from "../../schema";
+import {accountSchema, candidateSchema, schoolPresenterSchema, userSchema} from "../../schema";
 import {userInfo} from "../../../../../common/states/user-info";
 import {customHistory} from "../../../routes";
 import {AccountInfoForm} from "../edit/account-info-form/account-info-form";
@@ -13,6 +13,7 @@ import {UserInfoForm} from "../../user/edit/user-info-form/user-info-form";
 import {CandidateInfoForm} from "../../candidate/candidate-info-form/candidate-info-form";
 import {SchoolPresenterInfoForm} from "../../school-presenter/school-presenter-info-form/school-presenter-info-form";
 import {MultipleStepsTabs} from "../../../../common/multiple-steps-tabs/multiple-steps-tabs";
+import isEqual from "lodash/isEqual";
 
 
 export class AccountNewRoute extends KComponent {
@@ -23,9 +24,19 @@ export class AccountNewRoute extends KComponent {
       activeTab: 0,
       saving: false
     };
-    this.accountForm = createSimpleForm(accountSchema);
-    this.infoForm = null;
+    this.accountForm = createSimpleForm(accountSchema, {
+      initData: {
+        username: "",
+        password: "",
+        role: 0,
+        canLogin: 1
+      }
+    });
+
+    this.infoForm = createSimpleForm();
     this.onUnmount(this.accountForm.on("change", () => this.forceUpdate()));
+    this.onUnmount(this.infoForm.on("change", () => this.forceUpdate()));
+    this.accountForm.validateData();
   };
 
   createNewAccount = () => {
@@ -34,10 +45,15 @@ export class AccountNewRoute extends KComponent {
 
   renderStep = () => {
     let role = this.accountForm.getPathData("role");
+
     let matcher = {
       0: () => {
-        delete this.infoForm;
-        this.infoForm = createSimpleForm(userSchema);
+
+        this.infoForm.setSchema(userSchema);
+        this.infoForm.setInitData({
+          gender: 0
+        });
+        this.infoForm.resetData();
         return (
           <UserInfoForm
             form={this.infoForm}
@@ -47,8 +63,12 @@ export class AccountNewRoute extends KComponent {
         )
       },
       1: () => {
-        delete this.infoForm;
-        this.infoForm = createSimpleForm(userSchema);
+
+        this.infoForm.setSchema(userSchema);
+        this.infoForm.setInitData({
+          gender: 0
+        });
+        this.infoForm.resetData();
         return (
           <UserInfoForm
             form={this.infoForm}
@@ -58,8 +78,11 @@ export class AccountNewRoute extends KComponent {
         )
       },
       2: () => {
-        delete this.infoForm;
-        this.infoForm = createSimpleForm(schoolPresenterSchema);
+        this.infoForm.setSchema(schoolPresenterSchema);
+        this.infoForm.setInitData({
+          sID: 0
+        });
+        this.infoForm.resetData();
         return (
           <SchoolPresenterInfoForm
             form={this.infoForm}
@@ -69,8 +92,13 @@ export class AccountNewRoute extends KComponent {
         )
       },
       3: () => {
-        delete this.infoForm;
-        this.infoForm = createSimpleForm(userSchema);
+        this.infoForm.setSchema(candidateSchema);
+        this.infoForm.setInitData({
+          sID: 0,
+          dob: "01/01/1990",
+          gender: 0
+        });
+        this.infoForm.resetData();
         return (
           <CandidateInfoForm
             form={this.infoForm}
@@ -86,9 +114,7 @@ export class AccountNewRoute extends KComponent {
   handleClickLabel = (step) =>{
     let {activeTab: currentStep} = this.state;
     if(step < currentStep){
-      this.setState({activeTab: 0}, () => {
-        delete this.infoForm;
-      });
+      this.setState({activeTab: 0});
     }
   };
 
@@ -97,16 +123,22 @@ export class AccountNewRoute extends KComponent {
       step: 0,
       label: "Thiết lập tài khoản",
       render: () => (
-        <AccountInfoForm
-          form={this.accountForm}
-          onChange={() => this.setState({err: ""})}
-          err={this.state.err}
-        />
+        <div className="row justify-content-center">
+          <div className="col-8">
+            <AccountInfoForm
+              form={this.accountForm}
+              onChange={() => this.setState({err: ""})}
+              err={this.state.err}
+            />
+          </div>
+        </div>
+
+
       ),
       renderActions: () => {
-        let canNext = false;
+        let canNext = !this.accountForm.getInvalidPaths().length ;
         return (
-          <div className="row justify-content-end an-actions">
+          <div className="">
             <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/accounts")}>Hủy bỏ
             </button>
             <button type="button"
@@ -127,7 +159,7 @@ export class AccountNewRoute extends KComponent {
       renderActions: () => {
         let canFinish = false;
         return (
-          <div className="row justify-content-end an-actions">
+          <div className="">
             <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/accounts")}>Hủy bỏ
             </button>
             <button type="button" className="btn btn-danger"
@@ -154,6 +186,8 @@ export class AccountNewRoute extends KComponent {
 
   render() {
     let {activeTab} = this.state;
+    console.log(this.accountForm.getData())
+    console.log(this.infoForm.getData())
     return (
       <PageTitle title="Tạo tài khoản mới">
         <RouteTitle content="Tạo tài khoản mới">

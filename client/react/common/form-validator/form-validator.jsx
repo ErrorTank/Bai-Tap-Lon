@@ -12,8 +12,7 @@ export const createSimpleForm = (schema, _options) => {
     initData: {},
   };
 
-  const options = Object.assign({}, defaultOptions, _options);
-
+  let options = Object.assign({}, defaultOptions, _options);
 
   let state = {...options.initData};
   let errors = {};
@@ -73,7 +72,7 @@ export const createSimpleForm = (schema, _options) => {
       if (!touched[path]) {
         touched[path] = true;
       }
-      if(_options && _options.validateAll){
+      if(options && options.validateAll){
         await validateData()
       }else
         await validatePath(path);
@@ -98,6 +97,9 @@ export const createSimpleForm = (schema, _options) => {
   // validateData();
 
   return {
+    setSchema: (newSchema = {}) => {
+      schema = newSchema;
+    },
     on: eventManagement.on,
     validateData: async () => {
       await validateData();
@@ -112,11 +114,14 @@ export const createSimpleForm = (schema, _options) => {
       eventManagement.emit("change", state);
     },
     resetData: async (data = {}) => {
-      state = Object.assign({}, data, _options.initData);
+      state = Object.assign({}, data, options.initData);
 
       await validateData();
       touched = {};
       eventManagement.emit("change", state);
+    },
+    setInitData:(data = {}) => {
+      options = Object.assign({}, options, {initData: data})
     },
     updateData: async (data) => {
       state = Object.assign({}, state, data);

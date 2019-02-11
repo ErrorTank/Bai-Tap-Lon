@@ -22,7 +22,8 @@ const loginSchema = yup.object().shape({
 const loginErrs = {
   "not_existed": "Tài khoản không tồn tại, vui lòng đăng nhập lại.",
   "password_wrong": "Sai mật khẩu, vui lòng đăng nhập lại hoặc đổi mật khẩu mới.",
-  "token_expired": "Phiên đăng nhập hết hạn, vui lòng đăng nhập lại."
+  "token_expired": "Phiên đăng nhập hết hạn, vui lòng đăng nhập lại.",
+  "cannot_login": "Tài khoản này không được phép đăng nhập."
 };
 
 let getExternalError = (err) => {

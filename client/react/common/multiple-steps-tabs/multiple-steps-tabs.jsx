@@ -8,7 +8,7 @@ export class MultipleStepsTabs extends React.Component {
   };
 
   render() {
-    let {onClickLabel, steps, currentStep, } = this.props;
+    let {onClickLabel, steps, currentStep,} = this.props;
     return (
       <div className="multiple-steps-tabs m-portlet">
         <div className="m-wizard m-wizard--5 m-wizard--success m-wizard--step-first">
@@ -18,12 +18,15 @@ export class MultipleStepsTabs extends React.Component {
                 <div className="m-wizard__nav">
                   <div className="m-wizard__steps">
                     {steps.map((each, i) => (
-                      <div className={classnames("m-wizard__step", {"m-wizard__step--current": currentStep === each.step, "m-wizard__step--done": each.step < currentStep})}
+                      <div className={classnames("m-wizard__step", {
+                        "m-wizard__step--current": currentStep === each.step,
+                        "m-wizard__step--done": each.step < currentStep
+                      })}
                            key={i}
                            onClick={() => onClickLabel(each.step)}
                       >
-                        <a href="#" className="m-wizard__step-number">
-                          <span className="m-wizard__step-seq">{i+1}.</span>
+                        <a  className="m-wizard__step-number">
+                          <span className="m-wizard__step-seq">{i + 1}.</span>
                           <span className="m-wizard__step-label">
                             {each.label}
 												</span>
@@ -39,7 +42,30 @@ export class MultipleStepsTabs extends React.Component {
           <div className="m-wizard__form">
             <div className="m-form m-form--label-align-left- m-form--state-">
               <div className="m-portlet__body">
-                {steps.find(each => each.step === currentStep).render()}
+                {steps.map((each, i) => (
+                  <div
+                    className={classnames("m-wizard__form-step", {"m-wizard__form-step--current": each.step === currentStep})}
+                    key={i}
+                  >
+                    <div className="row">
+                      <div className="col-xl-10 offset-xl-1">
+                        <div className="m-form__section m-form__section--first">
+                          {each.render()}
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>))
+                }
+
+
+              </div>
+              <div className="m-portlet__foot m-portlet__foot--fit m--margin-top-40">
+                <div className={"m-form__actions m-form__actions"}>
+                  <div className="row justify-content-end an-actions">
+                    {steps.find(each => each.step === currentStep).renderActions()}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

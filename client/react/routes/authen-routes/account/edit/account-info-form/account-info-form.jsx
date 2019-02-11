@@ -5,6 +5,7 @@ import {Select} from "../../../../../common/select/select";
 import {Roles, userInfo} from "../../../../../../common/states/user-info";
 import {customHistory} from "../../../../routes";
 import {userApi} from "../../../../../../api/common/user-api";
+import {SwitchBtn} from "../../../../../common/switch/switch-btn";
 
 
 
@@ -81,24 +82,44 @@ export class AccountInfoForm extends KComponent {
                 />
               ), true)}
             </div>
+            {userInfo.getState().role === 0 && (
+              <div className="col-12">
+
+                {form.enhanceComponent("role", ({value, onChange}) => (
+                  <Select
+                    className="aif-input pt-0"
+                    options={Roles}
+                    value={value}
+                    onChange={e => {
+                      propsOnChange();
+                      onChange(Number(e.target.value))
+                    }}
+                    label={"Role"}
+                  />
+
+                ), true)}
+
+              </div>
+            )
+
+            }
+
             <div className="col-12">
 
-              {form.enhanceComponent("role", ({value, onChange}) => (
-                <Select
-                  className="aif-input pt-0"
-                  options={Roles}
+              {form.enhanceComponent("canLogin", ({value, onChange}) => (
+                <SwitchBtn
+                  className="aif-input pt-0 mt-4"
                   value={value}
-                  onChange={e => {
+                  onToggle={value => {
                     propsOnChange();
-                    onChange(e.target.value)
+                    onChange(value ? 1: 0)
                   }}
-                  label={"Role"}
+                  label={"Được đăng nhập"}
                 />
 
               ), true)}
 
             </div>
-
           </div>
           {renderNavigate()}
 
