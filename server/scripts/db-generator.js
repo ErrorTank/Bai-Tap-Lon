@@ -48,13 +48,13 @@ const dbUtils = [
     query: "CREATE TABLE `olympic`.`contestRoom` ( `roomID` NVARCHAR(10) NOT NULL , `subjectID` NVARCHAR(10) NOT NULL , `supervisoryID` NVARCHAR(10) NOT NULL , PRIMARY KEY (`roomID`, `subjectID`)) ENGINE = InnoDB;"
   }, {
     name: "Create supervisory table",
-    query: "CREATE TABLE `olympic`.`supervisory` ( `sID` NVARCHAR(10) NOT NULL , `supervisoryID` NVARCHAR(10) NOT NULL , `name` NVARCHAR(50) NOT NULL , `email` NVARCHAR(100) NOT NULL , `phone` NVARCHAR(20) NOT NULL , `address` NVARCHAR(200) NOT NULL , PRIMARY KEY (`sID`), UNIQUE (`supervisoryID`)) ENGINE = InnoDB;"
+    query: "CREATE TABLE `olympic`.`supervisory` (`supervisoryID` NVARCHAR(10) NOT NULL , `name` NVARCHAR(50) NOT NULL , `email` NVARCHAR(100) NOT NULL , `phone` NVARCHAR(20) NOT NULL , `address` NVARCHAR(200) NOT NULL , PRIMARY KEY (`supervisoryID`), UNIQUE (`email`)) ENGINE = InnoDB;"
   }, {
     name: "Create contest - candidate table",
     query: "CREATE TABLE `olympic`.`contestCandidate`(`cID` NVARCHAR(10) NOT NULL, `contestID` NVARCHAR(10) NOT NULL, `participantID` NVARCHAR(10) not null ,`candidateID` NVARCHAR(10) NOT NULL, PRIMARY KEY(`cID`, `contestID`)) ENGINE = InnoDB;"
   }, {
     name: "Insert schools",
-    query: "INSERT INTO `school` (`sID`, `name`, `address`, `phone`, `email`) VALUES ('2', 'Đại học Bách Khoa Hà Nội', '01 Đại Cồ Việt, Hai Bà Trưng, Hà Nội', '0212135', 'bku@Gmail.com'), ('3', 'Học viện ngân hàng', '30 Chùa bộc, Đống Đa, Hà Nội', '132133', 'banking@gmail.com'), ('4', 'Học viện công nghệ bưu chính viễn thông', '02 Quang Trung, Hà Đông, Hà Nội', '01216457464', 'ptit@edu.com')"
+    query: "INSERT INTO `school` (`sID`, `name`, `address`, `phone`, `email`) VALUES ('0', 'Đại học Thăng Long', '69 Nguyễn Xiển, Thanh Xuân, Hà Nội', '01234567', 'tlu@Gmail.com'), ('1', 'Đại học Công Đoàn', '169 Tây Sơn, Đống Đa, Hà Nội', '0212135', 'congdoan@Gmail.com'), ('2', 'Đại học Bách Khoa Hà Nội', '01 Đại Cồ Việt, Hai Bà Trưng, Hà Nội', '0212135', 'bku@Gmail.com'), ('3', 'Học viện ngân hàng', '30 Chùa bộc, Đống Đa, Hà Nội', '132133', 'banking@gmail.com'), ('4', 'Học viện công nghệ bưu chính viễn thông', '02 Quang Trung, Hà Đông, Hà Nội', '01216457464', 'ptit@edu.com')"
   }
 
 ];
