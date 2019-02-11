@@ -28,7 +28,7 @@ export const authenCache = (() =>  {
               reject();
             else
               resolve(userInfo.setState(info));
-          });
+          }).catch(err => reject());
 
         }
       });

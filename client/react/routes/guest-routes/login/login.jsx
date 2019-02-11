@@ -101,7 +101,7 @@ export class Login extends KComponent {
                   serverError={this.state.error}
                   renderBody={() => (
                     <Fragment>
-                      {this.form.enhanceComponent("username", ({error, onChange, onEnter, ...others}) => (
+                      {this.form.enhanceComponent("username", ({error, onChange, onEnter,...others}) => (
                         <InputBase
                           className="registration-input pt-0"
                           error={error}
@@ -110,13 +110,14 @@ export class Login extends KComponent {
                           type={"text"}
                           label={"Tên đăng nhập"}
                           onChange={e => {
+
                             this.setState({error: ""});
                             onChange(e);
                           }}
                           {...others}
                         />
                       ), true)}
-                      {this.form.enhanceComponent("password", ({error,  onChange, onEnter, ...others}) => (
+                      {this.form.enhanceComponent("password", ({error,  onChange, onEnter,  ...others}) => (
                         <InputBase
                           className="registration-input pt-0 pb-0"
                           error={error}

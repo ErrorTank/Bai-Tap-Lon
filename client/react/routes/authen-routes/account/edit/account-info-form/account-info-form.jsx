@@ -53,7 +53,7 @@ export class AccountInfoForm extends KComponent {
                 <InputBase
                   className="aif-input pt-0"
                   error={error}
-                  id={"username"}
+                  id={"username1"}
                   onKeyDown={onEnter}
                   onChange={e => {
                     propsOnChange();
@@ -70,7 +70,7 @@ export class AccountInfoForm extends KComponent {
                 <InputBase
                   className="aif-input pt-0"
                   error={error}
-                  id={"password"}
+                  id={"password1"}
                   onKeyDown={onEnter}
                   onChange={e => {
                     propsOnChange();

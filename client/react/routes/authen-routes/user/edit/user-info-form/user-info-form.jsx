@@ -44,15 +44,19 @@ export class UserInfoForm extends KComponent {
 
           }
 
+          {form.getPathData("employeeID") && (
+            <div className="row">
+              <div className="emp-id-wrap pb-5 col">
+                <div>
+                  Mã nhân viên: <span className="emp-id"> {form.getPathData("employeeID")}</span>
+                </div>
 
-          <div className="row">
-            <div className="emp-id-wrap pb-5 col">
-              <div>
-                Mã nhân viên: <span className="emp-id"> {form.getPathData("employeeID")}</span>
               </div>
-
             </div>
-          </div>
+          )
+
+          }
+
 
           <div className="row ">
             <div className="col-6">
