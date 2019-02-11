@@ -49,11 +49,7 @@ export class AccountNewRoute extends KComponent {
     let matcher = {
       0: () => {
 
-        this.infoForm.setSchema(userSchema);
-        this.infoForm.setInitData({
-          gender: 0
-        });
-        this.infoForm.resetData();
+
         return (
           <UserInfoForm
             form={this.infoForm}
@@ -64,11 +60,7 @@ export class AccountNewRoute extends KComponent {
       },
       1: () => {
 
-        this.infoForm.setSchema(userSchema);
-        this.infoForm.setInitData({
-          gender: 0
-        });
-        this.infoForm.resetData();
+
         return (
           <UserInfoForm
             form={this.infoForm}
@@ -78,11 +70,7 @@ export class AccountNewRoute extends KComponent {
         )
       },
       2: () => {
-        this.infoForm.setSchema(schoolPresenterSchema);
-        this.infoForm.setInitData({
-          sID: 0
-        });
-        this.infoForm.resetData();
+
         return (
           <SchoolPresenterInfoForm
             form={this.infoForm}
@@ -92,13 +80,7 @@ export class AccountNewRoute extends KComponent {
         )
       },
       3: () => {
-        this.infoForm.setSchema(candidateSchema);
-        this.infoForm.setInitData({
-          sID: 0,
-          dob: "01/01/1990",
-          gender: 0
-        });
-        this.infoForm.resetData();
+
         return (
           <CandidateInfoForm
             form={this.infoForm}
@@ -114,8 +96,45 @@ export class AccountNewRoute extends KComponent {
   handleClickLabel = (step) =>{
     let {activeTab: currentStep} = this.state;
     if(step < currentStep){
-      this.setState({activeTab: 0});
+      this.setState({activeTab: 0}, () => {
+        this.infoForm.resetData();
+      });
     }
+  };
+  schemaMatcher = {
+    0: {
+      schema: userSchema,
+      initData: {
+        gender: 0
+      }
+    },
+    1: {
+      schema: userSchema,
+      initData: {
+        gender: 0
+      }
+    },
+    2: {
+      schema: schoolPresenterSchema,
+      initData: {
+        sID: 0
+      }
+    },
+    3: {
+      schema: candidateSchema,
+      initData: {
+        sID: 0,
+        dob: "01/01/1990",
+        gender: 0
+      }
+    },
+  };
+
+  prepareInfoForm = () => {
+    let {initData, schema} = this.schemaMatcher[this.accountForm.getPathData("role")];
+    this.infoForm.setSchema(schema);
+    this.infoForm.setInitData(initData);
+    this.infoForm.resetData();
   };
 
   steps = [
@@ -144,7 +163,11 @@ export class AccountNewRoute extends KComponent {
             <button type="button"
                     className="btn btn-primary"
                     disabled={!canNext}
-                    onClick={() => this.setState({activeTab: 0})}
+                    onClick={() => {
+                      this.prepareInfoForm();
+                      this.setState({activeTab: 1})
+
+                    }}
             >
               Tiếp theo
               <i className="fas fa-angle-right"></i>
@@ -163,7 +186,7 @@ export class AccountNewRoute extends KComponent {
             <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/accounts")}>Hủy bỏ
             </button>
             <button type="button" className="btn btn-danger"
-                    onClick={() => this.setState({activeTab: 1})}>
+                    onClick={() => this.setState({activeTab: 0})}>
               <i className="fas fa-angle-left"></i>
               Trở về
             </button>
@@ -176,7 +199,6 @@ export class AccountNewRoute extends KComponent {
               {this.state.saving && (
                 <LoadingInline/>
               )}
-              <i className="fas fa-angle-right"></i>
             </button>
           </div>
         )
