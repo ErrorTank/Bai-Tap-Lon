@@ -6,7 +6,8 @@ const config = {
   user: 'kappa',
   password: '123456',
   database: 'olympic',
-  connectionLimit : 10
+  connectionLimit : 10,
+  dateStrings: true
 };
 
 

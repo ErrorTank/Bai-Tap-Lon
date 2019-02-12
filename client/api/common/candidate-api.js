@@ -8,8 +8,8 @@ export const candidateApi = {
   changePassword(accountID, obj){
     return authenApi.put(`/account/${accountID}/change-password`, obj);
   },
-  update(user){
-    return authenApi.put(`/user/${user.userID}`, {user});
+  update(candidate){
+    return authenApi.put(`/candidate/${candidate.cID}`, {candidate});
   },
   getCandidateByAccountID(accountID){
     return authenApi.get(`/candidate/account/${accountID}`);

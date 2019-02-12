@@ -5,8 +5,8 @@ export const schoolApi = {
   get(schoolID) {
     return authenApi.get("/school/" + schoolID);
   },
-  changePassword(accountID, obj){
-    return authenApi.put(`/account/${accountID}/change-password`, obj);
+  checkCandidate(cID, sID){
+    return authenApi.get(`/school/${sID}/check-candidate/${cID}`);
   },
   getSchoolsBrief(){
     return authenApi.get("/schools/brief");

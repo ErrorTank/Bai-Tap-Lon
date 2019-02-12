@@ -38,7 +38,6 @@ export class AccountRoute extends KComponent {
 
     this.form = createSimpleForm(accountSchema);
 
-    this.onUnmount(this.form.on("enter", () => this.editAccount()));
     this.onUnmount(this.form.on("change", () => this.forceUpdate()));
     let {role} = userInfo.getState();
     accountApi.checkAccountIDInUser({role, accountID: props.match.params.accountID}).then((data) => {
@@ -132,6 +131,7 @@ export class AccountRoute extends KComponent {
         <AccountInfoForm
           form={this.form}
           onChange={() => this.setState({err: ""})}
+          disabledRole={userInfo.getState().role === 1}
           err={this.state.err}
           renderNavigate={() => {
             let state = userInfo.getState();
@@ -169,7 +169,7 @@ export class AccountRoute extends KComponent {
                     onChangeTab={tab => this.setState({activeTab: tab})}
                     renderActions={() => (
                       <div className="row justify-content-end a-actions">
-                        <button type="button" className="btn btn-secondary" onClick={() => customHistory.goBack()}>Hủy bỏ</button>
+                        <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/accounts")}>Hủy bỏ</button>
                         <button type="button"
                                 className="btn btn-primary"
                                 disabled={!canSave}

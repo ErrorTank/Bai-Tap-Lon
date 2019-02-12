@@ -172,7 +172,7 @@ export class CandidateInfoForm extends KComponent {
                     value={value}
                     onChange={e => {
                       propsOnChange();
-                      onChange(e.target.value)
+                      onChange(Number(e.target.value))
                     }}
                     label={"Giới tính"}
                     placeholder="Chọn giới tính"

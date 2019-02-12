@@ -252,7 +252,7 @@ export class AccountNewRoute extends KComponent {
 
   render() {
     let {activeTab} = this.state;
-
+    console.log(this.infoForm.getData())
     return (
       <PageTitle title="Tạo tài khoản mới">
         <RouteTitle content="Tạo tài khoản mới">

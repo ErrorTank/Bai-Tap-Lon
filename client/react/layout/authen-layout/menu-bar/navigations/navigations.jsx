@@ -26,7 +26,7 @@ export class Navigations extends React.Component {
       url: "/accounts",
       linkTo: () => customHistory.push("/accounts"),
       roles: [0, 1],
-      active: ["/accounts", "/account"]
+      active: ["/accounts", "/account/:accountID/edit", "/account/new"]
     }, {
       icon: (
         <i className="fas fa-users"></i>
@@ -35,14 +35,40 @@ export class Navigations extends React.Component {
       url: "/users",
       linkTo: () => customHistory.push("/users"),
       roles: [0],
-      active: ["/users", "/user"]
+      active: ["/users", "/user/:userID/edit"]
+    }, {
+      icon: (
+        <i className="fas fa-chalkboard-teacher"></i>
+      ),
+      label: "Tra cứu đại diện trường",
+      url: "/school-presenters",
+      linkTo: () => customHistory.push("/school-presenters"),
+      roles: [0, 1],
+      active: ["/school-presenters", "/sp/:spID/edit"]
+    }, {
+      icon: (
+        <i className="fas fa-graduation-cap"></i>
+      ),
+      label: "Tra cứu thí sinh",
+      url: "/candidates",
+      linkTo: () => customHistory.push("/candidates"),
+      roles: [0, 1, 2],
+      active: ["/candidates", "/candidate/:candidateID/edit"]
+    }, {
+      icon: (
+        <i className="fas fa-school"></i>
+      ),
+      label: "Quản lý trường",
+      url: "/schools",
+      linkTo: () => customHistory.push("/schools"),
+      roles: [0, 1],
+      active: ["/schools", "/school/new", "/school/:schoolID/edit"]
     }
   ];
 
   render() {
     let {role} = userInfo.getState();
     let path = this.props.match.path;
-    console.log(path)
     return (
       <div className="navigations">
         {this.navs.filter(each => each.roles.includes(role)).map((each, i) => (

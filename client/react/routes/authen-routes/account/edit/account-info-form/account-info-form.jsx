@@ -39,7 +39,7 @@ export class AccountInfoForm extends KComponent {
   };
 
   render() {
-    let {form, err, onChange: propsOnChange, renderNavigate = () => null} = this.props;
+    let {form, err, onChange: propsOnChange, renderNavigate = () => null, disabledRole = false} = this.props;
     return (
       <div className="account-info-form">
         <div className="m-form m-form--fit m-form--label-align-right m-form--state">
@@ -91,28 +91,25 @@ export class AccountInfoForm extends KComponent {
                 />
               ), true)}
             </div>
-            {(
-              <div className="col-12">
+            <div className="col-12">
 
-                {form.enhanceComponent("role", ({value, onChange}) => (
-                  <Select
-                    className="aif-input pt-0"
-                    options={this.getRoles()}
-                    value={value}
-                    onChange={e => {
-                      propsOnChange();
-                      onChange(Number(e.target.value))
-                    }}
-                    label={"Role"}
-                    placeholder={"Chọn Role"}
-                  />
+              {form.enhanceComponent("role", ({value, onChange}) => (
+                <Select
+                  className="aif-input pt-0"
+                  disabled={disabledRole}
+                  options={this.getRoles()}
+                  value={value}
+                  onChange={e => {
+                    propsOnChange();
+                    onChange(Number(e.target.value))
+                  }}
+                  label={"Role"}
+                  placeholder={"Chọn Role"}
+                />
 
-                ), true)}
+              ), true)}
 
-              </div>
-            )
-
-            }
+            </div>
 
             <div className="col-12">
 

@@ -5,21 +5,23 @@ import {FormTabs} from "../../../../common/form-tabs/form-tabs";
 import {UserViewCol} from "../../../../common/user-view-col/user-view-col";
 import {customHistory} from "../../../routes";
 import {userInfo} from "../../../../../common/states/user-info";
-import {authenCache} from "../../../../../common/cache/authen-cache";
 import {userApi} from "../../../../../api/common/user-api";
 import {toDefaultRoute} from "../../../route-type";
 import classnames from "classnames"
-import {UserInfoForm} from "./user-info-form/user-info-form";
 import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
-import * as yup from "yup";
 import {createSimpleForm} from "../../../../common/form-validator/form-validator";
 import {KComponent} from "../../../../common/k-component";
 import pick from "lodash/pick"
 import isEqual from "lodash/isEqual"
-import {userSchema} from "../../schema";
+import {candidateSchema} from "../../schema";
+import {CandidateInfoForm} from "../candidate-info-form/candidate-info-form";
+import {accountApi} from "../../../../../api/common/account-api";
+import {schoolApi} from "../../../../../api/common/school-api";
+import {candidateApi} from "../../../../../api/common/candidate-api";
 
 
-export class UserRoute extends KComponent {
+
+export class CandidateRoute extends KComponent {
   constructor(props) {
     super(props);
 
@@ -31,34 +33,37 @@ export class UserRoute extends KComponent {
       err: ""
     };
 
-    this.form = createSimpleForm(userSchema);
+    this.form = createSimpleForm(candidateSchema);
     this.onUnmount(this.form.on("change", () => this.forceUpdate()));
-    let {userID, role} = userInfo.getState();
-    let {userID: alternateUserID} = props.match.params;
-    if (!alternateUserID || (role === 1 && userID !== alternateUserID)) {
-      customHistory.push(toDefaultRoute());
-    } else {
-      userApi.get(alternateUserID).then(data => {
-        let info = pick(data, ["name", "gender", "address", "phone", "email", "CMT", "userID", "employeeID", "accountID"]);
-        this.form.updateData({...info}).then(() =>  this.setState({loading: false, draft: {...info}}));
+    let {role, sID} = userInfo.getState();
+    let {candidateID} = props.match.params;
+    if(role === 2){
+
+      schoolApi.checkCandidate(candidateID, sID).then(() => {
+        this.fetchCandidateInfo(candidateID);
       }).catch(err => customHistory.push(toDefaultRoute()))
+
+    }else{
+      this.fetchCandidateInfo(candidateID);
     }
 
+  };
+
+  fetchCandidateInfo = (cID) => {
+    candidateApi.get(cID).then((candidate) => {
+      this.form.updateData({...candidate}).then(() =>  this.setState({loading: false, draft: {...candidate}}));
+    }).catch(err => customHistory.push(toDefaultRoute()))
   };
 
   componentDidMount(){
     this.form.validateData();
   }
 
-  editUser = () => {
+  editCandidate = () => {
     this.setState({saving: true});
-    let user = this.form.getData();
-    let state = userInfo.getState();
-    userApi.update(user).then(() => {
-      this.setState({draft: {...user}, saving: false});
-      if(user.userID === state.userID){
-        userInfo.setState(Object.assign({}, state, {...user}));
-      }
+    let candidate = this.form.getData();
+    candidateApi.update(candidate).then(() => {
+      this.setState({draft: {...candidate}, saving: false});
     }).catch(err =>{
       this.setState({err, saving: false});
     })
@@ -68,13 +73,13 @@ export class UserRoute extends KComponent {
     {
       label: "Thông tin cơ bản",
       render: () => (
-        <UserInfoForm
+        <CandidateInfoForm
           form={this.form}
           err={this.state.err}
           onChange={() => this.setState({err: ""})}
           renderNavigate={() => {
             let info = userInfo.getState();
-            return info.role === 0 ? (
+            return  [0, 1].includes(info.role) ? (
               <p onClick={() => customHistory.push(`/account/${this.form.getPathData("accountID")}/edit`)}>Xem thông tin tài khoản</p>
 
             ) : null
@@ -90,12 +95,12 @@ export class UserRoute extends KComponent {
     let canSave = !this.form.getInvalidPaths().length && !saving && !isEqual(draft, this.form.getData()) && !err;
     return (
       <PageTitle
-        title="Thông tin người dùng"
+        title="Thông tin thí sinh"
       >
         <RouteTitle
-          content={"Thông tin người dùng"}
+          content={"Thông tin thí sinh"}
         >
-          <div className="user-route">
+          <div className="candidate-route">
             {loading ? (
               <div className="loading-wrapper">
                 <LoadingInline/>
@@ -114,12 +119,12 @@ export class UserRoute extends KComponent {
                     activeTab={activeTab}
                     onChangeTab={tab => this.setState({activeTab: tab})}
                     renderActions={() => (
-                      <div className="row justify-content-end u-actions">
-                        <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/users")}>Hủy bỏ</button>
+                      <div className="row justify-content-end c-actions">
+                        <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/candidates")}>Hủy bỏ</button>
                         <button type="button"
                                 className="btn btn-primary"
                                 disabled={!canSave}
-                                onClick={this.editUser}
+                                onClick={this.editCandidate}
                         >
                           {saving && (
                             <LoadingInline/>

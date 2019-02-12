@@ -22,5 +22,15 @@ module.exports = (db, dbManager) => {
       res.status(200).json(candidate);
     }).catch(err => next(err))
   });
+  router.put("/candidate/:cID", authMiddleware, (req,res, next) =>{
+    candidateManager.updateCandidate(req.params.cID, req.body.candidate).then(() => {
+      res.status(200).end();
+    }).catch(err => next(err))
+  });
+  router.get("/candidate/:cID", authMiddleware, (req,res, next) =>{
+    candidateManager.getCandidate(req.params.cID).then(candidate => {
+      res.status(200).json({...candidate});
+    }).catch(err => next(err))
+  });
   return router;
 };

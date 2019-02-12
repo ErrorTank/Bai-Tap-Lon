@@ -20,12 +20,12 @@ const userSchema = yup.object().shape({
 const candidateSchema = yup.object().shape({
   sID: yup.string().required("Trường không được để trống"),
   name: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
-  address: yup.string().max(200, "Địa chỉ không được vượt quá 200 ký tự").required(),
+  address: yup.string().max(200, "Địa chỉ không được vượt quá 200 ký tự").required("Thí sinh không được để trống"),
   phone: yup.string().required("SĐT không được để trống").isPhone("SĐT không hợp lệ"),
   email: yup.string().email("Email không hợp lệ").required("Email không được để trống"),
   CMT: yup.string().max(20, "CMT không được vượt quá 20 ký tự").onlyWord("CMT không được có ký tự đặc biệt").required("CMT không được để trống"),
   gender: yup.boolean().required(),
-  dob: yup.date("Ngày sinh không hợp lệ").required("Ngày sinh không được để trống")
+  dob: yup.string().required("Ngày sinh không được để trống")
 });
 
 const schoolPresenterSchema = yup.object().shape({
