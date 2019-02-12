@@ -50,7 +50,7 @@ const supervisorySql = (db) => {
     //destruct obj for further use
     var {supervisoryID, name, email, phone, address} = supervisoryObj;
 
-    var updateInfo = `UPDATE supervisory SET supervisoryID = '${supervisoryID}, 'name = '${name}', email = '${email}', phone = '${phone}', address = '${address}' WHERE SID = '${SID}'`;
+    var updateInfo = `UPDATE supervisory SET supervisoryID = '${supervisoryID}', 'name = '${name}', email = '${email}', phone = '${phone}', address = '${address}' WHERE SID = '${SID}'`;
     return new Promise((resolve, reject) =>
         query(updateInfo).then((result) => {
             resolve();
