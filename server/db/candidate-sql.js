@@ -50,7 +50,7 @@ const candidateSql = (db) => {
     //destruct obj for further use
     var {studentID, universityID, name, phone, email, dob} = candidateObj;
 
-    var updateInfo = `UPDATE candidate SET studentID = '${studentID}', universityID = '${universityID}, 'name = '${name}', phone = '${phone}', email = '${email}', dob = '${dob}' WHERE CID = '${CID}'`;
+    var updateInfo = `UPDATE candidate SET studentID = '${studentID}', universityID = '${universityID}', 'name = '${name}', phone = '${phone}', email = '${email}', dob = '${dob}' WHERE CID = '${CID}'`;
     return new Promise((resolve, reject) =>
         query(updateInfo).then((result) => {
             resolve();

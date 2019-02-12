@@ -77,7 +77,7 @@ const userSql = (db) => {
     //destruct object for further use
     var {name, CMT, address, phone, email, accountID, employeeID, gender} = userObj;
 
-    var createInfo = `INSERT INTO User (userID, name, CMT, address, phone, email, accountID, employeeID, gender) VALUES('${userID}', '${name}', '${CMT}', '${address}, '${phone}', '${email}', '${accountID}', '${employeeID}', '${gender}')`;
+    var createInfo = `INSERT INTO User (userID, name, CMT, address, phone, email, accountID, employeeID, gender) VALUES('${userID}', '${name}', '${CMT}', '${address}', '${phone}', '${email}', '${accountID}', '${employeeID}', '${gender}')`;
     return new Promise((resolve, reject) =>
         query(createInfo).then((result) => {
             resolve();

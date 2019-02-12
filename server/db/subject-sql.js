@@ -50,7 +50,7 @@ const subjectSql = (db) => {
     //destruct obj for further use
     var {name} = subjectObj;
 
-    var updateInfo = `UPDATE subject SET subjectID = '${subjectID}, 'name = '${name}'`;
+    var updateInfo = `UPDATE subject SET subjectID = '${subjectID}', 'name = '${name}'`;
     return new Promise((resolve, reject) =>
         query(updateInfo).then((result) => {
             resolve();

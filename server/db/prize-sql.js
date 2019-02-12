@@ -26,7 +26,7 @@ const prizeSql = (db) => {
 
   //get location
   const getPrize = (prizeID) => {
-    var getInfo = `SELECT * FROM prize WHERE prizeID = ${prizeID}`;
+    var getInfo = `SELECT * FROM prize WHERE prizeID = '${prizeID}'`;
     return new Promise((resolve, reject) =>
         query(getInfo).then((result) => {
           if(result.length){
@@ -45,7 +45,7 @@ const prizeSql = (db) => {
     //
     var {name, address} = prizeObj;
 
-    var updateInfo = `UPDATE prize SET name = ${name}, content = ${content} WHERE prizeID = ${prizeID}`;
+    var updateInfo = `UPDATE prize SET name = ${name}, content = ${content} WHERE prizeID = '${prizeID}'`;
     return new Promise((resolve, reject) =>
         query(updateInfo).then((result) => {
             resolve();
@@ -57,7 +57,7 @@ const prizeSql = (db) => {
 
   //delete location
   const deletePrize = (prizeID) => {
-    var deleteInfo = `DELETE FROM prize WHERE prizeID = ${prizeID}`;
+    var deleteInfo = `DELETE FROM prize WHERE prizeID = '${prizeID}'`;
     return new Promise((resolve, reject) =>
         query(deleteInfo).then((result) => {
             resolve();
