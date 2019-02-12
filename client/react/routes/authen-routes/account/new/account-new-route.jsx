@@ -40,8 +40,13 @@ export class AccountNewRoute extends KComponent {
   };
 
   createNewAccount = () => {
-    console.log(this.accountForm.getData())
-    console.log(this.infoForm.getData())
+    let account = this.accountForm.getData();
+    let info = this.accountForm.getData();
+    console.log({
+      account,
+      info
+    })
+
   };
 
   renderStep = () => {
