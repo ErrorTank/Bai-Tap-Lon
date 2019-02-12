@@ -3,7 +3,7 @@ const createQuery = require("../config/query");
 const isNil = require("lodash/isNil");
 const uniquid = require("uniquid");
 
-const schoolBriefSql = (db) => {
+const schoolSql = (db) => {
   const query = createQuery(db);
 
   //create location
@@ -33,4 +33,4 @@ const schoolBriefSql = (db) => {
     //define function name here
   }
 };
-module.exports = schoolBriefSql;
+module.exports = schoolSql;

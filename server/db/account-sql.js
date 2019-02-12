@@ -15,7 +15,7 @@ const accountSql = (db) => {
             .then((data) => {
               if (data.length) {
                 data[0].canLogin ?
-                resolve(data[0]) : reject(new Error("cannot_login"));
+                  resolve(data[0]) : reject(new Error("cannot_login"));
               }
 
               else
@@ -35,18 +35,22 @@ const accountSql = (db) => {
 
   const createAccount = (accountObj) => {
     var id = uniquid();
-    var accountID = id.slice(-6, -1) + id.slide(-1);
+
+    var accountID = id.slice(-6, -1) + id.slice(-1);
 
     var {username, password, role, canLogin} = accountObj;
 
-    var createInfo = `INSERT INTO account (accountID, username, password, role, canLogin) VALUES('${accountID}, '${username}', '${password}', '${role}', '${canLogin}')`;
-    return new Promise((resolve, reject) =>
+    var createInfo = `INSERT INTO account (accountID, username, password, role, canLogin) VALUES('${accountID}', '${username}', '${password}', '${role}', '${canLogin}')`;
+
+    return new Promise((resolve, reject) => {
       query(createInfo).then((result) => {
-        resolve();
+
+        resolve(accountID);
       }).catch(err => {
+        console.log(err)
         reject(err)
       })
-    )
+    })
   };
 
   const getClientUserCache = (accountID) => {
@@ -61,6 +65,20 @@ const accountSql = (db) => {
       }).catch(err => reject(err));
     })
   };
+
+  const checkAccountExisted = ({username}) => {
+    const check = `Select * from account where username = '${username}'`;
+    return new Promise((resolve, reject) => {
+      query(check).then(result => {
+        if (result.length) {
+          reject(new Error("username_existed"));
+        } else {
+          resolve();
+        }
+      }).catch(err => reject(err));
+    })
+  };
+
 
   const getAccount = (accountID) => {
     return new Promise((resolve, reject) => {
@@ -95,13 +113,7 @@ const accountSql = (db) => {
       })
     )
   };
-  var q = {
-    take: 0,
-    skip: 50,
-    keyword: "ccc",
-    canLogin: false,
-    role: 3
-  };
+
 
   //get account by role
   const getAccountByRole = (Role) => {
@@ -138,7 +150,8 @@ const accountSql = (db) => {
     getAccount,
     getClientUserCache,
     getAccountByRole,
-    getAccountByCanLogin
+    getAccountByCanLogin,
+    checkAccountExisted
   }
 };
 

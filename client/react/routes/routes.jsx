@@ -63,12 +63,12 @@ export class MainRoute extends KComponent {
             <AuthenRoute exact path='/profile' component={AdminDashboard} excludeRoles={[0,1,2]}/>
             <AuthenRoute exact path='/dashboard' component={AdminDashboard} excludeRoles={[2, 3]}/>
             <AuthenRoute exact path='/account/new' component={AccountNewRoute} excludeRoles={[2, 3]}/>
-            <AuthenRoute exact path='/school/:schoolID' component={AdminDashboard} excludeRoles={[3]}/>
-            <AuthenRoute exact path='/candidate/:candidateID' component={AdminDashboard} excludeRoles={[2,3]}/>
-            <AuthenRoute exact path='/user/:userID' component={UserRoute} excludeRoles={[2,3]}/>
+            <AuthenRoute exact path='/school/:schoolID/edit' component={AdminDashboard} excludeRoles={[3]}/>
+            <AuthenRoute exact path='/candidate/:candidateID/edit' component={AdminDashboard} excludeRoles={[2,3]}/>
+            <AuthenRoute exact path='/user/:userID/edit' component={UserRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/users' component={UserListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/accounts' component={AccountListRoute} excludeRoles={[2,3]}/>
-            <AuthenRoute exact path='/account/:accountID' component={AccountRoute} excludeRoles={[2,3]}/>
+            <AuthenRoute exact path='/account/:accountID/edit' component={AccountRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/change-password' component={ChangePassword}/>
             <GuestRoute exact path='/forgot-password' component={ForgotPassword}/>
             <NotFoundRoute/>

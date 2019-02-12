@@ -40,6 +40,21 @@ const userSql = (db) => {
     })
   };
 
+
+  const checkUserExisted = ({email, CMT, employeeID}) => {
+    const check = `Select * from user where email = '${email}' or CMT = '${CMT}' or employeeID = '${employeeID}'`;
+    return new Promise((resolve, reject) => {
+      query(check).then(result => {
+        if (result.length) {
+          let msg = result[0].email === email ? "email_existed" : result[0].employeeID ? "employeeID_existed" :"CMT_existed";
+          reject(new Error(msg));
+        } else {
+          resolve();
+        }
+      }).catch(err => reject(err));
+    })
+  };
+
   //update user
   const updateUser = (userID, user) => {
     return new Promise((resolve, reject) => {
@@ -77,12 +92,12 @@ const userSql = (db) => {
     //destruct object for further use
     var {name, CMT, address, phone, email, accountID, employeeID, gender} = userObj;
 
-    var createInfo = `INSERT INTO User (userID, name, CMT, address, phone, email, accountID, employeeID, gender) VALUES('${userID}', '${name}', '${CMT}', '${address}, '${phone}', '${email}', '${accountID}', '${employeeID}', '${gender}')`;
+    var createInfo = `INSERT INTO User (userID, name, CMT, address, phone, email, accountID, employeeID, gender) VALUES ('${userID}', '${name}', '${CMT}', '${address}', '${phone}', '${email}', '${accountID}', '${employeeID}', ${gender})`;
     return new Promise((resolve, reject) =>
         query(createInfo).then((result) => {
             resolve();
         }).catch(err => {
-          reject(err)
+            reject(err)
         })
       )
   };
@@ -91,7 +106,8 @@ const userSql = (db) => {
     getUser,
     updateUser,
     getUserByAccountID,
-    createUser
+    createUser,
+    checkUserExisted
   }
 };
 module.exports = userSql;

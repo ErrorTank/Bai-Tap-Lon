@@ -20,6 +20,7 @@ import {candidateApi} from "../../../../../api/common/candidate-api";
 import omit from "lodash/omit"
 import {accountSchema} from "../../schema";
 import {authenCache} from "../../../../../common/cache/authen-cache";
+import {schoolPresenterApi} from "../../../../../api/common/school-presenter-api";
 
 
 export class AccountRoute extends KComponent {
@@ -64,7 +65,7 @@ export class AccountRoute extends KComponent {
         return await userApi.getUserByAccountID(accountID);
       },
       2: async () => {
-        return await schoolApi.getSchoolByAccountID(accountID);
+        return await schoolPresenterApi.getSpByAccountID(accountID);
       },
       3: async () => {
         return await candidateApi.getCandidateByAccountID(accountID);
@@ -79,19 +80,19 @@ export class AccountRoute extends KComponent {
 
     let matcher = {
       0: {
-        url: `/user/${info.userID}`,
+        url: `/user/${info.userID}/edit`,
         text: "Xem thông tin admin"
       },
       1: {
-        url: `/user/${info.userID}`,
+        url: `/user/${info.userID}/edit`,
         text: "Xem thông tin người dùng"
       },
       2: {
-        url: `/school/${info.schoolID}`,
+        url: `/sp/${info.spID}/edit`,
         text: "Xem thông tin trường"
       },
       3: {
-        url: `/candidate/${info.candidateID}`,
+        url: `/candidate/${info.cID}/edit`,
         text: "Xem thông tin thí sinh"
       },
     };

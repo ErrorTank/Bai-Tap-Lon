@@ -8,7 +8,13 @@ export const schoolPresenterApi = {
   update(sp){
     return authenApi.put(`/sp/${sp.spID}`, {sp});
   },
-  getSchoolByAccountID(accountID){
-    return authenApi.get(`/school/account/${accountID}`);
+  getSpByAccountID(accountID){
+    return authenApi.get(`/sp/account/${accountID}`);
+  },
+  createSchoolPresenter(sp){
+    return authenApi.post("/sp", {sp})
+  },
+  checkSpExisted(sp){
+    return authenApi.post("/sp/check", {sp})
   }
 };

@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const {authorization, createAuthToken} = require("../authorization/auth");
-const accountSql = require("../db/account-sql");
 const omit = require("lodash/omit");
 const {getPublicKey, getPrivateKey} = require("../authorization/keys/keys");
 
 const authMiddleware = authorization(getPublicKey(), {expiresIn: "1 day", algorithm: ["RS256"]});
 
-module.exports = (db) => {
-  let accManager = accountSql(db);
+module.exports = (db, dbManager) => {
+  let accManager = dbManager("account");
   router.get("/auth", authMiddleware, (req, res, next) => {
     accManager.getClientUserCache(req.user.accountID).then(info => {
       res.status(200).json(omit(info, 'password'));

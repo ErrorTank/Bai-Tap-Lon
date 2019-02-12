@@ -13,7 +13,8 @@ const userSchema = yup.object().shape({
   phone: yup.string().required("SĐT không được để trống").isPhone("SĐT không hợp lệ"),
   email: yup.string().email("Email không hợp lệ").required("Email không được để trống"),
   CMT: yup.string().max(20, "CMT không được vượt quá 20 ký tự").onlyWord("CMT không được có ký tự đặc biệt").required("CMT không được để trống"),
-  gender: yup.boolean().required()
+  gender: yup.boolean().required(),
+  employeeID: yup.string().max(10, "Mã nhân viên không được vượt quá 10 ký tự").required("Mã nhân viên không được để trống")
 });
 
 const candidateSchema = yup.object().shape({
@@ -24,7 +25,7 @@ const candidateSchema = yup.object().shape({
   email: yup.string().email("Email không hợp lệ").required("Email không được để trống"),
   CMT: yup.string().max(20, "CMT không được vượt quá 20 ký tự").onlyWord("CMT không được có ký tự đặc biệt").required("CMT không được để trống"),
   gender: yup.boolean().required(),
-  dob: yup.date().required("Ngày sinh không được để trống")
+  dob: yup.date("Ngày sinh không hợp lệ").required("Ngày sinh không được để trống")
 });
 
 const schoolPresenterSchema = yup.object().shape({

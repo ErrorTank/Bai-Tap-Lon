@@ -14,6 +14,10 @@ import {CandidateInfoForm} from "../../candidate/candidate-info-form/candidate-i
 import {SchoolPresenterInfoForm} from "../../school-presenter/school-presenter-info-form/school-presenter-info-form";
 import {MultipleStepsTabs} from "../../../../common/multiple-steps-tabs/multiple-steps-tabs";
 import isEqual from "lodash/isEqual";
+import {userApi} from "../../../../../api/common/user-api";
+import {schoolPresenterApi} from "../../../../../api/common/school-presenter-api";
+import {candidateApi} from "../../../../../api/common/candidate-api";
+import {accountApi} from "../../../../../api/common/account-api";
 
 
 export class AccountNewRoute extends KComponent {
@@ -22,7 +26,8 @@ export class AccountNewRoute extends KComponent {
     this.state = {
       err: "",
       activeTab: 0,
-      saving: false
+      saving: false,
+      loading: false
     };
     this.accountForm = createSimpleForm(accountSchema, {
       initData: {
@@ -40,12 +45,34 @@ export class AccountNewRoute extends KComponent {
   };
 
   createNewAccount = () => {
+    this.setState({saving: true});
     let account = this.accountForm.getData();
-    let info = this.accountForm.getData();
+    let info = this.infoForm.getData();
     console.log({
       account,
       info
-    })
+    });
+    let apiMatcher = {
+      0: () => {
+        return userApi.checkUserExisted({...this.infoForm.getData()})
+      },
+      1: () => {
+        return userApi.checkUserExisted({...this.infoForm.getData()})
+      },
+      2: () => {
+        return schoolPresenterApi.checkSpExisted({...this.infoForm.getData()})
+      },
+      3: () => {
+        return candidateApi.checkCandidateExisted({...this.infoForm.getData()})
+      },
+    };
+    let callApi = apiMatcher[account.role];
+    callApi().then(() => {
+      console.log("success")
+      accountApi.createAccount({account, info}).then(({accountID}) => {
+        customHistory.push(`/account/${accountID}/edit`)
+      }).catch(err => this.setState({err, saving: false}))
+    }).catch(err => this.setState({err, saving: false}));
 
   };
 
@@ -61,6 +88,7 @@ export class AccountNewRoute extends KComponent {
             form={this.infoForm}
             err={this.state.err}
             onChange={() => this.setState({err: ""})}
+            editEmp
           />
         )
       },
@@ -72,6 +100,7 @@ export class AccountNewRoute extends KComponent {
             form={this.infoForm}
             err={this.state.err}
             onChange={() => this.setState({err: ""})}
+            editEmp
           />
         )
       },
@@ -99,9 +128,9 @@ export class AccountNewRoute extends KComponent {
     return matcher[role]();
   };
 
-  handleClickLabel = (step) =>{
+  handleClickLabel = (step) => {
     let {activeTab: currentStep} = this.state;
-    if(step < currentStep){
+    if (step < currentStep) {
       this.setState({activeTab: 0}, () => {
         this.infoForm.resetData();
       });
@@ -143,6 +172,16 @@ export class AccountNewRoute extends KComponent {
     this.infoForm.resetData();
   };
 
+  handleClickNext = () => {
+    this.setState({loading: true});
+    accountApi.checkAccountExisted({...this.accountForm.getData()}).then(() => {
+      this.prepareInfoForm();
+      this.setState({activeTab: 1, loading: false})
+    }).catch(err => this.setState({err, loading: false}));
+
+
+  };
+
   steps = [
     {
       step: 0,
@@ -161,7 +200,7 @@ export class AccountNewRoute extends KComponent {
 
       ),
       renderActions: () => {
-        let canNext = !this.accountForm.getInvalidPaths().length ;
+        let canNext = !this.accountForm.getInvalidPaths().length && !this.state.err;
         return (
           <div className="">
             <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/accounts")}>Hủy bỏ
@@ -169,14 +208,13 @@ export class AccountNewRoute extends KComponent {
             <button type="button"
                     className="btn btn-primary"
                     disabled={!canNext}
-                    onClick={() => {
-                      this.prepareInfoForm();
-                      this.setState({activeTab: 1})
-
-                    }}
+                    onClick={this.handleClickNext}
             >
               Tiếp theo
               <i className="fas fa-angle-right"></i>
+              {this.state.loading && (
+                <LoadingInline/>
+              )}
             </button>
           </div>
         )

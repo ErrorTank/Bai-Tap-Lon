@@ -13,5 +13,11 @@ export const accountApi = {
   },
   checkAccountIDInUser({role, accountID}){
     return authenApi.get(`/account/${accountID}/role/${role}/check-in-user`);
+  },
+  createAccount(payload){
+    return authenApi.post("/account/create", {...payload})
+  },
+  checkAccountExisted(account){
+    return authenApi.post("/account/check", {account})
   }
 };

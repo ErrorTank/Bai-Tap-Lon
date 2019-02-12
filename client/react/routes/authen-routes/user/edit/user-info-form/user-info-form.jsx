@@ -18,16 +18,17 @@ export class UserInfoForm extends KComponent {
 
   generateError =() => {
     let {err, form} = this.props;
-    let {email, CMT} = form.getData();
+    let {email, CMT, employeeID} = form.getData();
     let msg = {
       "email_existed": `Email ${email} đã tồn tại!`,
-      "CMT_existed": `CMT ${CMT} đã tồn tại!`
+      "CMT_existed": `CMT ${CMT} đã tồn tại!`,
+      "employeeID_existed": `Mã nhân viên ${employeeID} đã tồn tại!`,
     };
-    return msg[err.message];
+    return (err.hasOwnProperty("message") && msg.hasOwnProperty(err.message))  ?  msg[err.message] : "Đã có lỗi xảy ra!";
   };
 
   render() {
-    let {form, err, onChange: propsOnChange, renderNavigate = () => null} = this.props;
+    let {form, err, onChange: propsOnChange, renderNavigate = () => null, editEmp = false} = this.props;
     return (
       <div className="user-info-form">
         <div className="m-form m-form--fit m-form--label-align-right m-form--state">
@@ -44,7 +45,7 @@ export class UserInfoForm extends KComponent {
 
           }
 
-          {form.getPathData("employeeID") && (
+          {(!editEmp && form.getPathData("employeeID")) && (
             <div className="row">
               <div className="emp-id-wrap pb-5 col">
                 <div>
@@ -56,7 +57,27 @@ export class UserInfoForm extends KComponent {
           )
 
           }
-
+          {editEmp && (
+            <div className="row">
+              <div className="col-6">
+                {form.enhanceComponent("employeeID", ({error, onEnter, onChange, ...others}) => (
+                  <InputBase
+                    className="uif-input pt-0"
+                    error={error}
+                    id={"employeeID"}
+                    onKeyDown={onEnter}
+                    onChange={e => {
+                      propsOnChange();
+                      onChange(e);
+                    }}
+                    type={"text"}
+                    label={"Mã nhân viên"}
+                    {...others}
+                  />
+                ), true)}
+              </div>
+            </div>
+          )}
 
           <div className="row ">
             <div className="col-6">

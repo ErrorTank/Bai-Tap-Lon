@@ -38,7 +38,7 @@ export class UserProfile extends React.Component {
   getUrl = () =>{
     let info = userInfo.getState();
     if([0, 1].includes(info.role)){
-      return `/user/${info.userID}`
+      return `/user/${info.userID}/edit`
     }else if(info.role === 2){
       return `/school/${info.schoolID}`
     }else if(info.role === 3){

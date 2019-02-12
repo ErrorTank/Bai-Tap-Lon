@@ -26,7 +26,7 @@ export class AccountInfoForm extends KComponent {
     let msg = {
       "username_existed": `Tên đăng nhập ${username} đã tồn tại!`
     };
-    return msg[err.message];
+    return  (err.hasOwnProperty("message") && msg.hasOwnProperty(err.message))  ?  msg[err.message] : "Đã có lỗi xảy ra!";
   };
 
   getRoles = () => {

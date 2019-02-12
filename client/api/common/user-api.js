@@ -13,5 +13,11 @@ export const userApi = {
   },
   getUserByAccountID(accountID){
     return authenApi.get(`/user/account/${accountID}`);
+  },
+  createUser(user){
+    return authenApi.post("/user", {user})
+  },
+  checkUserExisted(user){
+    return authenApi.post("/user/check", {user})
   }
 };

@@ -24,7 +24,7 @@ export class SchoolPresenterInfoForm extends KComponent {
     let msg = {
       "email_existed": `Email ${email} đã tồn tại!`
     };
-    return msg[err.message];
+    return  (err.hasOwnProperty("message") && msg.hasOwnProperty(err.message))  ?  msg[err.message] : "Đã có lỗi xảy ra!";
   };
 
 

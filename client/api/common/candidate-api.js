@@ -13,5 +13,11 @@ export const candidateApi = {
   },
   getCandidateByAccountID(accountID){
     return authenApi.get(`/candidate/account/${accountID}`);
+  },
+  createCandidate(candidate){
+    return authenApi.post("/candidate", {candidate})
+  },
+  checkCandidateExisted(candidate){
+    return authenApi.post("/candidate/check", {candidate})
   }
 };
