@@ -170,7 +170,12 @@ export class UserInfoForm extends KComponent {
             </div>
 
           </div>
-          {renderNavigate()}
+          <div className="row">
+            <div className="col optional-nav">
+              {renderNavigate()}
+            </div>
+          </div>
+
 
         </div>
 

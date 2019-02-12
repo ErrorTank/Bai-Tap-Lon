@@ -134,18 +134,9 @@ export class AccountRoute extends KComponent {
           err={this.state.err}
           renderNavigate={() => {
             let state = userInfo.getState();
-            return (state.role === 0 || (state.role === 1 && ![0, 1].includes(this.state.draft.role))) ? (
-              <div className="row">
-                <div className="col optional-nav">
-                  {this.getNavigateInfo(({url, text}) => (
-                    <p onClick={() => customHistory.push(url)}>{text}</p>
-                  ))
-
-                  }
-
-                </div>
-              </div>
-            ) : null
+            return (state.role === 0 || (state.role === 1 && ![0, 1].includes(this.state.draft.role))) ? this.getNavigateInfo(({url, text}) => (
+              <p onClick={() => customHistory.push(url)}>{text}</p>
+            )) : null
           }}
         />
       )

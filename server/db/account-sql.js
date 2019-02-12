@@ -56,7 +56,7 @@ const accountSql = (db) => {
         if (result.length) {
           resolve(result[0]);
         } else {
-          reject(new Error("not_found"));
+          reject(new Error("account_not_found"));
         }
       }).catch(err => reject(err));
     })
@@ -94,6 +94,13 @@ const accountSql = (db) => {
         reject(err)
       })
     )
+  };
+  var q = {
+    take: 0,
+    skip: 50,
+    keyword: "ccc",
+    canLogin: false,
+    role: 3
   };
 
   //get account by role

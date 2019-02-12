@@ -29,6 +29,15 @@ export class AccountInfoForm extends KComponent {
     return msg[err.message];
   };
 
+  getRoles = () => {
+    let state = userInfo.getState();
+    let matcher = {
+      0: () => true,
+      1: (each) => each.value !== 0 && each.value !== 1
+    };
+    return Roles.filter(matcher[state.role])
+  };
+
   render() {
     let {form, err, onChange: propsOnChange, renderNavigate = () => null} = this.props;
     return (
@@ -82,19 +91,20 @@ export class AccountInfoForm extends KComponent {
                 />
               ), true)}
             </div>
-            {userInfo.getState().role === 0 && (
+            {(
               <div className="col-12">
 
                 {form.enhanceComponent("role", ({value, onChange}) => (
                   <Select
                     className="aif-input pt-0"
-                    options={Roles}
+                    options={this.getRoles()}
                     value={value}
                     onChange={e => {
                       propsOnChange();
                       onChange(Number(e.target.value))
                     }}
                     label={"Role"}
+                    placeholder={"Chọn Role"}
                   />
 
                 ), true)}
@@ -121,7 +131,15 @@ export class AccountInfoForm extends KComponent {
 
             </div>
           </div>
-          {renderNavigate()}
+
+          <div className="row">
+            <div className="col optional-nav">
+              {renderNavigate()}
+
+            </div>
+          </div>
+
+
 
         </div>
 

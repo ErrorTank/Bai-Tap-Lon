@@ -18,7 +18,7 @@ const dbUtils = [
     query: "CREATE TABLE `olympic`.`school` ( `sID` NVARCHAR(10) NOT NULL , `name` NVARCHAR(100) NOT NULL , `address` NVARCHAR(100) NOT NULL , `phone` NVARCHAR(20) NOT NULL , `email` NVARCHAR(100) NOT NULL , PRIMARY KEY (`sID`), UNIQUE (`email`)) ENGINE = InnoDB;"
   }, {
     name: "Create school presenter table",
-    query: "CREATE TABLE `olympic`.`schoolPresenter` ( `spID` NVARCHAR(10) NOT NULL , `sID` NVARCHAR(10) NOT NULL , `name` NVARCHAR(100) NOT NULL , `address` NVARCHAR(100) NULL , `phone` NVARCHAR(20) NOT NULL , `email` NVARCHAR(100) NOT NULL , PRIMARY KEY (`spID`),  UNIQUE (`email`)) ENGINE = InnoDB;"
+    query: "CREATE TABLE `olympic`.`schoolPresenter` ( `spID` NVARCHAR(10) NOT NULL , `accountID` NVARCHAR(10) NOT NULL, `sID` NVARCHAR(10) NOT NULL , `name` NVARCHAR(100) NOT NULL , `address` NVARCHAR(100) NULL , `phone` NVARCHAR(20) NOT NULL , `email` NVARCHAR(100) NOT NULL , PRIMARY KEY (`spID`), UNIQUE (`accountID`),  UNIQUE (`email`)) ENGINE = InnoDB;"
   }, {
     name: "Create contest table",
     query: "CREATE TABLE `olympic`.`contest` ( `contestID` NVARCHAR(10) NOT NULL , `start` DATE NOT NULL , `stop` DATE NOT NULL , `fee` NVARCHAR(20) NOT NULL,  PRIMARY KEY (`contestID`)) ENGINE = InnoDB;"
@@ -39,7 +39,7 @@ const dbUtils = [
     query: "CREATE TABLE `olympic`.`room` ( `roomID` NVARCHAR(10) NOT NULL , `orgLocationID` NVARCHAR(10) NOT NULL ,`name` NVARCHAR(50) NOT NULL , PRIMARY KEY (`roomID`)) ENGINE = InnoDB;"
   },{
     name: "Create candidate table",
-    query: "CREATE TABLE `olympic`.`candidate`(`cID` NVARCHAR(10) NOT NULL, `accountID` NVARCHAR(10) NOT NULL , `address` NVARCHAR(200) NOT NULL, `sID` NVARCHAR(10) NOT NULL, `name` NVARCHAR(50) NOT NULL, `phone` NVARCHAR(20) NOT NULL, `email` NVARCHAR(100) NOT NULL, `CMT` NVARCHAR(20) NOT NULL , `gender` INT(1) NOT NULL  ,  `dob` DATETIME NOT NULL, PRIMARY KEY(`cID`), UNIQUE (`accountID`), UNIQUE (`CMT`)) ENGINE = InnoDB;"
+    query: "CREATE TABLE `olympic`.`candidate`(`cID` NVARCHAR(10) NOT NULL, `accountID` NVARCHAR(10) NOT NULL , `address` NVARCHAR(200) NOT NULL, `sID` NVARCHAR(10) NOT NULL, `name` NVARCHAR(50) NOT NULL, `phone` NVARCHAR(20) NOT NULL, `email` NVARCHAR(100) NOT NULL, `CMT` NVARCHAR(20) NOT NULL , `gender` INT(1) NOT NULL  ,  `dob` DATETIME NOT NULL, PRIMARY KEY(`cID`), UNIQUE (`accountID`), UNIQUE (`CMT`), UNIQUE (`email`)) ENGINE = InnoDB;"
   }, {
     name: "Create report card table",
     query: "CREATE TABLE `olympic`.`reportCard` ( `reportCardID` NVARCHAR(10) NOT NULL , `mark` REAL NOT NULL , `subjectID` NVARCHAR(10) NOT NULL , `contestID` NVARCHAR(10) NOT NULL , `candidateID` NVARCHAR(10) NOT NULL , PRIMARY KEY (`reportCardID`)) ENGINE = InnoDB;"

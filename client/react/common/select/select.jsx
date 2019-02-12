@@ -8,7 +8,7 @@ export class Select extends React.Component {
   };
 
   render() {
-    let {className, label, id, options, value, onChange} = this.props;
+    let {className, label, id, options, value, onChange, placeholder, displayAs = null, getValue = null} = this.props;
     return (
       <div className={classnames("form-group m-form__group k-select", className)}>
         <label htmlFor={id}>{label}</label>
@@ -16,12 +16,13 @@ export class Select extends React.Component {
                 value={value}
                 onChange={onChange}
         >
+          <option value={""} disabled hidden>{placeholder}</option>
           {options.map((each, i) => (
             <option
               key={i}
-              value={each.value}
+              value={getValue ? getValue(each) : each.value}
             >
-              {each.label}
+              {displayAs ? displayAs(each) : each.label}
             </option>
           ))}
         </select>

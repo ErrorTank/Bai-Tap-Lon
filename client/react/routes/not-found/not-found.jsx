@@ -19,7 +19,7 @@ export class NotFoundPage extends React.Component {
           <div className="explain">
             <p>Trang bạn tìm "{path}" không tồn tại.</p>
             <p className="redirect">
-              Nhấn vào <span>Đây</span> để quay về {isLogin ? "Trang chủ" : "Trang đăng nhập"}
+              Nhấn vào <span >Đây</span> để quay về {isLogin ? "Trang chủ" : "Trang đăng nhập"}
             </p>
           </div>
         </div>

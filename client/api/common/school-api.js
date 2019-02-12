@@ -8,6 +8,9 @@ export const schoolApi = {
   changePassword(accountID, obj){
     return authenApi.put(`/account/${accountID}/change-password`, obj);
   },
+  getSchoolsBrief(){
+    return authenApi.get("/schools/brief");
+  },
   update(user){
     return authenApi.put(`/user/${user.userID}`, {user});
   },

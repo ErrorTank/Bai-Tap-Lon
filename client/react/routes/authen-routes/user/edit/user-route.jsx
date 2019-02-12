@@ -76,11 +76,8 @@ export class UserRoute extends KComponent {
           renderNavigate={() => {
             let info = userInfo.getState();
             return info.role === 0 ? (
-              <div className="row">
-                <div className="col optional-nav">
-                  <p onClick={() => customHistory.push(`/account/${this.form.getPathData("accountID")}`)}>Xem thông tin tài khoản</p>
-                </div>
-              </div>
+              <p onClick={() => customHistory.push(`/account/${this.form.getPathData("accountID")}`)}>Xem thông tin tài khoản</p>
+
             ) : null
           }}
         />

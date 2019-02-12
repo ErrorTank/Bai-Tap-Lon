@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const {authorization} = require("../../authorization/auth");
-const {getPublicKey} = require("../../authorization/keys/keys");
+const {authorization} = require("../authorization/auth");
+const {getPublicKey} = require("../authorization/keys/keys");
 const authMiddleware = authorization(getPublicKey(), {expiresIn: "1h", algorithm: ["RS256"]});
 const omit = require("lodash/omit");
-const accountSql = require("../../db/account-sql");
-const userSql = require("../../db/user-sql");
+const accountSql = require("../db/account-sql");
+const userSql = require("../db/user-sql");
 
 
 module.exports = (db) => {

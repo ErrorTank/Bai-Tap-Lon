@@ -10,6 +10,10 @@ const authenApiConfig = {
     "token_expired": () => {
       authenCache.clearAuthen();
       customHistory.push("/login?error=token_expired")
+    },
+    "account_not_found": () => {
+      authenCache.clearAuthen();
+      customHistory.push("/login")
     }
   }
 

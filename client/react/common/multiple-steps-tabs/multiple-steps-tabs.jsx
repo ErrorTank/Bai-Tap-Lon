@@ -25,7 +25,7 @@ export class MultipleStepsTabs extends React.Component {
                            key={i}
                            onClick={() => onClickLabel(each.step)}
                       >
-                        <a  className="m-wizard__step-number">
+                        <a className="m-wizard__step-number">
                           <span className="m-wizard__step-seq">{i + 1}.</span>
                           <span className="m-wizard__step-label">
                             {each.label}
@@ -42,21 +42,20 @@ export class MultipleStepsTabs extends React.Component {
           <div className="m-wizard__form">
             <div className="m-form m-form--label-align-left- m-form--state-">
               <div className="m-portlet__body">
-                {steps.map((each, i) => (
-                  <div
-                    className={classnames("m-wizard__form-step", {"m-wizard__form-step--current": each.step === currentStep})}
-                    key={i}
-                  >
-                    <div className="row">
-                      <div className="col-xl-10 offset-xl-1">
-                        <div className="m-form__section m-form__section--first">
-                          {each.render()}
-                        </div>
 
+                <div
+                  className={classnames("m-wizard__form-step m-wizard__form-step--current")}
+
+                >
+                  <div className="row">
+                    <div className="col-xl-10 offset-xl-1">
+                      <div className="m-form__section m-form__section--first">
+                        {steps.find(each => each.step === currentStep).render()}
                       </div>
+
                     </div>
-                  </div>))
-                }
+                  </div>
+                </div>
 
 
               </div>

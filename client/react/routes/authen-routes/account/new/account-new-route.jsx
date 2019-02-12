@@ -28,8 +28,8 @@ export class AccountNewRoute extends KComponent {
       initData: {
         username: "",
         password: "",
-        role: 0,
-        canLogin: 1
+        canLogin: 1,
+        role: ""
       }
     });
 
@@ -40,7 +40,8 @@ export class AccountNewRoute extends KComponent {
   };
 
   createNewAccount = () => {
-
+    console.log(this.accountForm.getData())
+    console.log(this.infoForm.getData())
   };
 
   renderStep = () => {
@@ -117,14 +118,14 @@ export class AccountNewRoute extends KComponent {
     2: {
       schema: schoolPresenterSchema,
       initData: {
-        sID: 0
+        sID: ""
       }
     },
     3: {
       schema: candidateSchema,
       initData: {
-        sID: 0,
-        dob: "01/01/1990",
+        sID: "",
+        dob: "1990-01-01",
         gender: 0
       }
     },
@@ -180,7 +181,7 @@ export class AccountNewRoute extends KComponent {
       label: "Thông tin cơ bản",
       render: () => this.renderStep(),
       renderActions: () => {
-        let canFinish = false;
+        let canFinish = !this.infoForm.getInvalidPaths().length;
         return (
           <div className="">
             <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/accounts")}>Hủy bỏ
@@ -208,8 +209,7 @@ export class AccountNewRoute extends KComponent {
 
   render() {
     let {activeTab} = this.state;
-    console.log(this.accountForm.getData())
-    console.log(this.infoForm.getData())
+
     return (
       <PageTitle title="Tạo tài khoản mới">
         <RouteTitle content="Tạo tài khoản mới">
