@@ -13,15 +13,16 @@ export class NotFoundPage extends React.Component {
     let {isLogin, path} = this.props;
 
     return (
-      <PageTitle
+      <PageTitle 
         title={"Trang không tồn tại"}
       >
         <div className="not-found-page">
-          <h2 className="not-found-title">404 Không Tìm Thấy!</h2>
+          <div className="logo-404-image"><img src="assets/img/404logo.png" alt="404 Logo Place"/></div>
+          <p className="not-found-title">Không Tìm Thấy!</p>
           <div className="explain">
-            <p>Trang bạn tìm "{path}" không tồn tại.</p>
+            <p>Trang bạn tìm "{path}" đã bị di chuyển, xóa, đổi tên hoặc chưa từng tồn tại.</p>
             <p className="redirect">
-              Nhấn vào <span onClick={() => customHistory.push(isLogin ? toDefaultRoute() : "/login")}>Đây</span> để quay về {isLogin ? "Trang chủ" : "Trang đăng nhập"}
+              <span onClick={() => customHistory.push(isLogin ? toDefaultRoute() : "/login")} > {isLogin ? "Trang chủ" : "Trang đăng nhập"} </span>
             </p>
           </div>
         </div>
