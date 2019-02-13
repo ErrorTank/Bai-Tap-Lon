@@ -11,7 +11,11 @@ const omit = require("lodash/omit");
 
 module.exports = (db, dbManager) => {
   const candidateManager = dbManager("candidate");
-
+  router.delete("/candidate/:cID", authMiddleware, (req,res, next) =>{
+    candidateManager.deleteCandidate(req.params.cID).then(() => {
+      res.status(200).end();
+    }).catch(err => next(err))
+  });
   router.post("/candidate/check", authMiddleware, (req,res, next) =>{
     candidateManager.checkCandidateExisted(req.body.candidate).then(() => {
       res.status(200).end();

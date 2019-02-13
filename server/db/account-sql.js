@@ -102,16 +102,30 @@ const accountSql = (db) => {
 
   //update account's info
   const updateAccount = (accountID, accountObj) => {
-    let {username, password, role, canLogin} = accountObj;
 
-    let updateInfo = `UPDATE Account SET username = '${username}', password = '${password}', role = '${role}', canLogin = '${canLogin}' WHERE accountID = '${accountID}'`;
-    return new Promise((resolve, reject) =>
-      query(updateInfo).then((result) => {
-        resolve();
-      }).catch(err => {
-        reject(err)
-      })
-    )
+    return new Promise((resolve, reject) => {
+      if(isNil(accountID)){
+        reject(new Error("Cannot find account with ID: " + accountID));
+      }else{
+
+        let {username, password, role, canLogin} = accountObj;
+        const checkExist = `SELECT username from account where not accountID = '${accountID}' and username = '${username}'`;
+        let updateInfo = `UPDATE Account SET username = '${username}', password = '${password}', role = '${role}', canLogin = '${canLogin}' WHERE accountID = '${accountID}'`;
+        query(checkExist).then((result) => {
+          if(result && result.length){
+            reject(new Error("username_existed"));
+          }else{
+            query(updateInfo).then(() => {
+              resolve();
+            }).catch(err => {
+              reject(err)
+            })
+          }
+        }).catch(err => reject(err));
+
+      }
+
+    });
   };
 
 
@@ -143,8 +157,20 @@ const accountSql = (db) => {
     })
   };
 
+  const deleteAccount = (accID) => {
+    var deleteInfo = `DELETE FROM account WHERE accountID = '${accID}'`;
+    return new Promise((resolve, reject) =>
+      query(deleteInfo).then((result) => {
+        resolve();
+      }).catch(err => {
+        reject(err)
+      })
+    )
+  };
+
   return {
     checkLogin,
+    deleteAccount,
     createAccount,
     updateAccount,
     getAccount,

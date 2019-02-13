@@ -21,6 +21,7 @@ import omit from "lodash/omit"
 import {accountSchema} from "../../schema";
 import {authenCache} from "../../../../../common/cache/authen-cache";
 import {schoolPresenterApi} from "../../../../../api/common/school-presenter-api";
+import {appModal} from "../../../../common/modal/modals";
 
 
 export class AccountRoute extends KComponent {
@@ -33,7 +34,8 @@ export class AccountRoute extends KComponent {
       saving: false,
       draft: {},
       inf: {},
-      err: ""
+      err: "",
+      deleting: false
     };
 
     this.form = createSimpleForm(accountSchema);
@@ -124,6 +126,38 @@ export class AccountRoute extends KComponent {
     })
   };
 
+  handleDeleteAcc = () => {
+    appModal.confirm({
+      title: "Xác nhận",
+      text: "Bạn có muốn xóa tài khoản này?",
+      btnText: "Đồng ý",
+      cancelText: "Hủy bỏ"
+    }).then((result) => {
+      if(result){
+        this.setState({deleting: true});
+        let {role, accountID} = this.form.getData();
+        let matcher = {
+          0: () => userApi.deleteUser(this.state.inf.userID),
+          1: () => userApi.deleteUser(this.state.inf.userID),
+          2: () => schoolPresenterApi.deleteSp(this.state.inf.spID),
+          3: () => candidateApi.deleteCandidate(this.state.inf.cID)
+        };
+        let promises = [matcher[role](), accountApi.deleteAccount(accountID)];
+        Promise.all(promises).then(() => {
+          if(accountID === userInfo.accountID){
+            authenCache.clearAuthen();
+            userInfo.setState(null);
+            customHistory.push("/login");
+          }else{
+            customHistory.push("/accounts");
+          }
+
+        }).catch(err => this.setState({err, deleting: false}))
+      }
+    });
+
+  };
+
   tabs = [
     {
       label: "Thông tin cơ bản",
@@ -146,7 +180,7 @@ export class AccountRoute extends KComponent {
 
 
   render() {
-    let {activeTab, loading, saving, draft} = this.state;
+    let {activeTab, loading, saving, draft, deleting} = this.state;
     let canSave = !this.form.getInvalidPaths().length && !saving && !isEqual(draft, this.form.getData());
     return (
       <PageTitle
@@ -170,6 +204,12 @@ export class AccountRoute extends KComponent {
                     renderActions={() => (
                       <div className="row justify-content-end a-actions">
                         <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/accounts")}>Hủy bỏ</button>
+                        <button type="button" className="btn btn-danger" onClick={this.handleDeleteAcc}>
+                          {deleting && (
+                            <LoadingInline/>
+                          )}
+                          Xóa tài khoản
+                        </button>
                         <button type="button"
                                 className="btn btn-primary"
                                 disabled={!canSave}

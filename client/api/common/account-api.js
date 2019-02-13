@@ -8,6 +8,9 @@ export const accountApi = {
   changePassword(accountID, obj){
     return authenApi.put(`/account/${accountID}/change-password`, obj);
   },
+  deleteAccount(accountID){
+    return authenApi.delete(`/account/${accountID}`)
+  },
   update(account){
     return authenApi.put(`/account/${account.accountID}`, {account});
   },
@@ -17,6 +20,7 @@ export const accountApi = {
   createAccount(payload){
     return authenApi.post("/account/create", {...payload})
   },
+
   checkAccountExisted(account){
     return authenApi.post("/account/check", {account})
   }

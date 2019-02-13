@@ -33,6 +33,11 @@ module.exports = (db, dbManager) => {
     }
 
   });
+  router.delete("/account/:accountID", authMiddleware, (req,res, next) =>{
+    accountManager.deleteAccount(req.params.accountID).then(() => {
+      res.status(200).end();
+    }).catch(err => next(err))
+  });
   router.put("/account/:accountID", authMiddleware, (req,res, next) =>{
     accountManager.updateAccount(req.params.accountID, req.body.account).then(() => {
       res.status(200).end();

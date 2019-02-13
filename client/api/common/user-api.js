@@ -11,6 +11,9 @@ export const userApi = {
   update(user){
     return authenApi.put(`/user/${user.userID}`, {user});
   },
+  deleteUser(userID){
+    return authenApi.delete(`/user/${userID}`)
+  },
   getUserByAccountID(accountID){
     return authenApi.get(`/user/account/${accountID}`);
   },

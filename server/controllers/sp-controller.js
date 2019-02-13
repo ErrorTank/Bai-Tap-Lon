@@ -11,7 +11,21 @@ const omit = require("lodash/omit");
 
 module.exports = (db, dbManager) => {
   const spManager = dbManager("sp");
-
+  router.delete("/sp/:spID", authMiddleware, (req,res, next) =>{
+    spManager.deleteSp(req.params.spID).then(() => {
+      res.status(200).end();
+    }).catch(err => next(err))
+  });
+  router.put("/sp/:spID", authMiddleware, (req,res, next) =>{
+    spManager.updateSp(req.params.spID, req.body.sp).then(() => {
+      res.status(200).end();
+    }).catch(err => next(err))
+  });
+  router.get("/sp/:spID", authMiddleware, (req,res, next) =>{
+    spManager.getSp(req.params.spID).then(sp => {
+      res.status(200).json(sp);
+    }).catch(err => next(err))
+  });
   router.post("/sp/check", authMiddleware, (req,res, next) =>{
     spManager.checkSpExisted(req.body.sp).then(() => {
       res.status(200).end();

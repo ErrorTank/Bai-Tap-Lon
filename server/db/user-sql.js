@@ -101,13 +101,24 @@ const userSql = (db) => {
         })
       )
   };
+  const deleteUser = (uID) => {
+    var deleteInfo = `DELETE FROM user WHERE userID = '${uID}'`;
+    return new Promise((resolve, reject) =>
+      query(deleteInfo).then((result) => {
+        resolve();
+      }).catch(err => {
+        reject(err)
+      })
+    )
+  };
 
   return {
     getUser,
     updateUser,
     getUserByAccountID,
     createUser,
-    checkUserExisted
+    checkUserExisted,
+    deleteUser
   }
 };
 module.exports = userSql;
