@@ -84,7 +84,7 @@ const spSql = (db) => {
 
         let {name, sID, address, phone, email}  = sp;
         const checkExist = `SELECT email from schoolpresenter where not spID = '${spID}' and email = '${email}'`;
-        const getInfo = `UPDATE schoolpresenter SET name = '${name}', sID = '${sID}', phone = '${phone}',  address = '${address}' WHERE spID = '${spID}'`;
+        const getInfo = `UPDATE schoolpresenter SET name = '${name}', sID = '${sID}', phone = '${phone}',  address = '${address}', email = '${email}' WHERE spID = '${spID}'`;
         query(checkExist).then((result) => {
           if(result && result.length){
             reject(new Error("email_existed"));
