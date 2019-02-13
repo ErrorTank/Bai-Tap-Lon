@@ -33,6 +33,15 @@ module.exports = (db, dbManager) => {
     }
 
   });
+  router.get("/accounts/:role/brief", authMiddleware, (req,res, next) =>{
+
+    let {role: clientRole} = req.params;
+    console.log({clientRole, ...req.query})
+    accountManager.getAccountBriefWithCondition({clientRole, ...req.query}).then((data) => {
+      res.status(200).json(data);
+    }).catch(err => next(err));
+
+  });
   router.delete("/account/:accountID", authMiddleware, (req,res, next) =>{
     accountManager.deleteAccount(req.params.accountID).then(() => {
       res.status(200).end();

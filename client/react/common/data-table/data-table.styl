@@ -1,0 +1,21 @@
+.data-table{
+  .no-data{
+    pointer-events none
+  }
+  & ~ .table-footer{
+    &:after{
+      content: ""
+      clear both
+      display block
+    }
+
+    & .table-pagination{
+      float left
+    }
+    & .summary {
+      margin-top 15px
+      float right
+    }
+
+  }
+}

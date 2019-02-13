@@ -1,5 +1,7 @@
 
 import {authenApi} from "../api";
+import {userInfo} from "../../common/states/user-info";
+import {urlUtils} from "../../common/url-utils";
 
 export const accountApi = {
   get(userID) {
@@ -7,6 +9,22 @@ export const accountApi = {
   },
   changePassword(accountID, obj){
     return authenApi.put(`/account/${accountID}/change-password`, obj);
+  },
+  getAccountBrief(filters){
+    let {role} = userInfo.getState();
+    let {skip, take, filter = {}, sort} = filters || {};
+
+    let {key, asc} = sort || {};
+    let params = {
+      orderAsc: asc,
+      orderBy: key,
+      skip,
+      take,
+      role: filter.role.value,
+      canLogin: filter.canLogin.value,
+      keyword: filter.keyword || null,
+    };
+    return authenApi.get(`/accounts/${role}/brief${urlUtils.buildParams(params)}`)
   },
   deleteAccount(accountID){
     return authenApi.delete(`/account/${accountID}`)

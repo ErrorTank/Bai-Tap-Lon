@@ -6,6 +6,8 @@ import {CustomSelect} from "../../../../common/custom-select/custom-select";
 import {Roles, userInfo} from "../../../../../common/states/user-info";
 import {IconInput} from "../../../../common/icon-input/icon-input";
 import {DebounceSearchInput} from "../../../../common/debounce-search-input/debounce-search-input";
+import {accountApi} from "../../../../../api/common/account-api";
+import {ApiDataTable} from "../../../../common/data-table/api-data-table/api-data-table";
 
 export class AccountListRoute extends React.Component {
   constructor(props) {
@@ -41,9 +43,39 @@ export class AccountListRoute extends React.Component {
     return [{label: "Tất cả", value: null}].concat(Roles.map(matcher[role]))
   };
 
+  parseAccRole = (role) => {
+    let matcher = {
+      0: "Admin",
+      1: "Ban tổ chức",
+      2: "Đại diện trường",
+      3: "Thí sinh"
+    };
+    return matcher[role];
+  };
+
+
+  columns = [
+    {
+      label: "Tên đăng nhập",
+      cellDisplay: account => account.username,
+    },
+    {
+      label: "Có thể đăng nhập",
+      cellDisplay: account => account.canLogin ? "Có" : "Không",
+    },
+    {
+      label: "Tên đăng nhập",
+      cellDisplay: account => this.parseAccRole(account.role),
+    },
+  ];
+
+
+
   render() {
     let {role, keyword, canLogin} = this.state;
     console.log(this.state);
+    const api = (skip, take, filter, sort) => accountApi.getAccountBrief({skip, take, filter, sort})
+      .then(({accounts, total}) => ({rows: accounts, total}));
     return (
       <PageTitle
         title={"Danh sách tài khoản"}
@@ -105,6 +137,18 @@ export class AccountListRoute extends React.Component {
                     </div>
                   </div>
                 </div>
+                <ApiDataTable
+                  className="account-list-table"
+                  columns={this.columns}
+                  filter={{
+                    canLogin,
+                    role,
+                    keyword
+                  }}
+                  api={api}
+                  pageSize={50}
+                  placeholder={"Không có tài khoản nào"}
+                />
               </div>
 
             </div>
