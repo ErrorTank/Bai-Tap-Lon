@@ -71,6 +71,7 @@ export class AccountListRoute extends React.Component {
 
 
 
+
   render() {
     let {role, keyword, canLogin} = this.state;
     console.log(this.state);
@@ -145,6 +146,7 @@ export class AccountListRoute extends React.Component {
                     role,
                     keyword
                   }}
+                  rowLinkTo={(row) => `account/${row.accountID}/edit`}
                   api={api}
                   pageSize={50}
                   placeholder={"Không có tài khoản nào"}

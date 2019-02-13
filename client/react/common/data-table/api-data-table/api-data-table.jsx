@@ -6,6 +6,7 @@ import {LoadingInline} from "../../loading-inline/loading-inline";
 import {DataTable} from "../data-table";
 import {Pagination} from "../pagination/pagination";
 import {LoadingOverLay} from "../../loading-overlay/loading-overlay";
+import {customHistory} from "../../../routes/routes";
 
 export class ApiDataTable extends KComponent {
   constructor(props) {
@@ -106,7 +107,14 @@ export class ApiDataTable extends KComponent {
       />
     )
   };
+  clickRow = (e, row) => {
 
+    if (this.props.rowLinkTo) {
+      customHistory.push(this.props.rowLinkTo(row));
+    } else if (this.props.onClickRow) {
+      this.props.onClickRow(row);
+    }
+  };
 
   render() {
     const {className, columns, ...props} = this.props;
@@ -117,6 +125,7 @@ export class ApiDataTable extends KComponent {
         {this.state.rows != null && (
           <DataTable
             {...props}
+            clickRow={this.clickRow}
             columns={_columns}
             renderHeaderCell={(column, index) => this.renderHeaderCell(column, index)}
             rows={this.state.rows}
