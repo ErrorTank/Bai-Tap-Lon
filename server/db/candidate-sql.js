@@ -28,14 +28,15 @@ const candidateSql = (db) => {
 
   const getCandidateBriefWithCondition = (obj) => {
     let {keyword, skip, take, orderAsc, orderBy, sID, gender} = obj;
-    const sql = `Select * from candidate where ${keyword ? `(name like '%${keyword}%' or email like '%${keyword}%' or cmt like '%${keyword}%' or phone like '%${keyword}%')` : "1=1"} ${!isNil(sID) ? `and sID = '${Number(sID)}'` : "and 1=1"} ${!isNil(gender) ? `and gender = '${Number(gender)}'` : "and 1=1"}  ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
-    console.log(sql)
+    const sql = `Select SQL_CALC_FOUND_ROWS * from candidate where ${keyword ? `(name like '%${keyword}%' or email like '%${keyword}%' or cmt like '%${keyword}%' or phone like '%${keyword}%')` : "1=1"} ${!isNil(sID) ? `and sID = '${Number(sID)}'` : "and 1=1"} ${!isNil(gender) ? `and gender = '${Number(gender)}'` : "and 1=1"}  ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
+
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
-        resolve({
-          candidates: result,
-          total: result.length
-        });
+        query(`Select FOUND_ROWS() as count`).then((result2) => {
+
+          resolve({candidates: result, total: result2[0].count});
+        }).catch(err => reject(err));
+
       }).catch(err => reject(err));
     })
   };

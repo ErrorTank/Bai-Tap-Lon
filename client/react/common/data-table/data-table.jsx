@@ -13,7 +13,7 @@ export class DataTable extends React.Component {
   render() {
     let {className, columns, _rowTrackBy = ((row, index) => index), onClickRow, rowLinkTo, rowClassName, clickRow, renderHeaderCell, rows, placeholder} = this.props;
     return (
-      <table className={classnames("data-table table m-table m-table--head-bg-success data-table-desktop", className)}>
+      <table className={classnames("data-table table m-table m-table--head data-table-desktop", className)}>
         <thead>
         <tr>
           {columns.map(renderHeaderCell)}

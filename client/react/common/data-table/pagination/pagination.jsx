@@ -68,7 +68,7 @@ export class Pagination extends React.Component {
         <div className={`link link-prev ${this.props.value <= 1 ? "isDisabled" : ""} `}
              onClick={() => this.props.onChange(this.props.value - 1)}
         >
-          <i className="la la-angle-left"/>
+          <i className="fas fa-ellipsis-h"></i>
         </div>
         {shownPages.map((p) => (
           <div className={classnames("link page", {active: p.page === this.props.value})}
@@ -81,7 +81,7 @@ export class Pagination extends React.Component {
         <div className={`link link-next ${this.props.value >= this.props.total ? "isDisabled" : ""} `}
              onClick={() => this.props.onChange(this.props.value + 1)}
         >
-          <i className="la la-angle-right"/>
+          <i className="fas fa-ellipsis-h"></i>
         </div>
       </div>
     );

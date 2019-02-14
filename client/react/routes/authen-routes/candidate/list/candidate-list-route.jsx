@@ -6,92 +6,105 @@ import {CustomSelect} from "../../../../common/custom-select/custom-select";
 import {Roles, userInfo} from "../../../../../common/states/user-info";
 import {IconInput} from "../../../../common/icon-input/icon-input";
 import {DebounceSearchInput} from "../../../../common/debounce-search-input/debounce-search-input";
-import {accountApi} from "../../../../../api/common/account-api";
 import {ApiDataTable} from "../../../../common/data-table/api-data-table/api-data-table";
-import {Badge} from "../../../../common/badge/badge";
+import {schoolsBriefCache} from "../../../../../common/api-cache/common-cache";
+import {candidateApi} from "../../../../../api/common/candidate-api";
 
-export class AccountListRoute extends React.Component {
+export class CandidateListRoute extends React.Component {
   constructor(props) {
     super(props);
     let getDefaultFilter = () => ({
       keyword: "",
-      canLogin: {label: "Tất cả", value: null},
-      role: {label: "Tất cả", value: null}
+      gender: {label: "Tất cả", value: null},
+      school: {label: "Tất cả", value: null},
+      schools: []
     });
     this.state = {
       ...getDefaultFilter()
     };
+    schoolsBriefCache.get().then(schools => this.setState({schools: [{name: "Tất cả", sID: null}].concat(schools)}))
   };
 
-  loginStatus = [
+  gender = [
     {
-      label: "Được",
-      value: 1
+      label: "Tất cả",
+      value: null,
+
     }, {
-      label: "Không",
+      label: "Nam",
       value: 0
+    },{
+      label: "Nữ",
+      value: 1
     },
   ];
 
 
 
-  getRolesByPrivilege = () => {
-    let {role} = userInfo.getState();
+  parseCanGender = (role) => {
     let matcher = {
-      0: each => each,
-      1: each => each.role === 2 || each.role === 3,
-    };
-    return [{label: "Tất cả", value: null}].concat(Roles.map(matcher[role]))
-  };
-
-  parseAccRole = (role) => {
-    let matcher = {
-      0: "Admin",
-      1: "Ban tổ chức",
-      2: "Đại diện trường",
-      3: "Thí sinh"
+      0: {
+        label: "Nam",
+        icon: (
+          <i className="fas fa-mars male"></i>
+        )
+      },
+      1: {
+        label: "Nữ",
+        icon: (
+          <i className="fas fa-venus female"></i>
+        )
+      },
     };
     return matcher[role];
+  };
+
+  parseCanSchoolStr = (sID) => {
+    return this.state.schools.find(each => each.sID === sID)
   };
 
 
   columns = [
     {
-      label: "Tên đăng nhập",
-      cellDisplay: account => account.username,
+      label: "Tên đầy đủ",
+      cellDisplay: candidate => candidate.name,
     }, {
-      label: "Role",
-      cellDisplay: account => this.parseAccRole(account.role),
-    },{
-      cellClass: "text-center",
-      label: "Tình trạng đăng nhập",
-      cellDisplay: account => (
-        <Badge
-          className={"login-status"}
-          content={account.canLogin ? "Cho phép" : "Hết hạn"}
-          style={account.canLogin ? "success" : "danger"}
-        />
+      label: "Giới tính",
+      cellDisplay: candidate => {
+        let {label, icon} = this.parseCanGender(candidate.gender);
+        return (
+          <span className="gender-display">
+            {icon} {label}
+          </span>
+
+        )
+      }
+    }, {
+
+      label: "Trường học",
+      cellDisplay: candidate => (
+        <p className="school-display">
+          {this.parseCanSchoolStr(candidate.sID)}
+        </p>
 
       )
     },
   ];
 
 
-
-
   render() {
-    let {role, keyword, canLogin} = this.state;
+    let {school, keyword, gender, schools} = this.state;
     console.log(this.state);
-    const api = (skip, take, filter, sort) => accountApi.getAccountBrief({skip, take, filter, sort})
-      .then(({accounts, total}) => ({rows: accounts, total}));
+    const api = (skip, take, filter, sort) => candidateApi.getCandidateBrief({skip, take, filter, sort})
+      .then(({candidates, total}) => ({rows: candidates, total}));
     return (
       <PageTitle
-        title={"Danh sách tài khoản"}
+        title={"Danh sách Thí sinh"}
       >
         <RouteTitle
-          content={"Danh sách tài khoản"}
+          content={"Danh sách Thí sinh"}
         >
-          <div className="account-list-route">
+          <div className="candidate-list-route">
             <div className="m-portlet">
               <div className="m-portlet__body">
                 <div className="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
@@ -100,20 +113,20 @@ export class AccountListRoute extends React.Component {
                       <div className="form-group m-form__group row align-items-end">
                         <div className="col-md-4 pl-0">
                           <CustomSelect
-                            label="Role"
-                            list={this.getRolesByPrivilege()}
-                            value={role}
-                            compare={item => item.value === role.value}
-                            onChange={each => this.setState({role: {...each}})}
+                            label="Trường"
+                            list={schools}
+                            value={school}
+                            compare={item => item.sID === school.value}
+                            onChange={each => this.setState({school: {label: each.name, value: each.sID}})}
                           />
                         </div>
                         <div className="col-md-4 pl-0">
                           <CustomSelect
-                            label="Đăng nhập"
-                            list={[{label: "Tất cả", value: null}].concat(this.loginStatus)}
-                            value={canLogin}
-                            compare={item => item.value === canLogin.value}
-                            onChange={each => this.setState({canLogin: {...each}})}
+                            label="Giới tính"
+                            list={this.gender}
+                            value={gender}
+                            compare={item => item.value === gender.value}
+                            onChange={each => this.setState({gender: {...each}})}
                           />
                         </div>
                         <div className="col-md-4 pl-0">

@@ -69,6 +69,8 @@ const queryController = (util, db) => new Promise((res, rej) => {
   });
 });
 
+
+
 const dbGenerator = (() => {
   initializeDb().then(db => {
     Promise.all(dbUtils.map(util => queryController(util, db)))

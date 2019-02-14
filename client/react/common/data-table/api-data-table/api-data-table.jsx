@@ -119,6 +119,8 @@ export class ApiDataTable extends KComponent {
   render() {
     const {className, columns, ...props} = this.props;
     const _columns = [...columns];
+    console.log(this.state.total)
+    console.log(this.pageSize())
 
     return (
       <div className={classnames("api-data-table", className)}>
