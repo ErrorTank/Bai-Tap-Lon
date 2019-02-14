@@ -52,22 +52,35 @@ const candidateSql = (db) => {
 
   //update location's info
   const updateCandidate = (cID, candidateObj) => {
-    //destruct obj for further use
-    var {address, sID, name, phone, email, dob, CMT, gender} = candidateObj;
+    return new Promise((resolve, reject) => {
+      if(isNil(cID)){
+        reject(new Error("Cannot find candidate with ID: " + cID));
+      }else{
 
-    var updateInfo = `UPDATE candidate SET address = '${address}', sID = '${sID}', name = '${name}', phone = '${phone}', email = '${email}', dob = '${dob}', CMT = '${CMT}', gender = '${gender}' WHERE cID = '${cID}'`;
-    return new Promise((resolve, reject) =>
-      query(updateInfo).then((result) => {
-        resolve();
-      }).catch(err => {
-        reject(err)
-      })
-    )
+        var {address, sID, name, phone, email, dob, CMT, gender} = candidateObj;
+        const checkExist = `SELECT email from candidate where not cID = '${cID}' and (email = '${email}' or CMT='${CMT}')`;
+        var updateInfo = `UPDATE candidate SET address = '${address}', sID = '${sID}', name = '${name}', phone = '${phone}', email = '${email}', dob = '${dob}', CMT = '${CMT}', gender = '${gender}' WHERE cID = '${cID}'`;
+        query(checkExist).then((result) => {
+          if(result && result.length){
+            let msg = result[0].email === email ? "email_existed" : "CMT_existed";
+            reject(new Error(msg));
+          }else{
+            query(updateInfo).then(() => {
+              resolve();
+            }).catch(err => {
+              reject(err)
+            })
+          }
+        }).catch(err => reject(err));
+
+      }
+
+    });
   };
 
   //delete location
   const deleteCandidate = (candidateID) => {
-    var deleteInfo = `DELETE FROM candidate WHERE CID = '${candidateID}'`;
+    var deleteInfo = `DELETE FROM candidate WHERE cID = '${candidateID}'`;
     return new Promise((resolve, reject) =>
       query(deleteInfo).then((result) => {
         resolve();

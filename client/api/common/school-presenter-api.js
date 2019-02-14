@@ -8,6 +8,9 @@ export const schoolPresenterApi = {
   update(sp){
     return authenApi.put(`/sp/${sp.spID}`, {sp});
   },
+  deleteSp(spID){
+    return authenApi.delete(`/sp/${spID}`)
+  },
   getSpByAccountID(accountID){
     return authenApi.get(`/sp/account/${accountID}`);
   },

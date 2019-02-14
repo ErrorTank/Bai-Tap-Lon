@@ -11,7 +11,11 @@ const omit = require("lodash/omit");
 
 module.exports = (db, dbManager) => {
   const userManager = dbManager("user");
-
+  router.delete("/user/:userID", authMiddleware, (req,res, next) =>{
+    userManager.deleteUser(req.params.userID).then(() => {
+      res.status(200).end();
+    }).catch(err => next(err))
+  });
   router.get("/user/:userID", authMiddleware, (req,res, next) =>{
     userManager.getUser(req.params.userID).then(user => {
       res.status(200).json(omit(user, "password"));

@@ -48,7 +48,64 @@ const spSql = (db) => {
     )
   };
 
+  const getSp = (spID) => {
+    return new Promise((resolve, reject) => {
+      if(isNil(spID)){
+        reject(new Error("Cannot find SP with ID: " + spID));
+      }else{
+        const getInfo = `SELECT * FROM schoolpresenter where spID = '${spID}'`;
+        query(getInfo).then((result) => {
+          if(result.length){
+            resolve(result[0]);
+          }else{
+            reject(new Error("sp not found"));
+          }
+        }).catch(err => {
+          reject(err)
+        })
+      }
+    });
+  };
+  const deleteSp = (spID) => {
+    var deleteInfo = `DELETE FROM schoolpresenter WHERE spID = '${spID}'`;
+    return new Promise((resolve, reject) =>
+      query(deleteInfo).then((result) => {
+        resolve();
+      }).catch(err => {
+        reject(err)
+      })
+    )
+  };
+  const updateSp = (spID, sp) => {
+    return new Promise((resolve, reject) => {
+      if(isNil(spID)){
+        reject(new Error("Cannot find sp with ID: " + spID));
+      }else{
+
+        let {name, sID, address, phone, email}  = sp;
+        const checkExist = `SELECT email from schoolpresenter where not spID = '${spID}' and email = '${email}'`;
+        const getInfo = `UPDATE schoolpresenter SET name = '${name}', sID = '${sID}', phone = '${phone}',  address = '${address}', email = '${email}' WHERE spID = '${spID}'`;
+        query(checkExist).then((result) => {
+          if(result && result.length){
+            reject(new Error("email_existed"));
+          }else{
+            query(getInfo).then(() => {
+              resolve();
+            }).catch(err => {
+              reject(err)
+            })
+          }
+        }).catch(err => reject(err));
+
+      }
+
+    });
+  };
+
   return {
+    updateSp,
+    getSp,
+    deleteSp,
     checkSpExisted,
     createSp,
     getSpByAccountID

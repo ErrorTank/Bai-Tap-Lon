@@ -224,7 +224,7 @@ export class AccountNewRoute extends KComponent {
       label: "Thông tin cơ bản",
       render: () => this.renderStep(),
       renderActions: () => {
-        let canFinish = !this.infoForm.getInvalidPaths().length;
+        let canFinish = !this.infoForm.getInvalidPaths().length && !this.state.err;
         return (
           <div className="">
             <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/accounts")}>Hủy bỏ

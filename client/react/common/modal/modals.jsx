@@ -45,16 +45,17 @@ export const appModal = {
             {text}
           </div>
           <div className="modal-footer">
-            <button className="btn modal-btn confirm-btn"
-                    onClick={() => modal.close(true)}
-            >
-              {btnText}
-            </button>
-            <button className="btn modal-btn cancel-btn"
+            <button className="btn modal-btn btn-danger cancel-btn ml-3"
                     onClick={() => modal.close(false)}
             >
               {cancelText}
             </button>
+            <button className="btn modal-btn btn-primary confirm-btn ml-3"
+                    onClick={() => modal.close(true)}
+            >
+              {btnText}
+            </button>
+
           </div>
         </div>
       )

@@ -53,6 +53,25 @@ const accountSql = (db) => {
     })
   };
 
+  const getAccountBriefWithCondition = (obj) => {
+    let {clientRole, orderAsc, orderBy, skip, take, role, canLogin, keyword} = obj;
+    console.log(canLogin)
+    let getSql = () => {
+      let matcher = {
+        0: `select accountID from (select u.accountID as accountID from user u where u.name like '%${keyword}%' or u.email like '%${keyword}%' union select c.accountID from candidate c where c.name like '%${keyword}%' or c.email like '%${keyword}%' union select sp.accountID from schoolpresenter sp where sp.name like '%${keyword}%' or sp.email like '%${keyword}%') fs`,
+        1: `select accountID from (select c.accountID from candidate c where c.name like '%${keyword}%' or c.email like '%${keyword}%' union select sp.accountID from schoolpresenter sp where sp.name like '%${keyword}%' or sp.email like '%${keyword}%') fs`
+      };
+      return matcher[Number(clientRole)]
+    };
+    const sql = `Select * from account where ${clientRole === 1 ? "(role = 2 or role = 3)" : "1=1" } ${!isNil(canLogin) ? `and canLogin = '${Number(canLogin)}'` : "and 1=1"} ${!isNil(role) ? `and role = '${Number(role)}'` : "and 1=1"} ${keyword ? `and (username like '%${keyword}%' or accountID in (${getSql()}))` : "and 1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
+    console.log(sql)
+    return new Promise((resolve, reject) => {
+      query(sql).then(result => {
+        resolve({accounts: result, total: result.length});
+      }).catch(err => reject(err));
+    })
+  };
+
   const getClientUserCache = (accountID) => {
     const sql = `SELECT * FROM ( ( SELECT * FROM Account WHERE accountID = '${accountID}' ) AS a INNER JOIN( SELECT * FROM USER ) AS u ) WHERE a.accountID = u.accountID`;
     return new Promise((resolve, reject) => {
@@ -102,16 +121,30 @@ const accountSql = (db) => {
 
   //update account's info
   const updateAccount = (accountID, accountObj) => {
-    let {username, password, role, canLogin} = accountObj;
 
-    let updateInfo = `UPDATE Account SET username = '${username}', password = '${password}', role = '${role}', canLogin = '${canLogin}' WHERE accountID = '${accountID}'`;
-    return new Promise((resolve, reject) =>
-      query(updateInfo).then((result) => {
-        resolve();
-      }).catch(err => {
-        reject(err)
-      })
-    )
+    return new Promise((resolve, reject) => {
+      if(isNil(accountID)){
+        reject(new Error("Cannot find account with ID: " + accountID));
+      }else{
+
+        let {username, password, role, canLogin} = accountObj;
+        const checkExist = `SELECT username from account where not accountID = '${accountID}' and username = '${username}'`;
+        let updateInfo = `UPDATE Account SET username = '${username}', password = '${password}', role = '${role}', canLogin = '${canLogin}' WHERE accountID = '${accountID}'`;
+        query(checkExist).then((result) => {
+          if(result && result.length){
+            reject(new Error("username_existed"));
+          }else{
+            query(updateInfo).then(() => {
+              resolve();
+            }).catch(err => {
+              reject(err)
+            })
+          }
+        }).catch(err => reject(err));
+
+      }
+
+    });
   };
 
 
@@ -143,6 +176,7 @@ const accountSql = (db) => {
     })
   };
 
+<<<<<<< HEAD
   //account filter
   const accountFilter = (accountObj) => {
     let {take, skip , keyword, role, canLogin} = accountObj;
@@ -187,8 +221,22 @@ const accountSql = (db) => {
 
     
   };
+=======
+  const deleteAccount = (accID) => {
+    var deleteInfo = `DELETE FROM account WHERE accountID = '${accID}'`;
+    return new Promise((resolve, reject) =>
+      query(deleteInfo).then((result) => {
+        resolve();
+      }).catch(err => {
+        reject(err)
+      })
+    )
+  };
+
+>>>>>>> 2307ab554941e9a220a5c8501f24ce94d7bf2ec5
   return {
     checkLogin,
+    deleteAccount,
     createAccount,
     updateAccount,
     getAccount,
@@ -196,7 +244,11 @@ const accountSql = (db) => {
     getAccountByRole,
     getAccountByCanLogin,
     checkAccountExisted,
+<<<<<<< HEAD
     accountFilter
+=======
+    getAccountBriefWithCondition
+>>>>>>> 2307ab554941e9a220a5c8501f24ce94d7bf2ec5
   }
 };
 
