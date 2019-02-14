@@ -143,6 +143,50 @@ const accountSql = (db) => {
     })
   };
 
+  //account filter
+  const accountFilter = (accountObj) => {
+    let {take, skip , keyword, role, canLogin} = accountObj;
+    if(keyword === '')
+    {
+      if(role === '')
+        var sql = `SELECT * FROM account WHERE canLogin LIKE "%'${canLogin}'%"`;
+
+      if(canLogin === '')
+        var sql = `SELECT * FROM account WHERE role LIKE "%'${role}'%"`;
+
+      else
+      var sql = `SELECT * FROM account WHERE canLogin LIKE "%'${canLogin}'%" AND role LIKE "%'${role}'%"`;
+    }
+
+    if(role === '')
+    {
+      if(keyword === '')
+        var sql = `SELECT * FROM account WHERE canLogin LIKE "%'${canLogin}'%"`;
+
+      if(canLogin === '')
+        var sql = `SELECT * FROM account WHERE username LIKE "%'${keyword}'%"`;
+
+      else
+      var sql = `SELECT * FROM account WHERE canLogin LIKE "%'${canLogin}'%" AND username LIKE "%'${keyword}'%"`;
+    }
+
+    if(canLogin === '')
+    {
+      if(keyword === '')
+        var sql = `SELECT * FROM account WHERE role LIKE "%'${role}'%"`;
+
+      if(role === '')
+        var sql = `SELECT * FROM account WHERE username LIKE "%'${keyword}'%"`;
+
+      else
+      var sql = `SELECT * FROM account WHERE canLogin LIKE "%'${canLogin}'%" AND username LIKE "%'${keyword}'%"`;
+    }
+
+    else
+      var sql = `SELECT * FROM account WHERE username LIKE "%'${keyword}'%" AND canLogin LIKE "%'${canLogin}'%" AND role LIKE "%'${role}'%"`;
+
+    
+  };
   return {
     checkLogin,
     createAccount,
@@ -151,7 +195,8 @@ const accountSql = (db) => {
     getClientUserCache,
     getAccountByRole,
     getAccountByCanLogin,
-    checkAccountExisted
+    checkAccountExisted,
+    accountFilter
   }
 };
 
