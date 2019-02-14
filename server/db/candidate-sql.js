@@ -138,7 +138,8 @@ const candidateSql = (db) => {
     updateCandidate,
     deleteCandidate,
     getCandidateByAccountID,
-    checkCandidateExisted
+    checkCandidateExisted,
+    getCandidateBriefWithCondition
     //define function name here
   }
 };
