@@ -33,7 +33,7 @@ const candidateSql = (db) => {
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
         resolve({
-          accounts: result,
+          candidates: result,
           total: result.length
         });
       }).catch(err => reject(err));
