@@ -176,52 +176,6 @@ const accountSql = (db) => {
     })
   };
 
-<<<<<<< HEAD
-  //account filter
-  const accountFilter = (accountObj) => {
-    let {take, skip , keyword, role, canLogin} = accountObj;
-    if(keyword === '')
-    {
-      if(role === '')
-        var sql = `SELECT * FROM account WHERE canLogin LIKE "%'${canLogin}'%"`;
-
-      if(canLogin === '')
-        var sql = `SELECT * FROM account WHERE role LIKE "%'${role}'%"`;
-
-      else
-      var sql = `SELECT * FROM account WHERE canLogin LIKE "%'${canLogin}'%" AND role LIKE "%'${role}'%"`;
-    }
-
-    if(role === '')
-    {
-      if(keyword === '')
-        var sql = `SELECT * FROM account WHERE canLogin LIKE "%'${canLogin}'%"`;
-
-      if(canLogin === '')
-        var sql = `SELECT * FROM account WHERE username LIKE "%'${keyword}'%"`;
-
-      else
-      var sql = `SELECT * FROM account WHERE canLogin LIKE "%'${canLogin}'%" AND username LIKE "%'${keyword}'%"`;
-    }
-
-    if(canLogin === '')
-    {
-      if(keyword === '')
-        var sql = `SELECT * FROM account WHERE role LIKE "%'${role}'%"`;
-
-      if(role === '')
-        var sql = `SELECT * FROM account WHERE username LIKE "%'${keyword}'%"`;
-
-      else
-      var sql = `SELECT * FROM account WHERE canLogin LIKE "%'${canLogin}'%" AND username LIKE "%'${keyword}'%"`;
-    }
-
-    else
-      var sql = `SELECT * FROM account WHERE username LIKE "%'${keyword}'%" AND canLogin LIKE "%'${canLogin}'%" AND role LIKE "%'${role}'%"`;
-
-    
-  };
-=======
   const deleteAccount = (accID) => {
     var deleteInfo = `DELETE FROM account WHERE accountID = '${accID}'`;
     return new Promise((resolve, reject) =>
@@ -233,7 +187,6 @@ const accountSql = (db) => {
     )
   };
 
->>>>>>> 2307ab554941e9a220a5c8501f24ce94d7bf2ec5
   return {
     checkLogin,
     deleteAccount,
@@ -244,11 +197,7 @@ const accountSql = (db) => {
     getAccountByRole,
     getAccountByCanLogin,
     checkAccountExisted,
-<<<<<<< HEAD
-    accountFilter
-=======
     getAccountBriefWithCondition
->>>>>>> 2307ab554941e9a220a5c8501f24ce94d7bf2ec5
   }
 };
 
