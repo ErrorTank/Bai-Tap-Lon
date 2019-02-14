@@ -112,22 +112,22 @@ const userSql = (db) => {
     )
   };
 
+
   //
   const getUserBriefWithCondition = (obj) => {
     let {keyword, skip, take, orderAsc, orderBy, accountType} = obj;
-    console.log(canLogin)
     let getSql = () => {
       let matcher = {
-        0: `select accountID from (select u.accountID from user u where u.name like '%${keyword}%' or u.email like '%${keyword}%' and role = 0) fs`,
-        1: `select accountID from (select u.accountID from user u where c.name like '%${keyword}%' or c.email like '%${keyword}%' and role = 1) fs`
+        0: `select accountID from account where role = 0`,
+        1: `select accountID from account where role = 1`
       };
       return matcher[Number(accountType)]
     };
-    const sql = `Select * from user where ${clientRole === 1 ? "(role = 0)" : "1=1" } ${keyword ? `and (username like '%${keyword}%' or accountID in (${getSql()}))` : "and 1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
+    const sql = `Select * from user where ${!isNil(accountType) ? `accountID in (${getSql()})` : "1=1" } ${keyword ? `and (name like '%${keyword}%' or email in like '%${keyword}%')` : "and 1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
     console.log(sql)
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
-        resolve({accounts: result, total: result.length});
+        resolve({users: result, total: result.length});
       }).catch(err => reject(err));
     })
   };
