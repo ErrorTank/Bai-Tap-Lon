@@ -112,13 +112,34 @@ const userSql = (db) => {
     )
   };
 
+  //
+  const getUserBriefWithCondition = (obj) => {
+    let {keyword, skip, take, orderAsc, orderBy, accountType} = obj;
+    console.log(accountType)
+    let getSql = () => {
+      let matcher = {
+        0: `select accountID from (select u.accountID from user u where u.name like '%${keyword}%' or u.email like '%${keyword}%' and role = 0) fs`,
+        1: `select accountID from (select u.accountID from user u where c.name like '%${keyword}%' or c.email like '%${keyword}%' and role = 1) fs`
+      };
+      return matcher[Number(accountType)]
+    };
+    const sql = `Select * from user where ${accountType === 1 ? "(role = 0)" : "1=1" } ${keyword ? `and (username like '%${keyword}%' or accountID in (${getSql()}))` : "and 1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
+    console.log(sql)
+    return new Promise((resolve, reject) => {
+      query(sql).then(result => {
+        resolve({accounts: result, total: result.length});
+      }).catch(err => reject(err));
+    })
+  };
+
   return {
     getUser,
     updateUser,
     getUserByAccountID,
     createUser,
     checkUserExisted,
-    deleteUser
+    deleteUser,
+    getUserBriefWithCondition
   }
 };
 module.exports = userSql;
