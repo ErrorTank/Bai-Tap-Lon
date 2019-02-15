@@ -1,9 +1,24 @@
 
 import {authenApi} from "../api";
+import {urlUtils} from "../../common/url-utils";
 
 export const schoolApi = {
   get(schoolID) {
     return authenApi.get("/school/" + schoolID);
+  },
+  getSchoolsBriefWithCondition(filters){
+    let {skip, take, filter = {}, sort} = filters || {};
+
+    let {key, asc} = sort || {};
+    let params = {
+      orderAsc: asc,
+      orderBy: key,
+      skip,
+      take,
+      keyword: filter.keyword || null,
+      sID: filter.school.value
+    };
+    return authenApi.get(`/sp/brief${urlUtils.buildParams(params)}`)
   },
   checkCandidate(cID, sID){
     return authenApi.get(`/school/${sID}/check-candidate/${cID}`);
