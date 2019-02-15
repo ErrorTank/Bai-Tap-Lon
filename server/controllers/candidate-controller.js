@@ -16,6 +16,13 @@ module.exports = (db, dbManager) => {
       res.status(200).end();
     }).catch(err => next(err))
   });
+  router.get("/candidate/brief", authMiddleware, (req,res, next) =>{
+    console.log({...req.query});
+    candidateManager.getCandidateBriefWithCondition({...req.query}).then((data) => {
+      res.status(200).json(data);
+    }).catch(err => next(err));
+
+  });
   router.post("/candidate/check", authMiddleware, (req,res, next) =>{
     candidateManager.checkCandidateExisted(req.body.candidate).then(() => {
       res.status(200).end();

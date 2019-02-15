@@ -1,6 +1,7 @@
 
 import {authenApi} from "../api";
 import {userInfo} from "../../common/states/user-info";
+import {urlUtils} from "../../common/url-utils";
 
 export const candidateApi = {
   get(candidateID) {
@@ -10,7 +11,6 @@ export const candidateApi = {
     return authenApi.put(`/candidate/${candidate.cID}`, {candidate});
   },
   getCandidateBrief(filters){
-    let {role} = userInfo.getState();
     let {skip, take, filter = {}, sort} = filters || {};
 
     let {key, asc} = sort || {};
@@ -19,11 +19,11 @@ export const candidateApi = {
       orderBy: key,
       skip,
       take,
-      role: filter.role.value,
-      canLogin: filter.canLogin.value,
+      gender: filter.gender.value,
       keyword: filter.keyword || null,
+      sID: filter.school.value
     };
-    return authenApi.get(`/accounts/${role}/brief${urlUtils.buildParams(params)}`)
+    return authenApi.get(`/candidate/brief${urlUtils.buildParams(params)}`)
   },
   deleteCandidate(cID){
     return authenApi.delete(`/candidate/${cID}`)

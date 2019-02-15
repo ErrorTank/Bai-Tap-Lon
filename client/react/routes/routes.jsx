@@ -70,7 +70,7 @@ export class MainRoute extends KComponent {
             <AuthenRoute exact path='/candidate/:candidateID/edit' component={CandidateRoute} excludeRoles={[3]}/>
             <AuthenRoute exact path='/sp/:spID/edit' component={SchoolPresenterRoute} excludeRoles={[2, 3]}/>
             <AuthenRoute exact path='/user/:userID/edit' component={UserRoute} excludeRoles={[2,3]}/>
-            <AuthenRoute exact path='/users' component={UserListRoute} excludeRoles={[2,3]}/>
+            <AuthenRoute exact path='/users' component={UserListRoute} excludeRoles={[2,3, 1]}/>
             <AuthenRoute exact path='/accounts' component={AccountListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/candidates' component={CandidateListRoute} excludeRoles={[3]}/>
             <AuthenRoute exact path='/school-presenters' component={AdminDashboard} excludeRoles={[2,3]}/>

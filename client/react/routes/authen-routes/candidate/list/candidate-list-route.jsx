@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 import {PageTitle} from "../../../../common/page-title/page-title";
 import {RouteTitle} from "../../../../layout/route-title/route-title";
 import {customHistory} from "../../../routes";
@@ -9,20 +9,35 @@ import {DebounceSearchInput} from "../../../../common/debounce-search-input/debo
 import {ApiDataTable} from "../../../../common/data-table/api-data-table/api-data-table";
 import {schoolsBriefCache} from "../../../../../common/api-cache/common-cache";
 import {candidateApi} from "../../../../../api/common/candidate-api";
+import {schoolApi} from "../../../../../api/common/school-api";
+import pick from "lodash/pick"
+import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
 
 export class CandidateListRoute extends React.Component {
   constructor(props) {
     super(props);
+    let {role, sID} = userInfo.getState();
     let getDefaultFilter = () => ({
       keyword: "",
       gender: {label: "Tất cả", value: null},
       school: {label: "Tất cả", value: null},
-      schools: []
+      schools: [],
+      loading: true
+
     });
     this.state = {
       ...getDefaultFilter()
     };
-    schoolsBriefCache.get().then(schools => this.setState({schools: [{name: "Tất cả", sID: null}].concat(schools)}))
+    if (role !== 2)
+      schoolsBriefCache.get().then(schools => this.setState({
+        schools: [{label: "Tất cả", value: null}].concat(schools.map(each => ({label: each.name, value: each.sID}))),
+        loading: false
+      }));
+    else
+      schoolApi.get(sID).then(school => this.setState({
+        school: {label: school.name, value: school.sID},
+        loading: false
+      }))
   };
 
   gender = [
@@ -33,12 +48,11 @@ export class CandidateListRoute extends React.Component {
     }, {
       label: "Nam",
       value: 0
-    },{
+    }, {
       label: "Nữ",
       value: 1
     },
   ];
-
 
 
   parseCanGender = (role) => {
@@ -60,7 +74,7 @@ export class CandidateListRoute extends React.Component {
   };
 
   parseCanSchoolStr = (sID) => {
-    return this.state.schools.find(each => each.sID === sID)
+    return this.state.schools.find(each => each.value === sID).label
   };
 
 
@@ -81,19 +95,28 @@ export class CandidateListRoute extends React.Component {
       }
     }, {
 
-      label: "Trường học",
+      label: "Email",
       cellDisplay: candidate => (
-        <p className="school-display">
-          {this.parseCanSchoolStr(candidate.sID)}
+        <p className="email-display">
+          {candidate.email}
         </p>
 
       )
-    },
+    }, {
+
+      label: "Trường học",
+      cellDisplay: candidate => (
+        <p className="school-display">
+          {userInfo.getState().role === 2 ? this.state.school.label  :this.parseCanSchoolStr(candidate.sID)}
+        </p>
+
+      )
+    }
   ];
 
 
   render() {
-    let {school, keyword, gender, schools} = this.state;
+    let {school, keyword, gender, schools, loading} = this.state;
     console.log(this.state);
     const api = (skip, take, filter, sort) => candidateApi.getCandidateBrief({skip, take, filter, sort})
       .then(({candidates, total}) => ({rows: candidates, total}));
@@ -107,70 +130,79 @@ export class CandidateListRoute extends React.Component {
           <div className="candidate-list-route">
             <div className="m-portlet">
               <div className="m-portlet__body">
-                <div className="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
-                  <div className="row align-items-end">
-                    <div className="col-xl-8 order-2 order-xl-1 p-0">
-                      <div className="form-group m-form__group row align-items-end">
-                        <div className="col-md-4 pl-0">
-                          <CustomSelect
-                            label="Trường"
-                            list={schools}
-                            value={school}
-                            compare={item => item.sID === school.value}
-                            onChange={each => this.setState({school: {label: each.name, value: each.sID}})}
-                          />
-                        </div>
-                        <div className="col-md-4 pl-0">
-                          <CustomSelect
-                            label="Giới tính"
-                            list={this.gender}
-                            value={gender}
-                            compare={item => item.value === gender.value}
-                            onChange={each => this.setState({gender: {...each}})}
-                          />
-                        </div>
-                        <div className="col-md-4 pl-0">
-                          <DebounceSearchInput
-                            timeout={1000}
-                            value={keyword}
-                            renderInput={({onChange, value}) => (
-                              <IconInput
-                                value={value}
-                                placeholder={"Tìm kiếm"}
-                                onChange={onChange}
-                                icon={(
-                                  <i className="fas fa-search"></i>
-                                )}
-                              />
-                            )}
-                            onSearch={(keyword) => this.setState({keyword})}
-                          />
+                {loading ? (
+                  <LoadingInline className={"first-load"}/>
+                ) : (
+                  <Fragment>
+                    <div className="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
+                      <div className="row align-items-end">
+                        <div className="col order-2 order-xl-1 p-0">
+                          <div className="form-group m-form__group row align-items-end">
+                            {userInfo.getState().role !== 2 && (
+                              <div className="col-md-4 pl-0">
+                                <CustomSelect
+                                  label="Trường"
+                                  list={schools}
+                                  value={school}
+                                  compare={item => item.value === school.value}
+                                  onChange={each => this.setState({school: {label: each.label, value: each.value}})}
+                                />
 
+
+                              </div>
+                            )
+
+                            }
+
+                            <div className="col-md-4 pl-0">
+                              <CustomSelect
+                                label="Giới tính"
+                                list={this.gender}
+                                value={gender}
+                                compare={item => item.value === gender.value}
+                                onChange={each => this.setState({gender: {...each}})}
+                              />
+                            </div>
+                            <div className="col-md-4 pl-0">
+                              <DebounceSearchInput
+                                timeout={1000}
+                                value={keyword}
+                                renderInput={({onChange, value}) => (
+                                  <IconInput
+                                    value={value}
+                                    placeholder={"Tìm kiếm"}
+                                    onChange={onChange}
+                                    icon={(
+                                      <i className="fas fa-search"></i>
+                                    )}
+                                  />
+                                )}
+                                onSearch={(keyword) => this.setState({keyword})}
+                              />
+
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-4 order-1 order-xl-2 m--align-right p-0">
-                      <button type="button" className="btn btn-primary create-account"
-                              onClick={() => customHistory.push("/account/new")}
-                      >
-                        <i className="fas fa-plus"></i> Tạo tài khoản
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <ApiDataTable
-                  className="account-list-table"
-                  columns={this.columns}
-                  filter={{
-                    canLogin,
-                    role,
-                    keyword
-                  }}
-                  rowLinkTo={(row) => `account/${row.accountID}/edit`}
-                  api={api}
-                  pageSize={10}
-                  placeholder={"Không có tài khoản nào"}
-                />
+                    <ApiDataTable
+                      className="candidate-list-table"
+                      columns={this.columns}
+                      filter={{
+                        school,
+                        gender,
+                        keyword
+                      }}
+                      rowLinkTo={(row) => `candidate/${row.cID}/edit`}
+                      api={api}
+                      pageSize={10}
+                      placeholder={"Không có thí sinh nào nào"}
+                    />
+                  </Fragment>
+                )
+
+                }
+
               </div>
 
             </div>

@@ -7,7 +7,25 @@ const schoolSql = (db) => {
   const query = createQuery(db);
 
   //create location
+  const getSchool = (schoolID) => {
+    return new Promise((resolve, reject) => {
+      if (isNil(schoolID)) {
+        reject(new Error("Cannot find school with ID: " + schoolID));
+      } else {
+        const getInfo = `SELECT * FROM school where sID = '${schoolID}'`;
+        query(getInfo).then((result) => {
+          if (result.length) {
+            resolve(result[0]);
+          } else {
+            reject(new Error("school not found"));
+          }
+        }).catch(err => {
+          reject(err)
+        })
+      }
 
+    });
+  };
   const getSchoolsBrief = () => {
     let getInfo = `SELECT sID, name, address FROM school`;
     return new Promise((resolve, reject) =>
@@ -41,7 +59,7 @@ const schoolSql = (db) => {
 
 
   return {
-
+    getSchool,
     getSchoolsBrief,
     checkCandidate
     //define function name here
