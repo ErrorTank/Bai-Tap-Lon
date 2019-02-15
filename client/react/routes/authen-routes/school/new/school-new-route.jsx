@@ -33,7 +33,7 @@ export class SchoolNewRoute extends KComponent {
 
 
     this.onUnmount(this.form.on("change", () => this.forceUpdate()));
-
+    this.form.validateData();
   };
 
   createNewSchool = () => {
@@ -74,6 +74,7 @@ export class SchoolNewRoute extends KComponent {
       ),
       renderActions: () => {
         let canFinish = !this.form.getInvalidPaths().length && !this.state.err;
+
         return (
           <div className="">
             <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/schools")}>Hủy bỏ

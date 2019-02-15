@@ -77,10 +77,14 @@ const schoolSql = (db) => {
     var {name, email, address, phone} = school;
 
     var createInfo = `INSERT INTO school (sID, name, email, address, phone) VALUES ('${sID}', '${name}','${email}', '${address}', '${phone}')`;
+    var getItem = `select * from school where email = '${email}'`;
     return new Promise((resolve, reject) =>
-      query(createInfo).then((result) => {
-        console.log(result)
-        resolve(result);
+      query(createInfo).then(() => {
+        query(getItem).then((result) => {
+
+          resolve(result[0]);
+        }).catch(err => reject(err));
+
       }).catch(err => {
         reject(err)
       })

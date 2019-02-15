@@ -8,7 +8,7 @@ const omit = require("lodash/omit");
 
 module.exports = (db, dbManager) => {
   const schoolManager = dbManager("school");
-  router.post("/user/check", authMiddleware, (req, res, next) => {
+  router.post("/school/check", authMiddleware, (req, res, next) => {
     schoolManager.checkSchoolExisted(req.body.school).then(() => {
       res.status(200).end();
     }).catch(err => next(err))
@@ -21,7 +21,8 @@ module.exports = (db, dbManager) => {
 
   });
   router.post("/school/create", authMiddleware, (req, res, next) => {
-    schoolManager.createSchool().then(school => {
+    console.log("đas")
+    schoolManager.createSchool(req.body.school).then(school => {
       res.status(200).json(school);
     }).catch(err => next(err))
   });
