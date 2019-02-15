@@ -130,7 +130,7 @@ export class UserListRoute extends React.Component {
                         accountType,
                         keyword
                       }}
-                      rowLinkTo={(row) => `user/${row.userID}/edit`}
+                      rowLinkTo={(row) => `/user/${row.userID}/edit`}
                       api={api}
                       pageSize={10}
                       placeholder={"Không có người dùng nào"}

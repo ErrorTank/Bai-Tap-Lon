@@ -11,6 +11,14 @@ const omit = require("lodash/omit");
 
 module.exports = (db, dbManager) => {
   const spManager = dbManager("sp");
+  router.get("/sp/brief", authMiddleware, (req,res, next) =>{
+
+    console.log({...req.query});
+    spManager.getSpBriefWithCondition({...req.query}).then((data) => {
+      res.status(200).json(data);
+    }).catch(err => next(err));
+
+  });
   router.delete("/sp/:spID", authMiddleware, (req,res, next) =>{
     spManager.deleteSp(req.params.spID).then(() => {
       res.status(200).end();

@@ -124,7 +124,7 @@ const userSql = (db) => {
       };
       return matcher[Number(accountType)]
     };
-    const sql = `Select  SQL_CALC_FOUND_ROWS * from user where ${!isNil(accountType) ? `accountID in (${getSql()})` : "1=1" } ${keyword ? `and (name like '%${keyword}%' or email in like '%${keyword}%')` : "and 1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
+    const sql = `Select  SQL_CALC_FOUND_ROWS * from user where ${!isNil(accountType) ? `accountID in (${getSql()})` : "1=1" } ${keyword ? `and (name like '%${keyword}%' or email  like '%${keyword}%')` : "and 1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
     console.log(sql)
     return new Promise((resolve, reject) => {
       query(sql).then(result => {

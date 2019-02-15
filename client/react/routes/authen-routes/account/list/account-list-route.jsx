@@ -153,7 +153,7 @@ export class AccountListRoute extends React.Component {
                     role,
                     keyword
                   }}
-                  rowLinkTo={(row) => `account/${row.accountID}/edit`}
+                  rowLinkTo={(row) => `/account/${row.accountID}/edit`}
                   api={api}
                   pageSize={10}
                   placeholder={"Không có tài khoản nào"}

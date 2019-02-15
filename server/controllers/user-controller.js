@@ -16,12 +16,6 @@ module.exports = (db, dbManager) => {
       res.status(200).end();
     }).catch(err => next(err))
   });
-  router.get("/user/:userID", authMiddleware, (req,res, next) =>{
-
-    userManager.getUser(req.params.userID).then(user => {
-      res.status(200).json(omit(user, "password"));
-    }).catch(err => next(err))
-  });
   router.get("/user/brief", authMiddleware, (req,res, next) =>{
 
     console.log({...req.query});
@@ -30,6 +24,13 @@ module.exports = (db, dbManager) => {
     }).catch(err => next(err));
 
   });
+  router.get("/user/:userID", authMiddleware, (req,res, next) =>{
+
+    userManager.getUser(req.params.userID).then(user => {
+      res.status(200).json(omit(user, "password"));
+    }).catch(err => next(err))
+  });
+
   router.get("/user/account/:accountID", authMiddleware, (req,res, next) =>{
     userManager.getUserByAccountID(req.params.accountID).then(user => {
       res.status(200).json(user);

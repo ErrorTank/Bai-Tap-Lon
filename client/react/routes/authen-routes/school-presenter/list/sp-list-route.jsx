@@ -8,18 +8,15 @@ import {IconInput} from "../../../../common/icon-input/icon-input";
 import {DebounceSearchInput} from "../../../../common/debounce-search-input/debounce-search-input";
 import {ApiDataTable} from "../../../../common/data-table/api-data-table/api-data-table";
 import {schoolsBriefCache} from "../../../../../common/api-cache/common-cache";
-import {candidateApi} from "../../../../../api/common/candidate-api";
-import {schoolApi} from "../../../../../api/common/school-api";
 import pick from "lodash/pick"
 import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
+import {schoolPresenterApi} from "../../../../../api/common/school-presenter-api";
 
-export class CandidateListRoute extends React.Component {
+export class SpListRoute extends React.Component {
   constructor(props) {
     super(props);
-    let {role, sID} = userInfo.getState();
     let getDefaultFilter = () => ({
       keyword: "",
-      gender: {label: "Tất cả", value: null},
       school: {label: "Tất cả", value: null},
       schools: [],
       loading: true
@@ -28,50 +25,16 @@ export class CandidateListRoute extends React.Component {
     this.state = {
       ...getDefaultFilter()
     };
-    if (role !== 2)
-      schoolsBriefCache.get().then(schools => this.setState({
-        schools: [{label: "Tất cả", value: null}].concat(schools.map(each => ({label: each.name, value: each.sID}))),
-        loading: false
-      }));
-    else
-      schoolApi.get(sID).then(school => this.setState({
-        school: {label: school.name, value: school.sID},
-        loading: false
-      }))
+
+    schoolsBriefCache.get().then(schools => this.setState({
+      schools: [{label: "Tất cả", value: null}].concat(schools.map(each => ({label: each.name, value: each.sID}))),
+      loading: false
+    }));
+
   };
 
-  gender = [
-    {
-      label: "Tất cả",
-      value: null,
-
-    }, {
-      label: "Nam",
-      value: 0
-    }, {
-      label: "Nữ",
-      value: 1
-    },
-  ];
 
 
-  parseCanGender = (role) => {
-    let matcher = {
-      0: {
-        label: "Nam",
-        icon: (
-          <i className="fas fa-mars male"></i>
-        )
-      },
-      1: {
-        label: "Nữ",
-        icon: (
-          <i className="fas fa-venus female"></i>
-        )
-      },
-    };
-    return matcher[role];
-  };
 
   parseCanSchoolStr = (sID) => {
     return this.state.schools.find(each => each.value === sID).label
@@ -82,18 +45,7 @@ export class CandidateListRoute extends React.Component {
     {
       label: "Tên đầy đủ",
       cellDisplay: candidate => candidate.name,
-    }, {
-      label: "Giới tính",
-      cellDisplay: candidate => {
-        let {label, icon} = this.parseCanGender(candidate.gender);
-        return (
-          <span className="gender-display">
-            {icon} {label}
-          </span>
-
-        )
-      }
-    }, {
+    },  {
 
       label: "Email",
       cellDisplay: candidate => (
@@ -107,7 +59,7 @@ export class CandidateListRoute extends React.Component {
       label: "Trường học",
       cellDisplay: candidate => (
         <p className="school-display">
-          {userInfo.getState().role === 2 ? this.state.school.label  :this.parseCanSchoolStr(candidate.sID)}
+          {userInfo.getState().role === 2 ? this.state.school.label : this.parseCanSchoolStr(candidate.sID)}
         </p>
 
       )
@@ -116,18 +68,18 @@ export class CandidateListRoute extends React.Component {
 
 
   render() {
-    let {school, keyword, gender, schools, loading} = this.state;
+    let {school, keyword, schools, loading} = this.state;
     console.log(this.state);
-    const api = (skip, take, filter, sort) => candidateApi.getCandidateBrief({skip, take, filter, sort})
-      .then(({candidates, total}) => ({rows: candidates, total}));
+    const api = (skip, take, filter, sort) => schoolPresenterApi.getSpBrief({skip, take, filter, sort})
+      .then(({sps, total}) => ({rows: sps, total}));
     return (
       <PageTitle
-        title={"Danh sách Thí sinh"}
+        title={"Danh sách Đại diện trường"}
       >
         <RouteTitle
-          content={"Danh sách Thí sinh"}
+          content={"Danh sách Đại diện trường"}
         >
-          <div className="candidate-list-route">
+          <div className="sp-list-route">
             <div className="m-portlet">
               <div className="m-portlet__body">
                 {loading ? (
@@ -138,31 +90,18 @@ export class CandidateListRoute extends React.Component {
                       <div className="row align-items-end">
                         <div className="col order-2 order-xl-1 p-0">
                           <div className="form-group m-form__group row align-items-end">
-                            {userInfo.getState().role !== 2 && (
-                              <div className="col-md-4 pl-0">
-                                <CustomSelect
-                                  label="Trường"
-                                  list={schools}
-                                  value={school}
-                                  compare={item => item.value === school.value}
-                                  onChange={each => this.setState({school: {label: each.label, value: each.value}})}
-                                />
-
-
-                              </div>
-                            )
-
-                            }
-
                             <div className="col-md-4 pl-0">
                               <CustomSelect
-                                label="Giới tính"
-                                list={this.gender}
-                                value={gender}
-                                compare={item => item.value === gender.value}
-                                onChange={each => this.setState({gender: {...each}})}
+                                label="Trường"
+                                list={schools}
+                                value={school}
+                                compare={item => item.value === school.value}
+                                onChange={each => this.setState({school: {label: each.label, value: each.value}})}
                               />
+
+
                             </div>
+
                             <div className="col-md-4 pl-0">
                               <DebounceSearchInput
                                 timeout={1000}
@@ -186,17 +125,16 @@ export class CandidateListRoute extends React.Component {
                       </div>
                     </div>
                     <ApiDataTable
-                      className="candidate-list-table"
+                      className="sp-list-table"
                       columns={this.columns}
                       filter={{
                         school,
-                        gender,
                         keyword
                       }}
-                      rowLinkTo={(row) => `/candidate/${row.cID}/edit`}
+                      rowLinkTo={(row) => `/sp/${row.spID}/edit`}
                       api={api}
                       pageSize={10}
-                      placeholder={"Không có thí sinh nào"}
+                      placeholder={"Không có đại diện trường nào"}
                     />
                   </Fragment>
                 )

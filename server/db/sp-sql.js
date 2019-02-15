@@ -105,16 +105,18 @@ const spSql = (db) => {
   //
   const getSpBriefWithCondition = (obj) => {
     let {keyword, skip, take, orderAsc, orderBy, sID} = obj;
-    const sql = `Select * from schoolPresenter where ${keyword ? `(name like '%${keyword}%' or address like '%${keyword}%' or phone like '%${keyword}%' or email like '%${keyword}%')` : "1=1"} ${!isNil(sID) ? `and sID = '${Number(sID)}'` : "and 1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
+    const sql = `Select SQL_CALC_FOUND_ROWS * from schoolPresenter where ${keyword ? `(name like '%${keyword}%' or address like '%${keyword}%'  or email like '%${keyword}%')` : "1=1"} ${!isNil(sID) ? `and sID = '${Number(sID)}'` : "and 1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
     console.log(sql)
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
-        resolve({
-          sps: result,
-          total: result.length
-        });
+        query(`Select FOUND_ROWS() as count`).then((result2) => {
+
+          resolve({sps: result, total: result2[0].count});
+        }).catch(err => reject(err));
+
       }).catch(err => reject(err));
     })
+
   };
   return {
     updateSp,
