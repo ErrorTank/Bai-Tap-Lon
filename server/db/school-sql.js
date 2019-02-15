@@ -59,14 +59,15 @@ const schoolSql = (db) => {
   //
   const getSchoolBriefWithCondition = (obj) => {
     let {keyword, skip, take, orderAsc, orderBy} = obj;
-    const sql = `Select * from school where ${keyword ? `(name like '%${keyword}%' or address like '%${keyword}%' or phone like '%${keyword}%' or email like '%${keyword}%')` : "1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
+    const sql = `Select SQL_CALC_FOUND_ROWS * from school where ${keyword ? `(name like '%${keyword}%' or address like '%${keyword}%'  or email like '%${keyword}%')` : "1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
     console.log(sql)
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
-        resolve({
-          accounts: result,
-          total: result.length
-        });
+        query(`Select FOUND_ROWS() as count`).then((result2) => {
+
+          resolve({sps: result, total: result2[0].count});
+        }).catch(err => reject(err));
+
       }).catch(err => reject(err));
     })
   };
