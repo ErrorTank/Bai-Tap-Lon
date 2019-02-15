@@ -8,7 +8,7 @@ export class MultipleStepsTabs extends React.Component {
   };
 
   render() {
-    let {onClickLabel, steps, currentStep,} = this.props;
+    let {onClickLabel = () =>  null, steps, currentStep,} = this.props;
     return (
       <div className="multiple-steps-tabs m-portlet">
         <div className="m-wizard m-wizard--5 m-wizard--success m-wizard--step-first">

@@ -56,6 +56,37 @@ const schoolSql = (db) => {
     )
   };
 
+  const checkSchoolExisted = ({email}) => {
+    const check = `Select * from school where email = '${email}' `;
+    return new Promise((resolve, reject) => {
+      query(check).then(result => {
+        if (result.length) {
+          reject(new Error("email_existed"));
+        } else {
+          resolve();
+        }
+      }).catch(err => reject(err));
+    })
+  };
+  const createSchool = (school) => {
+    //generate random ID for location
+    var id = uniquid();
+    var sID = id.slice(-6,-1)+id.slice(-1);
+
+    //destruct object for further use
+    var {name, email, address, phone} = school;
+
+    var createInfo = `INSERT INTO school (sID, name, email, address, phone) VALUES ('${sID}', '${name}','${email}', '${address}', '${phone}')`;
+    return new Promise((resolve, reject) =>
+      query(createInfo).then((result) => {
+        console.log(result)
+        resolve(result);
+      }).catch(err => {
+        reject(err)
+      })
+    )
+  };
+
   //
   const getSchoolBriefWithCondition = (obj) => {
     let {keyword, skip, take, orderAsc, orderBy} = obj;
@@ -73,10 +104,12 @@ const schoolSql = (db) => {
   };
 
   return {
+    createSchool,
     getSchool,
     getSchoolsBrief,
     checkCandidate,
-    getSchoolBriefWithCondition
+    getSchoolBriefWithCondition,
+    checkSchoolExisted
     //define function name here
   }
 };

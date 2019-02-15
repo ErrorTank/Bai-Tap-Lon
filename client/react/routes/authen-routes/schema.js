@@ -41,6 +41,7 @@ const schoolSchema = yup.object().shape({
   phone: yup.string().required("SĐT không được để trống").isPhone("SĐT không hợp lệ"),
   address: yup.string().max(200, "Địa chỉ không được vượt quá 200 ký tự").required(),
   email: yup.string().email("Email không hợp lệ").required("Email không được để trống"),
+
 });
 
 export {

@@ -8,12 +8,22 @@ const omit = require("lodash/omit");
 
 module.exports = (db, dbManager) => {
   const schoolManager = dbManager("school");
-    router.get("/schools/brief", authMiddleware, (req, res, next) => {
+  router.post("/user/check", authMiddleware, (req, res, next) => {
+    schoolManager.checkSchoolExisted(req.body.school).then(() => {
+      res.status(200).end();
+    }).catch(err => next(err))
+  });
+  router.get("/schools/brief", authMiddleware, (req, res, next) => {
     console.log({...req.query})
-      schoolManager.getSchoolBriefWithCondition({...req.query}).then((data) => {
+    schoolManager.getSchoolBriefWithCondition({...req.query}).then((data) => {
       res.status(200).json(data);
     }).catch(err => next(err));
 
+  });
+  router.post("/school/create", authMiddleware, (req, res, next) => {
+    schoolManager.createSchool().then(school => {
+      res.status(200).json(school);
+    }).catch(err => next(err))
   });
   router.get("/schools/brief-no-con", authMiddleware, (req, res, next) => {
     schoolManager.getSchoolsBrief().then(schools => {

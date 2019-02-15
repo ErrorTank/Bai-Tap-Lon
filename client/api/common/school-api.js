@@ -1,4 +1,3 @@
-
 import {authenApi} from "../api";
 import {urlUtils} from "../../common/url-utils";
 
@@ -6,7 +5,14 @@ export const schoolApi = {
   get(schoolID) {
     return authenApi.get("/school/" + schoolID);
   },
-  getSchoolsBriefWithCondition(filters){
+  create(school) {
+    return authenApi.post("/school/create", {school})
+  },
+
+  checkSchoolExisted(school) {
+    return authenApi.post("/school/check", {school})
+  },
+  getSchoolsBriefWithCondition(filters) {
     let {skip, take, filter = {}, sort} = filters || {};
 
     let {key, asc} = sort || {};
@@ -19,16 +25,16 @@ export const schoolApi = {
     };
     return authenApi.get(`/schools/brief${urlUtils.buildParams(params)}`)
   },
-  checkCandidate(cID, sID){
+  checkCandidate(cID, sID) {
     return authenApi.get(`/school/${sID}/check-candidate/${cID}`);
   },
-  getSchoolsBrief(){
+  getSchoolsBrief() {
     return authenApi.get("/schools/brief-no-con");
   },
-  update(user){
+  update(user) {
     return authenApi.put(`/user/${user.userID}`, {user});
   },
-  getSchoolByAccountID(accountID){
+  getSchoolByAccountID(accountID) {
     return authenApi.get(`/school/account/${accountID}`);
   }
 };
