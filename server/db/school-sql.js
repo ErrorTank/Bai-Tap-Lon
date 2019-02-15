@@ -65,7 +65,7 @@ const schoolSql = (db) => {
       query(sql).then(result => {
         query(`Select FOUND_ROWS() as count`).then((result2) => {
 
-          resolve({sps: result, total: result2[0].count});
+          resolve({schools: result, total: result2[0].count});
         }).catch(err => reject(err));
 
       }).catch(err => reject(err));

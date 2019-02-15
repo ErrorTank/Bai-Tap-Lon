@@ -15,7 +15,7 @@ module.exports = (db, dbManager) => {
     }).catch(err => next(err));
 
   });
-  router.get("/schools/brief", authMiddleware, (req, res, next) => {
+  router.get("/schools/brief-no-con", authMiddleware, (req, res, next) => {
     schoolManager.getSchoolsBrief().then(schools => {
       res.status(200).json(schools);
     }).catch(err => next(err))

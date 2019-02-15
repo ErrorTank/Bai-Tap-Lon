@@ -16,15 +16,14 @@ export const schoolApi = {
       skip,
       take,
       keyword: filter.keyword || null,
-      sID: filter.school.value
     };
-    return authenApi.get(`/sp/brief${urlUtils.buildParams(params)}`)
+    return authenApi.get(`/schools/brief${urlUtils.buildParams(params)}`)
   },
   checkCandidate(cID, sID){
     return authenApi.get(`/school/${sID}/check-candidate/${cID}`);
   },
   getSchoolsBrief(){
-    return authenApi.get("/schools/brief");
+    return authenApi.get("/schools/brief-no-con");
   },
   update(user){
     return authenApi.put(`/user/${user.userID}`, {user});
