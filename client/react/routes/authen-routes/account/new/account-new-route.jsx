@@ -9,7 +9,7 @@ import {userInfo} from "../../../../../common/states/user-info";
 import {customHistory} from "../../../routes";
 import {AccountInfoForm} from "../edit/account-info-form/account-info-form";
 import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
-import {UserInfoForm} from "../../user/edit/user-info-form/user-info-form";
+import {UserInfoForm} from "../../user/user-info-form/user-info-form";
 import {CandidateInfoForm} from "../../candidate/candidate-info-form/candidate-info-form";
 import {SchoolPresenterInfoForm} from "../../school-presenter/school-presenter-info-form/school-presenter-info-form";
 import {MultipleStepsTabs} from "../../../../common/multiple-steps-tabs/multiple-steps-tabs";

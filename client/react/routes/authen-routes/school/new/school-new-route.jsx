@@ -10,7 +10,7 @@ import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
 
 import {MultipleStepsTabs} from "../../../../common/multiple-steps-tabs/multiple-steps-tabs";
 
-import {SchoolInfoForm} from "../edit/school-info-form";
+import {SchoolInfoForm} from "../school-info-form/school-info-form";
 import {schoolApi} from "../../../../../api/common/school-api";
 
 

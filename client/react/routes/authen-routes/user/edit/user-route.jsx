@@ -9,7 +9,7 @@ import {authenCache} from "../../../../../common/cache/authen-cache";
 import {userApi} from "../../../../../api/common/user-api";
 import {toDefaultRoute} from "../../../route-type";
 import classnames from "classnames"
-import {UserInfoForm} from "./user-info-form/user-info-form";
+import {UserInfoForm} from "../user-info-form/user-info-form";
 import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
 import * as yup from "yup";
 import {createSimpleForm} from "../../../../common/form-validator/form-validator";
@@ -35,15 +35,19 @@ export class UserRoute extends KComponent {
     this.onUnmount(this.form.on("change", () => this.forceUpdate()));
     let {userID, role} = userInfo.getState();
     let {userID: alternateUserID} = props.match.params;
-    if (!alternateUserID || (role === 1 && userID !== alternateUserID)) {
+    if(alternateUserID && ((role === 1 && userID !== alternateUserID) || role !== 1)){
+      this.fetchUser(alternateUserID)
+    }else{
       customHistory.push(toDefaultRoute());
-    } else {
-      userApi.get(alternateUserID).then(data => {
-        let info = pick(data, ["name", "gender", "address", "phone", "email", "CMT", "userID", "employeeID", "accountID"]);
-        this.form.updateData({...info}).then(() =>  this.setState({loading: false, draft: {...info}}));
-      }).catch(err => customHistory.push(toDefaultRoute()))
     }
 
+  };
+
+  fetchUser = (userID) => {
+    userApi.get(userID).then(data => {
+      let info = pick(data, ["name", "gender", "address", "phone", "email", "CMT", "userID", "employeeID", "accountID"]);
+      this.form.updateData({...info}).then(() =>  this.setState({loading: false, draft: {...info}}));
+    }).catch(err => customHistory.push(toDefaultRoute()))
   };
 
   componentDidMount(){

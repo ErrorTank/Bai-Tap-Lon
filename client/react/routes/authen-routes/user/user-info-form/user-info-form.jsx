@@ -1,9 +1,9 @@
 import React from "react";
-import {InputBase} from "../../../../../common/base-input/base-input";
-import {KComponent} from "../../../../../common/k-component";
-import {Select} from "../../../../../common/select/select";
-import {userInfo} from "../../../../../../common/states/user-info";
-import {customHistory} from "../../../../routes";
+import {InputBase} from "../../../../common/base-input/base-input";
+import {KComponent} from "../../../../common/k-component";
+import {Select} from "../../../../common/select/select";
+import {userInfo} from "../../../../../common/states/user-info";
+import {customHistory} from "../../../routes";
 
 
 
