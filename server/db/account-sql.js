@@ -6,12 +6,21 @@ const createQuery = require("../config/query");
 const accountSql = (db) => {
   const query = createQuery(db);
   const checkLogin = ({username, password}) => {
+    let getTable = (role) => {
+      let matcher = {
+        0: "user",
+        1: "user",
+        2: "schoolpresenter",
+        3: "candidate"
+      };
+      return matcher[Number(role)];
+    };
     const checkExist = `SELECT * FROM Account where username = '${username}'`;
-    const checkCorrect = `SELECT * FROM ( ( SELECT * FROM Account WHERE username = '${username}' AND PASSWORD = '${password}' ) AS a INNER JOIN( SELECT * FROM USER ) AS u ) WHERE a.accountID = u.accountID`;
+    const checkCorrect = (role) => `SELECT * FROM ( ( SELECT * FROM Account WHERE username = '${username}' AND PASSWORD = '${password}' ) AS a INNER JOIN( SELECT * FROM ${getTable(role)} ) AS u ) WHERE a.accountID = u.accountID`;
     return new Promise((resolve, reject) =>
       query(checkExist).then((result) => {
         if (result.length) {
-          query(checkCorrect, "password_wrong")
+          query(checkCorrect(result[0].role), "password_wrong")
             .then((data) => {
               if (data.length) {
                 data[0].canLogin ?
@@ -76,8 +85,18 @@ const accountSql = (db) => {
     })
   };
 
-  const getClientUserCache = (accountID) => {
-    const sql = `SELECT * FROM ( ( SELECT * FROM Account WHERE accountID = '${accountID}' ) AS a INNER JOIN( SELECT * FROM USER ) AS u ) WHERE a.accountID = u.accountID`;
+  const getClientUserCache = (user) => {
+    let {accountID, role} = user;
+    let getTable = () => {
+      let matcher = {
+        0: "user",
+        1: "user",
+        2: "schoolpresenter",
+        3: "candidate"
+      };
+      return matcher[Number(role)];
+    };
+    const sql = `SELECT * FROM ( ( SELECT * FROM Account WHERE accountID = '${accountID}' ) AS a INNER JOIN( SELECT * FROM ${getTable()} ) AS u ) WHERE a.accountID = u.accountID`;
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
         if (result.length) {

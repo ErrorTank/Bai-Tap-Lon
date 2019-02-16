@@ -16,7 +16,7 @@ export class Navigations extends React.Component {
       label: "Trang chủ",
       url: "/dashboard",
       linkTo: () => customHistory.push("/dashboard"),
-      roles: [0, 1],
+      roles: [0, 1, 2],
       active: ["/dashboard"]
     }, {
       icon: (
@@ -63,6 +63,15 @@ export class Navigations extends React.Component {
       linkTo: () => customHistory.push("/schools"),
       roles: [0, 1],
       active: ["/schools", "/school/new", "/school/:schoolID/edit"]
+    } , {
+      icon: (
+        <i className="fas fa-school"></i>
+      ),
+      label: "Trường của tôi",
+      url: `/school/:schoolID/edit`,
+      linkTo: () => customHistory.push(`/school/${userInfo.getState().sID}/edit`),
+      roles: [2],
+      active: ["/school/:schoolID/edit"]
     }
   ];
 

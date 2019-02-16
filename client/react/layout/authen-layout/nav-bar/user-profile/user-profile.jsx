@@ -40,7 +40,7 @@ export class UserProfile extends React.Component {
     if([0, 1].includes(info.role)){
       return `/user/${info.userID}/edit`
     }else if(info.role === 2){
-      return `/school/${info.schoolID}`
+      return `/sp/${info.spID}/edit`
     }else if(info.role === 3){
       return `/profile`;
     }

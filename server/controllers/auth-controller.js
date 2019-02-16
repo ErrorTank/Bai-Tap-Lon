@@ -9,7 +9,7 @@ const authMiddleware = authorization(getPublicKey(), {expiresIn: "1 day", algori
 module.exports = (db, dbManager) => {
   let accManager = dbManager("account");
   router.get("/auth", authMiddleware, (req, res, next) => {
-    accManager.getClientUserCache(req.user.accountID).then(info => {
+    accManager.getClientUserCache(req.user).then(info => {
       res.status(200).json(omit(info, 'password'));
     }).catch(err => next(err));
 

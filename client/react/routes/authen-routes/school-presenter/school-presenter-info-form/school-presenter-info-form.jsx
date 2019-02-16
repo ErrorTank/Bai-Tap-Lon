@@ -29,7 +29,7 @@ export class SchoolPresenterInfoForm extends KComponent {
 
 
   render() {
-    let {form, err, onChange: propsOnChange, renderNavigate = () => null} = this.props;
+    let {form, err, onChange: propsOnChange, renderNavigate = () => null, blockChangeSchool = false} = this.props;
     return (
       <div className="sp-info-form">
         {this.state.loading ? (
@@ -74,11 +74,13 @@ export class SchoolPresenterInfoForm extends KComponent {
                     className="sp-input pt-0"
                     options={this.state.schools}
                     value={value}
+                    alt={(each) => each.name + " (" + each.address + ")"}
                     displayAs={(each) => each.name + " (" + each.address + ")"}
                     getValue={each => each.sID}
+                    disabled={blockChangeSchool}
                     onChange={e => {
                       propsOnChange();
-                      onChange(e.target.value)
+                      !blockChangeSchool && onChange(e.target.value)
                     }}
                     label={"Trường đại diện"}
                     placeholder="Chọn trường"

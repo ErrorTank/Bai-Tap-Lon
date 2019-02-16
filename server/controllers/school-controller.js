@@ -47,8 +47,9 @@ module.exports = (db, dbManager) => {
       res.status(200).json(school);
     }).catch(err => next(err))
   });
-  router.get("/schools/:sID/check-candidate/:cID", authMiddleware, (req, res, next) => {
+  router.get("/school/:sID/check-candidate/:cID", authMiddleware, (req, res, next) => {
     let {sID, cID} = req.params;
+    console.log(sID, cID);
     schoolManager.checkCandidate(sID, cID).then(() => {
       res.status(200).end();
     }).catch(err => next(err))

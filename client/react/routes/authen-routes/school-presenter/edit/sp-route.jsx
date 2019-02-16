@@ -68,11 +68,14 @@ export class SchoolPresenterRoute extends KComponent {
           form={this.form}
           err={this.state.err}
           onChange={() => this.setState({err: ""})}
+          blockChangeSchool
           renderNavigate={() => {
             let info = userInfo.getState();
             return  [0, 1].includes(info.role) ? (
               <p onClick={() => customHistory.push(`/account/${this.form.getPathData("accountID")}/edit`)}>Xem thông tin tài khoản</p>
 
+            ) : info.role === 2 ? (
+              <p onClick={() => customHistory.push(`/school/${this.form.getPathData("sID")}/edit`)}>Xem thông tin trường</p>
             ) : null
           }}
         />
