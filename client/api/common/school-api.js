@@ -31,8 +31,9 @@ export const schoolApi = {
   getSchoolsBrief() {
     return authenApi.get("/schools/brief-no-con");
   },
-  update(user) {
-    return authenApi.put(`/user/${user.userID}`, {user});
+  update(school) {
+
+    return authenApi.put(`/school/${school.sID}`, {school});
   },
   getSchoolByAccountID(accountID) {
     return authenApi.get(`/school/account/${accountID}`);

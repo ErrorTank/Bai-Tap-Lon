@@ -18,6 +18,11 @@ import {schoolApi} from "../../../../../api/common/school-api";
 import {SchoolInfoForm} from "../school-info-form/school-info-form";
 import {candidateApi} from "../../../../../api/common/candidate-api";
 import {CandidateListTab} from "./candidate-list-tab/candidate-list-tab";
+import {appModal} from "../../../../common/modal/modals";
+import {userApi} from "../../../../../api/common/user-api";
+import {schoolPresenterApi} from "../../../../../api/common/school-presenter-api";
+import {accountApi} from "../../../../../api/common/account-api";
+import {authenCache} from "../../../../../common/cache/authen-cache";
 
 
 export class SchoolRoute extends KComponent {
@@ -30,34 +35,38 @@ export class SchoolRoute extends KComponent {
       saving: false,
       draft: {},
       err: "",
-      candidates: [],
-      canDraft: []
+      deleting: false
+      // candidates: [],
+      // canDraft: []
     };
 
     this.form = createSimpleForm(schoolSchema);
     this.onUnmount(this.form.on("change", () => this.forceUpdate()));
     let {sID, role} = userInfo.getState();
-    let {sID: alternateSID} = props.match.params;
+    let {schoolID: alternateSID} = props.match.params;
+
     if (alternateSID && ((role === 2 && sID !== alternateSID) || role !== 2)) {
+
       this.fetchSchool(alternateSID);
 
 
     } else {
+
       customHistory.push(toDefaultRoute());
     }
 
   };
 
   fetchSchool = (sID) => {
-    let promises = [schoolApi.get(sID), candidateApi.getCandidateBrief({filter: {sID}})];
+    // let promises = [schoolApi.get(sID), candidateApi.getCandidateBrief({filter: {sID}})];
 
-    Promise.all(promises).then(([data, candidates]) => {
-      let info = pick(data, ["name", "address", "phone", "email"]);
+    schoolApi.get(sID).then((data) => {
+      let info = pick(data, ["name", "address", "phone", "email", "sID"]);
       this.form.updateData({...info}).then(() => this.setState({
         loading: false,
         draft: {...info},
-        candidates: [...candidates],
-        canDraft: [...candidates]
+        // candidates: [...candidates],
+        // canDraft: [...candidates]
       }));
     }).catch(err => customHistory.push(toDefaultRoute()))
   };
@@ -68,24 +77,54 @@ export class SchoolRoute extends KComponent {
 
   editSchool = () => {
     this.setState({saving: true});
-    let {candidates, canDraft} = this.state;
+    // let {candidates, canDraft} = this.state;
     let school = this.form.getData();
     let state = userInfo.getState();
-    let promises = [
-      schoolApi.update(school),
-      candidateApi.updateMultiple(candidates.filter(each => {
-        let root = canDraft.find((r) => r.cID === each.cID);
-        return !isEqual(root, each);
-      }))
-    ];
-    Promise.all(promises).then(() => {
-      this.setState({draft: {...school}, saving: false, canDraft: [...candidates]});
+    // let promises = [
+    //   schoolApi.update(school),
+    //   candidateApi.updateMultiple(candidates.filter(each => {
+    //     let root = canDraft.find((r) => r.cID === each.cID);
+    //     return !isEqual(root, each);
+    //   }))
+    // ];
+    schoolApi.update(school).then(() => {
+      // this.setState({draft: {...school}, saving: false, canDraft: [...candidates]});
+      this.setState({draft: {...school}, saving: false});
       if (state.role === 2 && school.sID === state.sID) {
         userInfo.setState(Object.assign({}, state, {...school}));
       }
     }).catch(err => {
       this.setState({err, saving: false});
     })
+  };
+
+  deleteSchool = () => {
+    let {schoolID} = this.props.match.params;
+    this.setState({deleting: true});
+    candidateApi.getCandidateBrief({filter: {school: {value: schoolID}}}).then((result) => {
+      if(result.length){
+        appModal.confirm({
+          title: "Xác nhận",
+          text: "Bạn có muốn xóa trường này?",
+          btnText: "Đồng ý",
+          cancelText: "Hủy bỏ"
+        }).then((result) => {
+          if (result) {
+            schoolApi.delete(schoolID).then(() => {
+              customHistory.push("/schools");
+
+            }).catch(err => this.setState({err, deleting: false}))
+          }
+        });
+      }else{
+        appModal.alert({
+          title: "Thông báo",
+          text: "Hãy xóa hết các thí sinh của trường trước khi xóa trường!",
+        })
+      }
+    }).catch((err) => this.setState({err, deleting: false}));
+
+
   };
 
   tabs = [
@@ -98,26 +137,25 @@ export class SchoolRoute extends KComponent {
           onChange={() => this.setState({err: ""})}
         />
       )
-    }, {
-      label: "Danh sách thí sinh",
-      render: () => (
-        <CandidateListTab
-          list={this.state.candidates}
-          onChange={candidates => this.setState({candidates})}
-        />
-      )
-
-    }
+    },
+    // {
+    //   label: "Danh sách thí sinh",
+    //   render: () => (
+    //     <CandidateListTab
+    //       list={this.state.candidates}
+    //       onChange={candidates => this.setState({candidates})}
+    //     />
+    //   )
+    //
+    // }
   ];
-
-  deleteSchool = () => {
-
-  };
 
 
   render() {
-    let {activeTab, loading, saving, draft, err, candidates, canDraft} = this.state;
-    let canSave = !this.form.getInvalidPaths().length && !saving && !isEqual(draft, this.form.getData()) && !err && !isEqual(sortBy(candidates), sortBy(canDraft));
+    // let {activeTab, loading, saving, draft, err, candidates, canDraft} = this.state;
+    let {activeTab, loading, saving, draft, err, deleting} = this.state;
+    // let canSave = !this.form.getInvalidPaths().length && !saving && !isEqual(draft, this.form.getData()) && !err && !isEqual(sortBy(candidates), sortBy(canDraft));
+    let canSave = !this.form.getInvalidPaths().length && !saving && !isEqual(draft, this.form.getData()) && !err;
     return (
       <PageTitle
         title="Thông tin trường"
@@ -140,9 +178,19 @@ export class SchoolRoute extends KComponent {
                     renderActions={() => (
                       <div className="row justify-content-end u-actions">
                         <button type="button" className="btn btn-secondary"
-                                onClick={() => customHistory.push("/school")}>Hủy bỏ
+                                onClick={() => customHistory.push("/schools")}>Hủy bỏ
                         </button>
-                        <button type="button" className="btn btn-danger" onClick={this.deleteSchool}>Xóa trường</button>
+                        {userInfo.getState().role !== 2 && (
+                          <button type="button" className="btn btn-danger" onClick={this.deleteSchool}>
+                            {deleting && (
+                              <LoadingInline/>
+                            )}
+                            Xóa trường
+                          </button>
+                        )
+
+                        }
+
                         <button type="button"
                                 className="btn btn-primary"
                                 disabled={!canSave}

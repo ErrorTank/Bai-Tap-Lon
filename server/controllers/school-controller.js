@@ -13,12 +13,18 @@ module.exports = (db, dbManager) => {
       res.status(200).end();
     }).catch(err => next(err))
   });
+
   router.get("/schools/brief", authMiddleware, (req, res, next) => {
     console.log({...req.query})
     schoolManager.getSchoolBriefWithCondition({...req.query}).then((data) => {
       res.status(200).json(data);
     }).catch(err => next(err));
 
+  });
+  router.put("/school/:schoolID", authMiddleware, (req,res, next) =>{
+    schoolManager.updateSchool(req.params.schoolID, req.body.school).then(() => {
+      res.status(200).end();
+    }).catch(err => next(err))
   });
   router.post("/school/create", authMiddleware, (req, res, next) => {
     console.log("đas")

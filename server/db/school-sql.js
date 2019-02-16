@@ -92,6 +92,32 @@ const schoolSql = (db) => {
   };
 
   //
+  const updateSchool = (sID, school) => {
+    return new Promise((resolve, reject) => {
+      if(isNil(sID)){
+        reject(new Error("Cannot find school with ID: " + sID));
+      }else{
+
+        let {name,  address, phone, email}  = school;
+        const checkExist = `SELECT email from school where not sID = '${sID}' and email = '${email}'`;
+        const getInfo = `UPDATE school SET name = '${name}', email = '${email}', phone = '${phone}', address = '${address}' WHERE sID = '${sID}'`;
+        query(checkExist).then((result) => {
+          if(result && result.length){
+            reject(new Error("email_existed"));
+          }else{
+            query(getInfo).then(() => {
+              resolve();
+            }).catch(err => {
+              reject(err)
+            })
+          }
+        }).catch(err => reject(err));
+
+      }
+
+    });
+  };
+
   const getSchoolBriefWithCondition = (obj) => {
     let {keyword, skip, take, orderAsc, orderBy} = obj;
     const sql = `Select SQL_CALC_FOUND_ROWS * from school where ${keyword ? `(name like '%${keyword}%' or address like '%${keyword}%'  or email like '%${keyword}%')` : "1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
@@ -108,6 +134,7 @@ const schoolSql = (db) => {
   };
 
   return {
+    updateSchool,
     createSchool,
     getSchool,
     getSchoolsBrief,

@@ -12,14 +12,13 @@ export const candidateApi = {
   },
   getCandidateBrief(filters){
     let {skip, take, filter = {}, sort} = filters || {};
-
     let {key, asc} = sort || {};
     let params = {
       orderAsc: asc,
       orderBy: key,
       skip,
       take,
-      gender: filter.gender.value,
+      gender: filter.gender ? filter.gender.value : null,
       keyword: filter.keyword || null,
       sID: filter.school.value
     };
