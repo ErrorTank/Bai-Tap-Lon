@@ -37,11 +37,12 @@ export class AccountListRoute extends React.Component {
 
   getRolesByPrivilege = () => {
     let {role} = userInfo.getState();
+    console.log(Roles)
     let matcher = {
-      0: each => each,
-      1: each => each.role === 2 || each.role === 3,
+      0: each => true,
+      1: each => each.value === 2 || each.value === 3,
     };
-    return [{label: "Tất cả", value: null}].concat(Roles.map(matcher[role]))
+    return [{label: "Tất cả", value: null}].concat(Roles.filter(matcher[role]))
   };
 
   parseAccRole = (role) => {

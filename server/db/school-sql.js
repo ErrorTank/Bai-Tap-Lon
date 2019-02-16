@@ -68,6 +68,7 @@ const schoolSql = (db) => {
       }).catch(err => reject(err));
     })
   };
+
   const createSchool = (school) => {
     //generate random ID for location
     var id = uniquid();
@@ -133,6 +134,17 @@ const schoolSql = (db) => {
     })
   };
 
+  const deleteSchool = (sID) => {
+    var deleteInfo = `DELETE FROM school WHERE sID = '${sID}'`;
+    return new Promise((resolve, reject) =>
+      query(deleteInfo).then((result) => {
+        resolve();
+      }).catch(err => {
+        reject(err)
+      })
+    )
+  };
+
   return {
     updateSchool,
     createSchool,
@@ -140,7 +152,8 @@ const schoolSql = (db) => {
     getSchoolsBrief,
     checkCandidate,
     getSchoolBriefWithCondition,
-    checkSchoolExisted
+    checkSchoolExisted,
+    deleteSchool
     //define function name here
   }
 };

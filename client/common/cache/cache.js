@@ -22,12 +22,12 @@ export class Cache {
     return ret;
   };
 
-  set = (value, key) => {
+  set = (value, key, options = {}) => {
     if (value == null) {
       this.engine.removeItem(key);
     } else {
       try {
-        this.engine.setItem(key, JSON.stringify(value));
+        this.engine.setItem(key, JSON.stringify(value), options);
       } catch (e) {
         // May throw exception if not enough memory allocated or in Safari's private mode
       }

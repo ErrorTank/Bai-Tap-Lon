@@ -45,7 +45,7 @@ export class SchoolRoute extends KComponent {
     let {sID, role} = userInfo.getState();
     let {schoolID: alternateSID} = props.match.params;
 
-    if (alternateSID && ((role === 2 && sID !== alternateSID) || role !== 2)) {
+    if (alternateSID && ((role === 2 && sID === alternateSID) || role !== 2)) {
 
       this.fetchSchool(alternateSID);
 
@@ -102,7 +102,8 @@ export class SchoolRoute extends KComponent {
     let {schoolID} = this.props.match.params;
     this.setState({deleting: true});
     candidateApi.getCandidateBrief({filter: {school: {value: schoolID}}}).then((result) => {
-      if(result.length){
+
+      if(!result.length){
         appModal.confirm({
           title: "Xác nhận",
           text: "Bạn có muốn xóa trường này?",
@@ -114,13 +115,16 @@ export class SchoolRoute extends KComponent {
               customHistory.push("/schools");
 
             }).catch(err => this.setState({err, deleting: false}))
+          }else{
+            this.setState({deleting: false});
           }
         });
       }else{
         appModal.alert({
           title: "Thông báo",
           text: "Hãy xóa hết các thí sinh của trường trước khi xóa trường!",
-        })
+        }).then(() => this.setState({deleting: false}));
+
       }
     }).catch((err) => this.setState({err, deleting: false}));
 
@@ -181,7 +185,7 @@ export class SchoolRoute extends KComponent {
                                 onClick={() => customHistory.push("/schools")}>Hủy bỏ
                         </button>
                         {userInfo.getState().role !== 2 && (
-                          <button type="button" className="btn btn-danger" onClick={this.deleteSchool}>
+                          <button type="button" className="btn btn-danger" onClick={this.deleteSchool} disabled={deleting}>
                             {deleting && (
                               <LoadingInline/>
                             )}

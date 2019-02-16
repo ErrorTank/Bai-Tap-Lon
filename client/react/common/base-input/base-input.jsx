@@ -8,7 +8,7 @@ export class InputBase extends React.Component {
   }
 
   render() {
-    const {className, success = false, error = false, label = null,   helper = null, id, ...others} = this.props;
+    const {className, success = false, error = false, label = null, helper = null, id, icon, ...others} = this.props;
     return (
       <div className={classnames(
         "form-group m-form__group base-input",
@@ -21,11 +21,30 @@ export class InputBase extends React.Component {
         {label && (
           <label className="form-control-label" htmlFor={id}>{label}</label>
         )}
-        <input type="text"
-               className="form-control m-input"
-               id={id}
-               {...others}
-        />
+
+        {icon ? (
+          <div className="m-input-icon m-input-icon--right">
+            <input type="text"
+                   className="form-control m-input"
+                   id={id}
+                   {...others}
+            />
+            <span className="m-input-icon__icon m-input-icon__icon--right">
+              <span>
+                {icon}
+              </span>
+            </span>
+          </div>
+
+        ) : (
+          <input type="text"
+                 className="form-control m-input"
+                 id={id}
+                 {...others}
+          />
+        )
+
+        }
         {(error) && (
           <div className="form-control-feedback">{error.message}</div>
         )}

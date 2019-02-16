@@ -37,8 +37,8 @@ export const authenCache = (() =>  {
     getAuthen(){
       return cache.get("k-authen")
     },
-    setAuthen(authen){
-      cache.set(authen, "k-authen");
+    setAuthen(authen, options){
+      cache.set(authen, "k-authen", options);
     }
   }
 })();

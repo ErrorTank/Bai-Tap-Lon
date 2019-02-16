@@ -6,6 +6,7 @@ import {Roles, userInfo} from "../../../../../../common/states/user-info";
 import {customHistory} from "../../../../routes";
 import {userApi} from "../../../../../../api/common/user-api";
 import {SwitchBtn} from "../../../../../common/switch/switch-btn";
+import {AppPasswordInput} from "../../../../../common/app-password-input/app-password-input";
 
 
 
@@ -56,8 +57,8 @@ export class AccountInfoForm extends KComponent {
 
           }
 
-          <div className="row justify-content-center">
-            <div className="col-12">
+          <div className="row justify-content-center form-wrap">
+            <div className="col-10 form-field">
               {form.enhanceComponent("username", ({error, onEnter, onChange, ...others}) => (
                 <InputBase
                   className="aif-input pt-0"
@@ -74,9 +75,9 @@ export class AccountInfoForm extends KComponent {
                 />
               ), true)}
             </div>
-            <div className="col-12">
+            <div className="col-10 form-field">
               {form.enhanceComponent("password", ({error, onEnter, onChange, ...others}) => (
-                <InputBase
+                <AppPasswordInput
                   className="aif-input pt-0"
                   error={error}
                   id={"password1"}
@@ -85,13 +86,12 @@ export class AccountInfoForm extends KComponent {
                     propsOnChange();
                     onChange(e);
                   }}
-                  type={"password"}
                   label={"Mật khẩu"}
                   {...others}
                 />
               ), true)}
             </div>
-            <div className="col-12">
+            <div className="col-10 form-field">
 
               {form.enhanceComponent("role", ({value, onChange}) => (
                 <Select
@@ -111,7 +111,7 @@ export class AccountInfoForm extends KComponent {
 
             </div>
 
-            <div className="col-12">
+            <div className="col-10 form-field">
 
               {form.enhanceComponent("canLogin", ({value, onChange}) => (
                 <SwitchBtn
@@ -130,7 +130,7 @@ export class AccountInfoForm extends KComponent {
           </div>
 
           <div className="row">
-            <div className="col optional-nav">
+            <div className="col optional-nav form-field">
               {renderNavigate()}
 
             </div>

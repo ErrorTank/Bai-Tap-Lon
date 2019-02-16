@@ -35,7 +35,8 @@ export class UserRoute extends KComponent {
     this.onUnmount(this.form.on("change", () => this.forceUpdate()));
     let {userID, role} = userInfo.getState();
     let {userID: alternateUserID} = props.match.params;
-    if(alternateUserID && ((role === 1 && userID !== alternateUserID) || role !== 1)){
+    if(alternateUserID && ((role === 1 && userID === alternateUserID) || role !== 1)){
+
       this.fetchUser(alternateUserID)
     }else{
       customHistory.push(toDefaultRoute());

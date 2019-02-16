@@ -196,7 +196,7 @@ export class AccountRoute extends KComponent {
               </div>
             ) : (
               <div className="row justify-content-center">
-                <div className="col-6">
+                <div className="col-8 tabs-wrap">
                   <FormTabs
                     tabs={this.tabs}
                     activeTab={activeTab}

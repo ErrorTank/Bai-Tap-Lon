@@ -65,10 +65,11 @@ export class Login extends KComponent {
 
 
   prepareInstance = (res) => {
-    authenCache.setAuthen(res.token);
+    authenCache.setAuthen(res.token, { expires: 7 });
     userInfo.setState({...res.info})
       .then(() => {
         let newRoute = toDefaultRoute();
+
         customHistory.push(this.prevLocation || newRoute);
       })
       .catch(err => console.log(err))

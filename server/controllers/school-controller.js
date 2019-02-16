@@ -21,6 +21,11 @@ module.exports = (db, dbManager) => {
     }).catch(err => next(err));
 
   });
+  router.delete("/school/:schoolID", authMiddleware, (req,res, next) =>{
+    schoolManager.deleteSchool(req.params.schoolID).then(() => {
+      res.status(200).end();
+    }).catch(err => next(err))
+  });
   router.put("/school/:schoolID", authMiddleware, (req,res, next) =>{
     schoolManager.updateSchool(req.params.schoolID, req.body.school).then(() => {
       res.status(200).end();

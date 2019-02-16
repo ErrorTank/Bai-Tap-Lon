@@ -68,14 +68,17 @@ export const AuthenRoute = ({component: Component, excludeRoles = null, ...rest}
   return (
     <Route
       {...rest}
-      render={props => (
-        <TrackLocation
-          location={props.location}
-          render={() => getComp(props)}
-        />
+      render={props => {
+
+        return (
+          <TrackLocation
+            location={props.match.url}
+            render={() => getComp(props)}
+          />
 
 
-      )}
+        )
+      }}
     />
   );
 };

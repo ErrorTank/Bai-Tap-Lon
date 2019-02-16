@@ -12,6 +12,9 @@ export const schoolApi = {
   checkSchoolExisted(school) {
     return authenApi.post("/school/check", {school})
   },
+  delete(sID){
+    return authenApi.delete(`/school/${sID}`)
+  },
   getSchoolsBriefWithCondition(filters) {
     let {skip, take, filter = {}, sort} = filters || {};
 

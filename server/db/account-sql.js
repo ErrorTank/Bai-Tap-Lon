@@ -58,13 +58,13 @@ const accountSql = (db) => {
     console.log(canLogin)
     let getSql = () => {
       let matcher = {
-        0: `select accountID from (select u.accountID as accountID from user u where u.name like '%${keyword}%' or u.email like '%${keyword}%' union select c.accountID from candidate c where c.name like '%${keyword}%' or c.email like '%${keyword}%' union select sp.accountID from schoolpresenter sp where sp.name like '%${keyword}%' or sp.email like '%${keyword}%') fs`,
-        1: `select accountID from (select c.accountID from candidate c where c.name like '%${keyword}%' or c.email like '%${keyword}%' union select sp.accountID from schoolpresenter sp where sp.name like '%${keyword}%' or sp.email like '%${keyword}%') fs`
+        0: `select accountID from (select u.accountID  from user u where u.name like '%${keyword}%' or u.email like '%${keyword}%' union select c.accountID from candidate c where c.name like '%${keyword}%' or c.email like '%${keyword}%' union select sp.accountID from schoolpresenter sp where sp.name like '%${keyword}%' or sp.email like '%${keyword}%') fs`,
+        1: `select accountID from (select c.accountID  from candidate c where c.name like '%${keyword}%' or c.email like '%${keyword}%' union select sp.accountID from schoolpresenter sp where sp.name like '%${keyword}%' or sp.email like '%${keyword}%') fs`
       };
       return matcher[Number(clientRole)]
     };
 
-    const sql = `Select SQL_CALC_FOUND_ROWS *  from account where ${clientRole === 1 ? "(role = 2 or role = 3)" : "1=1" } ${!isNil(canLogin) ? `and canLogin = '${Number(canLogin)}'` : "and 1=1"} ${!isNil(role) ? `and role = '${Number(role)}'` : "and 1=1"} ${keyword ? `and (username like '%${keyword}%' or accountID in (${getSql()}))` : "and 1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}; `;
+    const sql = `Select SQL_CALC_FOUND_ROWS *  from account where ${Number(clientRole) === 1 ? "(role = 2 or role = 3)" : "1=1" } ${!isNil(canLogin) ? `and canLogin = '${Number(canLogin)}'` : "and 1=1"} ${!isNil(role) ? `and role = '${Number(role)}'` : "and 1=1"} ${keyword ? `and (username like '%${keyword}%' or accountID in (${getSql()}))` : "and 1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}; `;
     return new Promise((resolve, reject) => {
       query(sql).then((result) => {
         query(`Select FOUND_ROWS() as count`).then((result2) => {
