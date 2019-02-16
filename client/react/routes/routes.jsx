@@ -68,12 +68,12 @@ export class MainRoute extends KComponent {
             <GuestRoute exact path='/' render={props => <Redirect to="/login"/>}/>
             <GuestRoute exact path='/login' component={Login}/>
             <AuthenRoute exact path='/profile' component={AdminDashboard} excludeRoles={[0,1,2]}/>
-            <AuthenRoute exact path='/dashboard' component={AdminDashboard} excludeRoles={[2, 3]}/>
+            <AuthenRoute exact path='/dashboard' component={AdminDashboard} excludeRoles={[3]}/>
             <AuthenRoute exact path='/account/new' component={AccountNewRoute} excludeRoles={[2, 3]}/>
             <AuthenRoute exact path='/school/new' component={SchoolNewRoute} excludeRoles={[2, 3]}/>
             <AuthenRoute exact path='/school/:schoolID/edit' component={SchoolRoute} excludeRoles={[3]}/>
             <AuthenRoute exact path='/candidate/:candidateID/edit' component={CandidateRoute} excludeRoles={[3]}/>
-            <AuthenRoute exact path='/sp/:spID/edit' component={SchoolPresenterRoute} excludeRoles={[2, 3]}/>
+            <AuthenRoute exact path='/sp/:spID/edit' component={SchoolPresenterRoute} excludeRoles={[3]}/>
             <AuthenRoute exact path='/user/:userID/edit' component={UserRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/users' component={UserListRoute} excludeRoles={[2,3, 1]}/>
             <AuthenRoute exact path='/accounts' component={AccountListRoute} excludeRoles={[2,3]}/>
