@@ -11,6 +11,19 @@ app.use(bodyParser.json({
   limit: '2mb'
 }));
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+    return res.status(200).json({});
+  }
+  next();
+});
+
 app.use("/", express.static(process.cwd() + "/" + process.env.STATIC_DIR));
 
 app.use("*", (req, res, next) => {
@@ -31,6 +44,6 @@ if (!fs.existsSync(uploadDir)){
 if (!fs.existsSync(uploadDir + "/img")){
   fs.mkdirSync(uploadDir + "/img");
 }
-
+app.use("/uploads", express.static(uploadDir));
 
 module.exports = app;

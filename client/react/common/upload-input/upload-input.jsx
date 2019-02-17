@@ -10,7 +10,7 @@ export class UploadInput extends React.Component {
 
   handleRemove = key => {
     const {value: imagesPreview, onChange} = this.props;
-    onChange(imagesPreview.filter(each => each.fileID !== key));
+    onChange(imagesPreview.filter(each => each.file.lastModified !== key));
   };
 
   handleUpload = e => {
@@ -76,13 +76,13 @@ export class UploadInput extends React.Component {
             </div>
             {imagesPreview.map((each) => {
               return (
-                <div className="dz-preview  dz-image-preview" key={each.fileID}>
+                <div className="dz-preview  dz-image-preview" key={each.file.lastModified}>
                   <div className="dz-image">
                     <img src={each.src}/>
                   </div>
                   <a className="dz-remove" onClick={(e) => {
                     e.stopPropagation();
-                    this.handleRemove(each.fileID)
+                    this.handleRemove(each.file.lastModified)
                   }}>Loại bỏ</a>
 
                 </div>

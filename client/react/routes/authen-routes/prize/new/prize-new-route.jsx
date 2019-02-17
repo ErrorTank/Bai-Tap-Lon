@@ -36,11 +36,17 @@ export class PrizeNewRoute extends KComponent {
 
   createNewPrize = () => {
     this.setState({saving: true});
-    let info = this.info.getData();
+    let info = this.form.getData();
     console.log({
       info
     });
-    prizeApi.createPrize(info).then(({prizeID}) => {
+    let newData = {...info};
+    if(info.dir.length){
+      newData.dir = newData.dir.map(each => {
+        return each.file;
+      })
+    }
+    prizeApi.createPrize(newData).then(({prizeID}) => {
       customHistory.push(`/prize/${prizeID}/edit`)
     }).catch(err => this.setState({err, saving: false}));
 

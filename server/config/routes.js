@@ -10,5 +10,6 @@ module.exports = (db) => {
   router.use('/api', require("../controllers/school-controller")(db, dbManager));
   router.use('/api', require("../controllers/candidate-controller")(db, dbManager));
   router.use('/api', require("../controllers/sp-controller")(db, dbManager));
+  router.use('/api', require("../controllers/prize-controller")(db, dbManager));
   return router;
 };
