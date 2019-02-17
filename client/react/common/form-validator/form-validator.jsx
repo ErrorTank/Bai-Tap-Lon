@@ -54,11 +54,10 @@ export const createSimpleForm = (schema, _options) => {
   };
 
   const onEnter = path => (e) => {
-    if(keyEvents.isEnter(e)){
+    if (keyEvents.isEnter(e)) {
       eventManagement.emit("enter");
     }
   };
-
 
 
   const onChange = (path, validateOnChange) => async (e) => {
@@ -72,9 +71,9 @@ export const createSimpleForm = (schema, _options) => {
       if (!touched[path]) {
         touched[path] = true;
       }
-      if(options && options.validateAll){
+      if (options && options.validateAll) {
         await validateData()
-      }else
+      } else
         await validatePath(path);
 
       eventManagement.emit("change", state);
@@ -120,7 +119,7 @@ export const createSimpleForm = (schema, _options) => {
       touched = {};
       eventManagement.emit("change", state);
     },
-    setInitData:(data = {}) => {
+    setInitData: (data = {}) => {
       options = Object.assign({}, options, {initData: data})
     },
     updateData: async (data) => {
@@ -143,7 +142,10 @@ export const createSimpleForm = (schema, _options) => {
         onChange: onChange(path, validateOnChange),
         onBlur: onBlur(path),
         error: touched[path] ? errors[path] : null,
-        onEnter: onEnter(path)
+        onEnter: onEnter(path),
+        onError: (msg) => {
+          errors[path] = msg;
+        }
       })
     }
   }

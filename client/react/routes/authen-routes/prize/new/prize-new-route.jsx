@@ -11,6 +11,7 @@ import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
 import {MultipleStepsTabs} from "../../../../common/multiple-steps-tabs/multiple-steps-tabs";
 import isEqual from "lodash/isEqual";
 import {PrizeInfoForm} from "../prize-info-form/prize-info-form";
+import {prizeApi} from "../../../../../api/common/prize-api";
 
 
 export class PrizeNewRoute extends KComponent {
@@ -26,7 +27,7 @@ export class PrizeNewRoute extends KComponent {
       initData: {
         name: "",
         content: "",
-        dir: ""
+        dir: []
       }
     });
 
@@ -37,32 +38,12 @@ export class PrizeNewRoute extends KComponent {
 
   createNewPrize = () => {
     this.setState({saving: true});
-    let account = this.accountForm.getData();
-    let info = this.infoForm.getData();
+    let info = this.info.getData();
     console.log({
-      account,
       info
     });
-    let apiMatcher = {
-      0: () => {
-        return userApi.checkUserExisted({...this.infoForm.getData()})
-      },
-      1: () => {
-        return userApi.checkUserExisted({...this.infoForm.getData()})
-      },
-      2: () => {
-        return schoolPresenterApi.checkSpExisted({...this.infoForm.getData()})
-      },
-      3: () => {
-        return candidateApi.checkCandidateExisted({...this.infoForm.getData()})
-      },
-    };
-    let callApi = apiMatcher[account.role];
-    callApi().then(() => {
-      console.log("success")
-      accountApi.createAccount({account, info}).then(({accountID}) => {
-        customHistory.push(`/account/${accountID}/edit`)
-      }).catch(err => this.setState({err, saving: false}))
+    prizeApi.createPrize(info).then(({prizeID}) => {
+      customHistory.push(`/prize/${prizeID}/edit`)
     }).catch(err => this.setState({err, saving: false}));
 
   };
@@ -74,9 +55,9 @@ export class PrizeNewRoute extends KComponent {
       label: "Thiết lập giải thưởng",
       render: () => (
         <div className="row justify-content-center">
-          <div className="col-8">
+          <div className="col-12  ">
             <PrizeInfoForm
-              form={this.accountForm}
+              form={this.form}
               onChange={() => this.setState({err: ""})}
               err={this.state.err}
             />
@@ -110,7 +91,7 @@ export class PrizeNewRoute extends KComponent {
 
   render() {
     let {activeTab} = this.state;
-    console.log(this.infoForm.getData())
+    console.log(this.form.getData())
     return (
       <PageTitle title="Tạo giải thưởng mới">
         <RouteTitle content="Tạo giải thưởng mới">

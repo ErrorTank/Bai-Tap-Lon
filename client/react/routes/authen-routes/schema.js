@@ -7,9 +7,9 @@ const accountSchema = yup.object().shape({
     canLogin: yup.number().required()
   });
 const prizeSchema = yup.object().shape({
-  name: yup.string().min(5, "Tên giải thưởng lớn hơn 6 kí tự").max(50, "Tên đăng nhập nhỏ hơn 20 kí tự").required("Tên giải thưởng không được để trống"),
+  name: yup.string().max(50, "Tên giải thưởng tối đa 50 kí tự").required("Tên giải thưởng không được để trống"),
   content: yup.string(),
-  dir: yup.string()
+  dir: yup.array().max(3, "Số ảnh tối đa không vượt quá 3 ảnh")
 });
 
 const userSchema = yup.object().shape({

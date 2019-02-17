@@ -1,9 +1,8 @@
 import React from "react";
 import {InputBase} from "../../../../common/base-input/base-input";
 import {KComponent} from "../../../../common/k-component";
-import {Select} from "../../../../common/select/select";
-import {userInfo} from "../../../../../common/states/user-info";
-import {customHistory} from "../../../routes";
+
+import {UploadInput} from "../../../../common/upload-input/upload-input";
 
 
 export class PrizeInfoForm extends KComponent {
@@ -32,7 +31,7 @@ export class PrizeInfoForm extends KComponent {
           )}
 
           <div className="row ">
-            <div className="col-6">
+            <div className="col-10 form-input">
               {form.enhanceComponent("name", ({error, onEnter, onChange, ...others}) => (
                 <InputBase
                   className="p-input pt-0"
@@ -49,12 +48,17 @@ export class PrizeInfoForm extends KComponent {
                 />
               ), true)}
             </div>
-            <div className="col-6">
+
+
+          </div>
+          <div className="row">
+            <div className="col-10 form-input">
               {form.enhanceComponent("content", ({error, onEnter, onChange, ...others}) => (
                 <InputBase
                   className="p-input pt-0"
                   error={error}
                   id={"content"}
+                  inputType={"textarea"}
                   onKeyDown={onEnter}
                   onChange={e => {
                     propsOnChange();
@@ -66,23 +70,21 @@ export class PrizeInfoForm extends KComponent {
                 />
               ), true)}
             </div>
-
           </div>
           <div className="row">
 
-            <div className="col-10">
+            <div className="col-10 form-input">
               {form.enhanceComponent("dir", ({error, onEnter, onChange, ...others}) => (
-                <InputBase
-                  className="uif-input pt-0"
+                <UploadInput
+                  className={"p-input pt-0"}
                   error={error}
-                  id={"phone"}
-                  onKeyDown={onEnter}
-                  onChange={e => {
+                  id={"dir"}
+                  content={"Click để đăng ảnh"}
+                  onChange={files => {
                     propsOnChange();
-                    onChange(e);
+                    onChange(files);
                   }}
-                  type={"text"}
-                  label={"Số điện thoại"}
+                  label={"Ảnh minh họa"}
                   {...others}
                 />
               ), true)}

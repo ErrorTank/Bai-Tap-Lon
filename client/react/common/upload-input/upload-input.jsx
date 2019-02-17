@@ -1,47 +1,49 @@
 import React from "react";
 import classnames from "classnames"
+import {getBase64} from "../../../common/common-utils";
 
 export class UploadInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      uploading: false
-    };
+
   };
 
   handleUpload = e => {
     e.preventDefault();
-    let {imagesPreview, limit = 2} = this.props;
+    let {value: imagesPreview, onChange, onError, limit = 2} = this.props;
     const files = e.target.files;
-    if(files && files.length + imagesPreview.length > limit){
-      onError();
+    if(files.length + imagesPreview.length > 8){
+      onError("Số lượng file vượt quá " + limit + " file");
+      return ;
     }
-    if (file && file.type.indexOf("image") > -1) {
-      this.setState({uploading: true});
-      this.props.onChange(file).then(
-        () => this.setState({uploading: false}),
-        () => this.setState({uploading: false})
-      )
+    let promise=[];
+    for (let i = 0; i < files.length; i++) {
+      let file = files[i];
+      if (file && file.type.indexOf("image") > -1) {
+        promise.push(getBase64(files[i]));
+      }
+
     }
+    Promise.all(promise).then((data)=>{
+      onChange(imagesPreview.concat(data));
+    });
 
   };
 
-  componentDidUpdate({imagePreview}) {
-    console.log(imagePreview);
-    console.log(this.inputElem.value)
-    if (!imagePreview && this.inputElem) {
+  componentDidUpdate({value: imagePreview}) {
+    if (!imagePreview.length && this.inputElem) {
       this.inputElem.value = "";
     }
   }
 
   render() {
-    let {className, imagesPreview, label, content, limit = 2} = this.props;
+    let {className, label, content, limit = 2, value: imagesPreview} = this.props;
     return (
       <div className={classnames("upload-input form-group m-form__group row", className)}>
-        <label className="col-form-label col-lg-3 col-sm-12">
+        <label className="col-form-label col-4 text-left p-0">
           {label}
         </label>
-        <div className="col-lg-4 col-md-9 col-sm-12">
+        <div className="col-8">
           <div className="m-dropzone dropzone m-dropzone--primary dz-clickable"  onClick={() => this.inputElem.click()}>
             <input
               className="upload-input-tag"
@@ -59,10 +61,12 @@ export class UploadInput extends React.Component {
             </div>
             {imagesPreview.map((each) => {
               return (
-                <div className="dz-preview  dz-image-preview" key={each.value}>
+                <div className="dz-preview  dz-image-preview" key={each.file}>
                   <div className="dz-image">
-                    <img src={each.value}/>
+                    <img src={each.file}/>
                   </div>
+                  <a className="dz-remove">Loại bỏ</a>
+
                 </div>
               )
             })}

@@ -8,7 +8,8 @@ export class InputBase extends React.Component {
   }
 
   render() {
-    const {className, success = false, error = false, label = null, helper = null, id, icon, ...others} = this.props;
+    const {className, success = false, error = false, label = null, helper = null, id, icon, inputType = "input", ...others} = this.props;
+
     return (
       <div className={classnames(
         "form-group m-form__group base-input",
@@ -23,26 +24,45 @@ export class InputBase extends React.Component {
         )}
 
         {icon ? (
-          <div className="m-input-icon m-input-icon--right">
+            <div className="m-input-icon m-input-icon--right">
+              {inputType === "input" ? (
+                <input type="text"
+                       className="form-control m-input"
+                       id={id}
+                       {...others}
+                />
+              ) : (
+                <textarea
+                  className="form-control m-input"
+                  id={id}
+                  {...others}
+                />
+              )
+
+              }
+
+              <span className="m-input-icon__icon m-input-icon__icon--right">
+                <span>
+                 {icon}
+               </span>
+              </span>
+            </div>
+
+          ) :
+          inputType === "input" ? (
             <input type="text"
                    className="form-control m-input"
                    id={id}
                    {...others}
             />
-            <span className="m-input-icon__icon m-input-icon__icon--right">
-              <span>
-                {icon}
-              </span>
-            </span>
-          </div>
+          ) : (
+            <textarea
+              className="form-control m-input"
+              id={id}
+              {...others}
+            />
+          )
 
-        ) : (
-          <input type="text"
-                 className="form-control m-input"
-                 id={id}
-                 {...others}
-          />
-        )
 
         }
         {(error) && (
