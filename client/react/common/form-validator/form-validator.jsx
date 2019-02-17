@@ -143,9 +143,6 @@ export const createSimpleForm = (schema, _options) => {
         onBlur: onBlur(path),
         error: touched[path] ? errors[path] : null,
         onEnter: onEnter(path),
-        onError: (msg) => {
-          errors[path] = msg;
-        }
       })
     }
   }

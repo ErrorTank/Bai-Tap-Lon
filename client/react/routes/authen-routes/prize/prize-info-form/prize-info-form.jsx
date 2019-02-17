@@ -77,11 +77,14 @@ export class PrizeInfoForm extends KComponent {
               {form.enhanceComponent("dir", ({error, onEnter, onChange, ...others}) => (
                 <UploadInput
                   className={"p-input pt-0"}
-                  error={error}
+                  error={this.state.uploadErr || error}
+                  onError={(err) => this.setState({uploadErr: {message: err}})}
                   id={"dir"}
+                  limit={3}
                   content={"Click để đăng ảnh"}
                   onChange={files => {
                     propsOnChange();
+                    this.setState({uploadErr: ""});
                     onChange(files);
                   }}
                   label={"Ảnh minh họa"}

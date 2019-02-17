@@ -23,15 +23,13 @@ export class PrizeNewRoute extends KComponent {
       saving: false,
       loading: false
     };
-    this.accountForm = createSimpleForm(prizeSchema, {
+    this.form = createSimpleForm(prizeSchema, {
       initData: {
         name: "",
         content: "",
         dir: []
       }
     });
-
-    this.form = createSimpleForm();
     this.onUnmount(this.form.on("change", () => this.forceUpdate()));
     this.form.validateData();
   };
