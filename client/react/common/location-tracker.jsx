@@ -2,9 +2,6 @@ import React, {Fragment} from "react";
 import {PropsTracker} from "./tracker/props-tracker";
 
 
-
-
-
 const PrevLocationTracker = PropsTracker({
   getProp: (prevLocation, nextProps) => {
     if (nextProps.location !== prevLocation) {
