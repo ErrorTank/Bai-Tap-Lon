@@ -1,10 +1,15 @@
 import * as yup from "yup";
 
 const accountSchema = yup.object().shape({
-  username: yup.string().min(6, "Tên đăng nhập lớn hơn 6 kí tự").max(20, "Tên đăng nhập nhỏ hơn 20 kí tự").onlyWord("Tên đăng nhập không được có kí tự đặc biệt").haveChar("Tên đăng nhập phải có kí tự alphabet").haveNumber("Tên đăng nhập phải có chữ số"),
-  password: yup.string().min(6, "Mật khẩu bắt buộc từ 6 ký tự trở lên").onlyWord("Mật khẩu không được có kí tự đặc biệt"),
-  role: yup.number().required(),
-  canLogin: yup.number().required()
+    username: yup.string().min(6, "Tên đăng nhập lớn hơn 6 kí tự").max(20, "Tên đăng nhập nhỏ hơn 20 kí tự").onlyWord("Tên đăng nhập không được có kí tự đặc biệt").haveChar("Tên đăng nhập phải có kí tự alphabet").haveNumber("Tên đăng nhập phải có chữ số"),
+    password: yup.string().min(6, "Mật khẩu bắt buộc từ 6 ký tự trở lên").onlyWord("Mật khẩu không được có kí tự đặc biệt"),
+    role: yup.number().required(),
+    canLogin: yup.number().required()
+  });
+const prizeSchema = yup.object().shape({
+  name: yup.string().min(5, "Tên giải thưởng lớn hơn 6 kí tự").max(50, "Tên đăng nhập nhỏ hơn 20 kí tự").required("Tên giải thưởng không được để trống"),
+  content: yup.string(),
+  dir: yup.string()
 });
 
 const userSchema = yup.object().shape({
@@ -44,8 +49,10 @@ const schoolSchema = yup.object().shape({
 
 });
 
-export {
+export
+{
   accountSchema,
+  prizeSchema,
   userSchema,
   candidateSchema,
   schoolPresenterSchema,
