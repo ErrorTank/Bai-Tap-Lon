@@ -1,26 +1,30 @@
 const initializeDb = require("../config/db");
 
 const dbUtils = [{
-    name: "Create Account table",
-    query: "CREATE TABLE `olympic`.`Account` ( `accountID` NVARCHAR(10) NOT NULL ,  `username` NVARCHAR(50) NOT NULL , `password` NVARCHAR(50) NOT NULL , `role` INT(11) NOT NULL , `canLogin` BOOLEAN NOT NULL , PRIMARY KEY (`accountID`), UNIQUE (`username`)) ENGINE = InnoDB;"
-  }, {
-    name: "Create User Table",
-    query: "CREATE TABLE `olympic`.`User` ( `userID` NVARCHAR(10) NOT NULL , `name` NVARCHAR(50) NOT NULL , `CMT` NVARCHAR(20) NOT NULL , `address` NVARCHAR(200) NULL , `phone` NVARCHAR(50) NULL , `email` NVARCHAR(50) NOT NULL , `accountID` NVARCHAR(10) NOT NULL , `employeeID` NVARCHAR(10) NOT NULL , `gender` INT(1) NOT NULL , PRIMARY KEY (`userID`), UNIQUE (`email`), UNIQUE (`accountID`), UNIQUE (`employeeID`), UNIQUE (`CMT`)) ENGINE = InnoDB;"
-  }, {
-    name: "Create Admin",
-    query: "INSERT INTO `account` (`accountID`,  `username`, `password`, `role`, `canLogin`) VALUES ('1',  'kappa2', '123123qwe', '0', '1');"
-  }, {
-    name: "Create Admin info",
-    query: "INSERT INTO `user` (`userID`, `name`, `address`, `phone`, `email`, `accountID`, `employeeID`, `CMT`, `gender`) VALUES ('1', 'Kappa', 'No fucking where', '0123456789', 'kappa@gmail.com', '1', '1', '123456', '0');"
-  }, {
-    name: "Create school table",
-    query: "CREATE TABLE `olympic`.`school` ( `sID` NVARCHAR(10) NOT NULL , `name` NVARCHAR(100) NOT NULL , `address` NVARCHAR(100) NOT NULL , `phone` NVARCHAR(20) NOT NULL , `email` NVARCHAR(100) NOT NULL , PRIMARY KEY (`sID`), UNIQUE (`email`)) ENGINE = InnoDB;"
-  }, {
-    name: "Create school presenter table",
-    query: "CREATE TABLE `olympic`.`schoolPresenter` ( `spID` NVARCHAR(10) NOT NULL , `accountID` NVARCHAR(10) NOT NULL, `sID` NVARCHAR(10) NOT NULL , `name` NVARCHAR(100) NOT NULL , `address` NVARCHAR(100) NULL , `phone` NVARCHAR(20) NOT NULL , `email` NVARCHAR(100) NOT NULL , PRIMARY KEY (`spID`), UNIQUE (`accountID`),  UNIQUE (`email`)) ENGINE = InnoDB;"
-  }, {
-    name: "Create contest table",
-    query: "CREATE TABLE `olympic`.`contest` ( `contestID` NVARCHAR(10) NOT NULL , `start` DATE NOT NULL , `stop` DATE NOT NULL , `fee` NVARCHAR(20) NOT NULL,  PRIMARY KEY (`contestID`)) ENGINE = InnoDB;"
+  name: "Create Account table",
+  query: "CREATE TABLE `olympic`.`Account` ( `accountID` NVARCHAR(10) NOT NULL ,  `username` NVARCHAR(50) NOT NULL , `password` NVARCHAR(50) NOT NULL , `role` INT(11) NOT NULL , `canLogin` BOOLEAN NOT NULL , PRIMARY KEY (`accountID`), UNIQUE (`username`)) ENGINE = InnoDB;"
+}, {
+  name: "Create User Table",
+  query: "CREATE TABLE `olympic`.`User` ( `userID` NVARCHAR(10) NOT NULL , `name` NVARCHAR(50) NOT NULL , `CMT` NVARCHAR(20) NOT NULL , `address` NVARCHAR(200) NULL , `phone` NVARCHAR(50) NULL , `email` NVARCHAR(50) NOT NULL , `accountID` NVARCHAR(10) NOT NULL , `employeeID` NVARCHAR(10) NOT NULL , `gender` INT(1) NOT NULL , PRIMARY KEY (`userID`), UNIQUE (`email`), UNIQUE (`accountID`), UNIQUE (`employeeID`), UNIQUE (`CMT`)) ENGINE = InnoDB;"
+}, {
+  name: "Create Admin",
+  query: "INSERT INTO `account` (`accountID`,  `username`, `password`, `role`, `canLogin`) VALUES ('1',  'kappa2', '123123qwe', '0', '1');"
+}, {
+  name: "Create Admin info",
+  query: "INSERT INTO `user` (`userID`, `name`, `address`, `phone`, `email`, `accountID`, `employeeID`, `CMT`, `gender`) VALUES ('1', 'Kappa', 'No fucking where', '0123456789', 'kappa@gmail.com', '1', '1', '123456', '0');"
+}, {
+  name: "Create school table",
+  query: "CREATE TABLE `olympic`.`school` ( `sID` NVARCHAR(10) NOT NULL , `name` NVARCHAR(100) NOT NULL , `address` NVARCHAR(100) NOT NULL , `phone` NVARCHAR(20) NOT NULL , `email` NVARCHAR(100) NOT NULL , PRIMARY KEY (`sID`), UNIQUE (`email`)) ENGINE = InnoDB;"
+}, {
+  name: "Create school presenter table",
+  query: "CREATE TABLE `olympic`.`schoolPresenter` ( `spID` NVARCHAR(10) NOT NULL , `accountID` NVARCHAR(10) NOT NULL, `sID` NVARCHAR(10) NOT NULL , `name` NVARCHAR(100) NOT NULL , `address` NVARCHAR(100) NULL , `phone` NVARCHAR(20) NOT NULL , `email` NVARCHAR(100) NOT NULL , PRIMARY KEY (`spID`), UNIQUE (`accountID`),  UNIQUE (`email`)) ENGINE = InnoDB;"
+}, {
+  name: "Create contest table",
+  query: "CREATE TABLE `olympic`.`contest` ( `contestID` NVARCHAR(10) NOT NULL , `start` DATE NOT NULL , `stop` DATE NOT NULL , `fee` NVARCHAR(20) NOT NULL,  PRIMARY KEY (`contestID`)) ENGINE = InnoDB;"
+},
+  {
+    name: "Create prizeimg table",
+    query: "CREATE TABLE `olympic`.`prizeimg` ( `imgID` NVARCHAR(10) NOT NULL , `link` NVARCHAR(200) NOT NULL , `prizeID` NVARCHAR(10) NOT NULL, PRIMARY KEY (`imgID`)) ENGINE = InnoDB;"
   }, {
     name: "Create contest - subject table",
     query: "CREATE TABLE `olympic`.`contestSubject` ( `contestID` NVARCHAR(10) NOT NULL , `subjectID` NVARCHAR(10) NOT NULL, PRIMARY KEY (`contestID`, `subjectID`)) ENGINE = InnoDB;"
@@ -68,7 +72,6 @@ const queryController = (util, db) => new Promise((res, rej) => {
 
   });
 });
-
 
 
 const dbGenerator = (() => {

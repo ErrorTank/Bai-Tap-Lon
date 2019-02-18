@@ -167,7 +167,7 @@ export class SchoolRoute extends KComponent {
         <RouteTitle
           content={"Thông tin trường"}
         >
-          <div className="user-route">
+          <div className="school-route">
             {loading ? (
               <div className="loading-wrapper">
                 <LoadingInline/>
@@ -180,7 +180,7 @@ export class SchoolRoute extends KComponent {
                     activeTab={this.tabs[activeTab]}
                     onChangeTab={(tab, index) => this.setState({activeTab: index})}
                     renderActions={() => (
-                      <div className="row justify-content-end u-actions">
+                      <div className="row justify-content-end school-actions">
                         <button type="button" className="btn btn-secondary"
                                 onClick={() => customHistory.push("/schools")}>Hủy bỏ
                         </button>

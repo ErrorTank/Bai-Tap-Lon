@@ -9,8 +9,12 @@ export const PropsTracker = ({getProp, initial = null}) => {
         prevProp = getProp(prevProp, props);
       };
 
+      static setProps(initProps){
+        prevProp = initProps;
+      }
+
       componentWillReceiveProps(nextProps) {
-        console.log({prevProp, nextProps})
+
         prevProp = getProp(prevProp, nextProps);
       }
 

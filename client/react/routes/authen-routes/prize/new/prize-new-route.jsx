@@ -46,7 +46,7 @@ export class PrizeNewRoute extends KComponent {
         return each.file;
       })
     }
-    prizeApi.createPrize(newData).then(({prizeID}) => {
+    prizeApi.createPrize(newData, "dir").then(({prizeID}) => {
       customHistory.push(`/prize/${prizeID}/edit`)
     }).catch(err => this.setState({err, saving: false}));
 

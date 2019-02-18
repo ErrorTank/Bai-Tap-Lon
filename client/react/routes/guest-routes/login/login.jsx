@@ -69,7 +69,7 @@ export class Login extends KComponent {
     userInfo.setState({...res.info})
       .then(() => {
         let newRoute = toDefaultRoute();
-
+        console.log(this.prevLocation)
         customHistory.push(this.prevLocation || newRoute);
       })
       .catch(err => console.log(err))

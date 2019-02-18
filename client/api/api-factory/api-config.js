@@ -48,11 +48,11 @@ export const apiFactory = {
       downloadStream(url) {
         window.open(hostURL + url);
       },
-      postMultipart: (url, data) => {
+      postMultipart: (url, data, fileKey) => {
         let formData = new FormData();
         forIn(data, (value, key)=>{
           if (value != null) {
-            if(Array.isArray(value)){
+            if(key === fileKey && Array.isArray(value)){
               for(let i =0 ;i < value.length; i++){
                 formData.append(key, value[i]);
               }
@@ -83,6 +83,7 @@ export const apiFactory = {
               resolve(data);
             },
             error: (rsp, status, error) => {
+              console.log(error)
               reject({rsp: rsp.responseJSON}, status, error);
             }
           });
