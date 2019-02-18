@@ -67,8 +67,11 @@ export const apiFactory = {
             url: hostURL + url,
             type: 'POST',
             beforeSend: (xhr) => {
-              if (headers && headers.length) {
-                headers.map(({key, content}) => xhr.setRequestHeader(key, content));
+              if (headers && Object.keys(headers).length) {
+                Object.keys(headers).map((each) => {
+                  let val = typeof headers[each] === "function"  ? headers[each]() : headers[each];
+                  xhr.setRequestHeader(each, val)
+                });
               }
               if(beforeSend){
                 beforeSend(xhr);
@@ -83,7 +86,6 @@ export const apiFactory = {
               resolve(data);
             },
             error: (rsp, status, error) => {
-              console.log(error)
               reject({rsp: rsp.responseJSON}, status, error);
             }
           });

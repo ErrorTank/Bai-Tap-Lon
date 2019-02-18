@@ -27,6 +27,7 @@ let uploadDir = process.cwd() + "/" + process.env.UPLOAD_DIR;
 app.use("/", express.static(process.cwd() + "/" + process.env.STATIC_DIR));
 app.use("/uploads", express.static(uploadDir));
 app.use("*", (req, res, next) => {
+
   if (/^\/api\//.test(req.originalUrl)) {
     next();
   } else {

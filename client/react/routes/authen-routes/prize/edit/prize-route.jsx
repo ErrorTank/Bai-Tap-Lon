@@ -81,6 +81,8 @@ export class PrizeRoute extends KComponent {
     let deleted = draft.dir.filter(item => !old.find(each => each.fileID === item.fileID)).map(each => each.fileID);
     prizeApi.update({...staticData, deleted: JSON.stringify(deleted), created}, "created").then((data) => {
       let newInfo = {...staticData, dir: data.files ? data.files.map(each => ({fileID: each.imgID, src: `/uploads/img/${each.link}`})) : []};
+
+      this.form.updateData({...newInfo});
       this.setState({draft: {...newInfo}, saving: false});
     }).catch(err => {
       this.setState({err, saving: false});

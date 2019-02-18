@@ -17,6 +17,11 @@ const authenApiConfig = {
     "account_not_found": () => {
       authenCache.clearAuthen();
       customHistory.push("/login")
+    },
+    "require_login": () => {
+      authenCache.clearAuthen();
+      TrackLocation.setProps(customHistory.location.pathname);
+      customHistory.push("/login")
     }
   }
 

@@ -23,6 +23,16 @@ module.exports = (db, dbManager) => {
     }).catch(err => next(err));
 
   });
+  router.post("/prize/update",  authMiddleware, upload.array("created" ,3), (req,res, next) => {
+    let data = req.body;
+    let files = req.files;
+    console.log(data)
+    console.log(files)
+
+    prizeManager.updatePrize({data: {...data}, files:[...files]}).then((data) => {
+      res.status(200).json(data);
+    }).catch(err => next(err));
+  });
   router.post("/prize/create",  authMiddleware, upload.array("dir" ,3), (req,res, next) => {
     let data = req.body;
     let files = req.files;
@@ -32,15 +42,6 @@ module.exports = (db, dbManager) => {
     }).catch(err => next(err));
   });
 
-  router.post("/prize/update",  authMiddleware, upload.array("dir" ,3), (req,res, next) => {
-    let data = req.body;
-    let files = req.files;
-    console.log(data)
-    console.log(files)
 
-    // prizeManager.updatePrize({data: {...data}, files:[...files]}).then((prizeID) => {
-    //   res.status(200).json({prizeID});
-    // }).catch(err => next(err));
-  });
   return router;
 };

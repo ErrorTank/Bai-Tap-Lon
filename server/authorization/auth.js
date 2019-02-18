@@ -5,7 +5,9 @@ const {getPrivateKey, getPublicKey} = require("../authorization/keys/keys");
 const decodeAuthRequest = (req, secret, config) => {
   return new Promise((resolve, reject) => {
     let authHeader = req.headers.authorization;
+
     if (!authHeader || authHeader.replace(/^Bearer /, '') === 'null'){
+
       reject();
     }else{
       let token = authHeader.replace(/^Bearer /, '');
@@ -48,15 +50,20 @@ const verifyToken = (token, secret, config) => {
 
 const authorization = (secret, config) => {
   return (req, res, next) => {
+
     decodeAuthRequest(req, secret, config)
       .then((user) => {
+
         if (!user) {
           next(new AuthorizationError("require_login"));
         } else {
           req.user = user;
           next();
         }
-      }).catch(err => next(err))
+      }).catch(err => {
+
+        next(new AuthorizationError("require_login"))
+    })
   }
 };
 
