@@ -32,6 +32,7 @@ import {SupervisorListRoute} from "./authen-routes/supervisor/list/supervisor-li
 import {SupervisorNewRoute} from "./authen-routes/supervisor/new/supervisor-new-route";
 import {SupervisorRoute} from "./authen-routes/supervisor/edit/supervisor-route";
 import {OrgLocationListRoute} from "./authen-routes/org-location/list/org-location-list-route";
+import {OrgLocationNewRoute} from "./authen-routes/org-location/new/org-location-new-route";
 
 const NotFoundRoute = () => {
   let getComp = (props) => {
@@ -80,8 +81,10 @@ export class MainRoute extends KComponent {
             <AuthenRoute exact path='/prize/new' component={PrizeNewRoute} excludeRoles={[2, 3]}/>
             <AuthenRoute exact path='/school/new' component={SchoolNewRoute} excludeRoles={[2, 3]}/>
             <AuthenRoute exact path='/supervisor/new' component={SupervisorNewRoute} excludeRoles={[2, 3]}/>
+            <AuthenRoute exact path='/org-location/new' component={OrgLocationNewRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/school/:schoolID/edit' component={SchoolRoute} excludeRoles={[3]}/>
             <AuthenRoute exact path='/candidate/:candidateID/edit' component={CandidateRoute} excludeRoles={[3]}/>
+            <AuthenRoute exact path='/account/:accountID/edit' component={AccountRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/sp/:spID/edit' component={SchoolPresenterRoute} excludeRoles={[3]}/>
             <AuthenRoute exact path='/user/:userID/edit' component={UserRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/prize/:prizeID/edit' component={PrizeRoute} excludeRoles={[2, 3]}/>
@@ -94,7 +97,6 @@ export class MainRoute extends KComponent {
             <AuthenRoute exact path='/org-locations' component={OrgLocationListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/prizes' component={PrizeListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/supervisors' component={SupervisorListRoute} excludeRoles={[2,3]}/>
-            <AuthenRoute exact path='/account/:accountID/edit' component={AccountRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/change-password' component={ChangePassword}/>
             <GuestRoute exact path='/forgot-password' component={ForgotPassword}/>
             <NotFoundRoute/>

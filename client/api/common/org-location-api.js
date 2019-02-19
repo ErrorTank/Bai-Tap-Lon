@@ -2,8 +2,8 @@ import {authenApi} from "../api";
 import {urlUtils} from "../../common/url-utils";
 
 export const orgLocationApi = {
-  create(supervisor){
-    return authenApi.post(`/supervisor/create`, {supervisor})
+  createOrgLocation(orgLocation){
+    return authenApi.post(`/org-location/create`, {orgLocation})
   },
   get(supervisorID){
     return authenApi.get("/supervisor/" + supervisorID);

@@ -4,6 +4,21 @@
       color #9699a2
       cursor pointer
       font-size 18px
+
+      .m-wizard__step-number{
+        position relative
+        display block
+        .m-wizard__step-icon{
+          position absolute
+          right 10px
+          top 50%
+          i{
+            font-size 17px !important
+          }
+          transform translateY(-50%)
+        }
+      }
+
       &.m-wizard__step--current{
         color #34bfa3
 
@@ -18,4 +33,5 @@
       position relative
     }
   }
+
 }

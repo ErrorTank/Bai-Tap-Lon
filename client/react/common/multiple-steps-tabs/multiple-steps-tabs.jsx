@@ -9,6 +9,7 @@ export class MultipleStepsTabs extends React.Component {
 
   render() {
     let {onClickLabel = () =>  null, steps, currentStep,} = this.props;
+    let check = (each) => each.hasOwnProperty("isDone") ? each.isDone(each) : each.step < currentStep;
     return (
       <div className="multiple-steps-tabs m-portlet">
         <div className="m-wizard m-wizard--5 m-wizard--success m-wizard--step-first">
@@ -20,7 +21,7 @@ export class MultipleStepsTabs extends React.Component {
                     {steps.map((each, i) => (
                       <div className={classnames("m-wizard__step", {
                         "m-wizard__step--current": currentStep === each.step,
-                        "m-wizard__step--done": each.hasOwnProperty("isDone") ? each.isDone(each) : each.step < currentStep
+                        "m-wizard__step--done": check(each)
                       })}
                            key={i}
                            onClick={() => onClickLabel(each.step)}
@@ -30,7 +31,12 @@ export class MultipleStepsTabs extends React.Component {
                           <span className="m-wizard__step-label">
                             {each.label}
 												</span>
-                          <span className="m-wizard__step-icon"><i className="la la-check"></i></span>
+                          {check(each) && (
+                            <span className="m-wizard__step-icon"><i className="fas fa-check"></i></span>
+                          )
+
+                          }
+
                         </a>
                       </div>
                     ))}
