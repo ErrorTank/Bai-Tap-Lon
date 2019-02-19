@@ -12,6 +12,7 @@ export class DataTable extends React.Component {
 
   render() {
     let {className, columns, _rowTrackBy = ((row, index) => index), onClickRow, rowLinkTo, rowClassName, clickRow, renderHeaderCell, rows, placeholder} = this.props;
+
     return (
       <table className={classnames("data-table table m-table m-table--head data-table-desktop", className)}>
         <thead>
@@ -30,7 +31,7 @@ export class DataTable extends React.Component {
           <tr
             key={_rowTrackBy(row, rIndex)}
             onClick={(onClickRow == null && rowLinkTo == null) ? undefined : e => {
-              return clickRow(e, row)
+              return clickRow(e, row, rIndex)
             }}
             className={classnames({clickable: onClickRow != null || rowLinkTo != null}, getValueOf(rowClassName, row))}
           >

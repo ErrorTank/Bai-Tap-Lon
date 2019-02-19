@@ -3,6 +3,7 @@ import {modals} from "../modals";
 import {KComponent} from "../../k-component";
 import {createSimpleForm} from "../../form-validator/form-validator";
 import {roomSchema} from "../../../routes/authen-routes/schema";
+import {InputBase} from "../../base-input/base-input";
 
 export class RoomInfoModal extends KComponent {
   constructor(props) {
@@ -18,7 +19,11 @@ export class RoomInfoModal extends KComponent {
         maxSeat: ""
       }
     });
+    this.onUnmount(this.form.on("change", () => this.forceUpdate()));
+    this.form.validateData();
   };
+
+
 
   handleConfirm = () => {
     let data = this.form.getData();
@@ -28,24 +33,79 @@ export class RoomInfoModal extends KComponent {
 
   render() {
     let {onChange, onClose, confirmText} = this.props;
+    let canSave = this.form.isValid() && !this.state.loading;
     return (
       <div className="room-info-modal">
         <div className="modal-header">
           <div className="modal-title">
-            {title}
+            Tạo phòng
           </div>
           <i className="fas fa-times close-modal"
              onClick={() => onClose()}
           />
         </div>
         <div className="modal-body">
-          <p>{text}</p>
+          <div className="row justify-content-center">
+            <div className="col-10">
+              {this.form.enhanceComponent("name", ({error, onEnter, onChange, ...others}) => (
+                <InputBase
+                  className="r-input pt-0"
+                  error={error}
+                  id={"name"}
+                  onKeyDown={onEnter}
+                  onChange={e => {
+                    console.log(e.target.value)
+                    onChange(e);
+                  }}
+                  type={"text"}
+                  label={"Tên phòng"}
+                  {...others}
+                />
+              ), true)}
+            </div>
+            <div className="col-10">
+
+              {this.form.enhanceComponent("locate", ({error, onEnter, onChange, ...others}) => (
+                <InputBase
+                  className="r-input pt-0"
+                  error={error}
+                  id={"locate"}
+                  onKeyDown={onEnter}
+                  onChange={e => {
+                    onChange(e);
+                  }}
+                  type={"text"}
+                  label={"Địa điểm"}
+                  {...others}
+                />
+              ), true)}
+
+            </div>
+            <div className="col-10">
+
+              {this.form.enhanceComponent("maxSeat", ({error, onEnter, onChange, ...others}) => (
+                <InputBase
+                  className="r-input pt-0"
+                  error={error}
+                  id={"maxSeat"}
+                  onKeyDown={onEnter}
+                  onChange={e => {
+                    onChange(e);
+                  }}
+                  type={"number"}
+                  label={"Sức chứa"}
+                  {...others}
+                />
+              ), true)}
+
+            </div>
+          </div>
         </div>
         <div className="modal-footer">
-          <button type="button" className="btn btn-primary" onClick={() => onClose()}>
+          <button type="button" className="btn btn-danger" onClick={() => onClose()}>
             Hủy bỏ
           </button>
-          <button type="button" className="btn btn-primary" onClick={this.handleConfirm}>
+          <button type="button" className="btn btn-primary ml-3" disabled={!canSave} onClick={this.handleConfirm}>
             {confirmText}
           </button>
         </div>

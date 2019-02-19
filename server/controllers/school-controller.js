@@ -32,7 +32,7 @@ module.exports = (db, dbManager) => {
     }).catch(err => next(err))
   });
   router.post("/school/create", authMiddleware, (req, res, next) => {
-    console.log("đas")
+
     schoolManager.createSchool(req.body.school).then(school => {
       res.status(200).json(school);
     }).catch(err => next(err))

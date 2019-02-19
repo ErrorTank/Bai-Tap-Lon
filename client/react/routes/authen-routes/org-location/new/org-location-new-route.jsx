@@ -44,8 +44,8 @@ export class OrgLocationNewRoute extends KComponent {
       location
     });
 
-    orgLocationApi.createOrgLocation(location).then(({locationID}) => {
-      customHistory.push(`/org-location/${locationID}/edit`)
+    orgLocationApi.createOrgLocation(location).then(({orgLocationID}) => {
+      customHistory.push(`/org-location/${orgLocationID}/edit`)
     }).catch(err => this.setState({err, saving: false}))
 
   };
@@ -63,7 +63,7 @@ export class OrgLocationNewRoute extends KComponent {
       label: "Thiết lập thông tin",
       render: () => (
         <div className="row justify-content-center">
-          <div className="col-12">
+          <div className="col-12 col-lg-10 p-0">
             <OrgLocationInfoForm
               form={this.form}
               onChange={() => this.setState({err: ""})}
@@ -101,7 +101,7 @@ export class OrgLocationNewRoute extends KComponent {
       label: "Thiết lập phòng",
       render: () => (
         <div className="row justify-content-center">
-          <div className="col-12">
+          <div className="col-12 p-0">
             <InitialRoomInfoForm
               form={this.form}
               onChange={() => this.setState({err: ""})}
@@ -139,7 +139,7 @@ export class OrgLocationNewRoute extends KComponent {
 
   render() {
     let {activeTab} = this.state;
-    console.log(this.form.getData())
+    console.log(this.form.getInvalidPaths())
     return (
       <PageTitle title="Tạo địa điểm tổ chức mới">
         <RouteTitle content="Tạo địa điểm tổ chức mới">

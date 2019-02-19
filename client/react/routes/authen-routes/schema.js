@@ -59,8 +59,8 @@ const schoolSchema = yup.object().shape({
 const orgLocationSchema = yup.object().shape({
   name: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
   phone: yup.string().required("SĐT không được để trống").isPhone("SĐT không hợp lệ"),
-  address: yup.string().max(200, "Địa chỉ không được vượt quá 200 ký tự").required(),
-  room: yup.array()
+  address: yup.string().max(200, "Địa chỉ không được vượt quá 200 ký tự").required("Địa chỉ không được để trống"),
+  rooms: yup.array()
 
 });
 

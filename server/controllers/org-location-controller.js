@@ -18,6 +18,14 @@ module.exports = (db, dbManager) => {
 
   });
 
+  router.post("/org-location/create", authMiddleware, (req,res, next) =>{
+    orgLocationManager.createOrgLocation(req.body.orgLocation).then((orgLocationID) => {
+      console.log(orgLocationID)
+      res.status(200).json({orgLocationID});
+    }).catch(err => next(err))
+
+  });
+
 
 
   return router;

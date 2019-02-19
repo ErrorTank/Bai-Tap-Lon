@@ -20,7 +20,18 @@ export class InitialRoomInfoForm extends React.Component {
       cellDisplay: room => room.maxSeat,
     }, {
       label: "Địa điểm",
-      cellDisplay: room => room.locate,
+      cellDisplay: room => (
+        <p className="locate-display">
+          {room.locate}
+        </p>
+      ),
+    },{
+      label: "",
+      cellDisplay: room => (
+        <div className="actions">
+          {room.locate}
+        </div>
+      ),
     },
   ];
 
@@ -31,17 +42,21 @@ export class InitialRoomInfoForm extends React.Component {
   );
 
 
-  handleClickRow = (e, room) => {
+  handleClickRow = (e, room, index) => {
+    console.log(e)
+    let handleUpdate = (info) => {
+      let {form, onChange} = this.props;
+      onChange();
+      form.updatePathData("rooms", form.getPathData("rooms").map((each, i) => {
+        if (i === index)
+          return {...info};
+        return each;
+      }));
+    };
     roomInfoModal.open({
       onChange(info) {
-        let {form, onChange} = this.props;
         return new Promise((resolve) => {
-          onChange();
-          form.updatePathData("rooms", form.getPathData("rooms").map(each => {
-            if (each.roomID === room.roomID)
-              return {...info};
-            return each;
-          }));
+          handleUpdate(info);
           resolve();
         })
       },
@@ -51,27 +66,29 @@ export class InitialRoomInfoForm extends React.Component {
   };
 
   handleCreateRoom = () => {
+    let handleCreate = (info) => {
+      let {form, onChange} = this.props;
+      onChange();
+      form.updatePathData("rooms", form.getPathData("rooms").concat({...info}));
+    };
+
     roomInfoModal.open({
       onChange(info) {
-        let {form, onChange} = this.props;
+
         return new Promise((resolve) => {
-          onChange();
-          form.updatePathData("rooms", form.getPathData("rooms").map(each => {
-            if (each.roomID === room.roomID)
-              return {...info};
-            return each;
-          }));
+          handleCreate(info);
+
           resolve();
         })
       },
-      confirmText: "Lưu thay đổi"
+      confirmText: "Tạo phòng"
     });
   };
 
   render() {
     let {form, err} = this.props;
     return (
-      <div className="supervisor-info-form">
+      <div className="initial-room-info-form">
         <div className="m-form m-form--fit m-form--label-align-right m-form--state">
           {err && (
             <div className="row">
@@ -89,7 +106,7 @@ export class InitialRoomInfoForm extends React.Component {
 
           <div className="row ">
 
-            <div className="col-12">
+            <div className="col-12 p-0">
               {form.enhanceComponent("rooms", ({error, onEnter, onChange, value, ...others}) => (
                 <div className="rooms-table-wrap">
 
@@ -100,6 +117,7 @@ export class InitialRoomInfoForm extends React.Component {
                     placeholder={"Không có phòng nào"}
                     rows={value}
                     clickRow={this.handleClickRow}
+                    onClickRow={true}
                   />
                 </div>
 
@@ -110,10 +128,12 @@ export class InitialRoomInfoForm extends React.Component {
           </div>
 
           <div className="row justify-content-end">
+            <div className="col text-right p-0">
+              <button className="btn btn-success create-room" onClick={this.handleCreateRoom}>
+                Tạo phòng
+              </button>
+            </div>
 
-            <button className="btn btn-primary" onClick={this.handleCreateRoom}>
-              Tạo phòng
-            </button>
 
 
           </div>
