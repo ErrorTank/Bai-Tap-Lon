@@ -50,8 +50,8 @@ const dbUtils = [{
     name: "Create contest - room table",
     query: "CREATE TABLE `olympic`.`contestRoom` ( `roomID` NVARCHAR(10) NOT NULL , `subjectID` NVARCHAR(10) NOT NULL , `supervisoryID` NVARCHAR(10) NOT NULL , PRIMARY KEY (`roomID`, `subjectID`)) ENGINE = InnoDB;"
   }, {
-    name: "Create supervisory table",
-    query: "CREATE TABLE `olympic`.`supervisory` (`supervisoryID` NVARCHAR(10) NOT NULL , `name` NVARCHAR(50) NOT NULL , `email` NVARCHAR(100) NOT NULL , `phone` NVARCHAR(20) NOT NULL , `address` NVARCHAR(200) NOT NULL , PRIMARY KEY (`supervisoryID`), UNIQUE (`email`)) ENGINE = InnoDB;"
+    name: "Create supervisor table",
+    query: "CREATE TABLE `olympic`.`supervisor` (`supervisorID` NVARCHAR(10) NOT NULL , `name` NVARCHAR(50) NOT NULL , `email` NVARCHAR(100) NOT NULL , `phone` NVARCHAR(20) NOT NULL , `address` NVARCHAR(200) NOT NULL , PRIMARY KEY (`supervisorID`), UNIQUE (`email`)) ENGINE = InnoDB;"
   }, {
     name: "Create contest - candidate table",
     query: "CREATE TABLE `olympic`.`contestCandidate`(`cID` NVARCHAR(10) NOT NULL, `contestID` NVARCHAR(10) NOT NULL, `participantID` NVARCHAR(10) not null ,`candidateID` NVARCHAR(10) NOT NULL, PRIMARY KEY(`cID`, `contestID`)) ENGINE = InnoDB;"

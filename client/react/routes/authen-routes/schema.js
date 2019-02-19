@@ -12,6 +12,13 @@ const prizeSchema = yup.object().shape({
   dir: yup.array()
 });
 
+const supervisorSchema = yup.object().shape({
+  name: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
+  address: yup.string().max(200, "Địa chỉ không được vượt quá 200 ký tự"),
+  phone: yup.string().required("SĐT không được để trống").isPhone("SĐT không hợp lệ"),
+  email: yup.string().email("Email không hợp lệ").required("Email không được để trống"),
+});
+
 const userSchema = yup.object().shape({
   name: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
   address: yup.string().max(200, "Địa chỉ không được vượt quá 200 ký tự"),
@@ -56,5 +63,6 @@ export
   userSchema,
   candidateSchema,
   schoolPresenterSchema,
-  schoolSchema
+  schoolSchema,
+  supervisorSchema
 }

@@ -9,6 +9,13 @@ const authMiddleware = authorization(getPublicKey(), {expiresIn: "1 day", algori
 
 module.exports = (db, dbManager) => {
   let prizeManager = dbManager("prize");
+  router.get("/prize/brief", authMiddleware, (req,res, next) =>{
+
+    prizeManager.getPrizeBriefWithCondition({...req.query}).then((data) => {
+      res.status(200).json(data);
+    }).catch(err => next(err));
+
+  });
   router.get("/prize/:prizeID", authMiddleware, (req, res, next) => {
 
     prizeManager.getPrize(req.params.prizeID).then((data) => {

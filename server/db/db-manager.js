@@ -4,6 +4,7 @@ const spSql = require("../db/sp-sql");
 const candidateSql = require("../db/candidate-sql");
 const schoolSql = require("../db/school-sql");
 const prizeSql = require("../db/prize-sql");
+const supervisorSql = require("../db/supervisor-sql");
 
 const createDbManager = (db) => {
   const dbs = {
@@ -12,7 +13,8 @@ const createDbManager = (db) => {
     sp: spSql(db),
     candidate: candidateSql(db),
     school: schoolSql(db),
-    prize: prizeSql(db)
+    prize: prizeSql(db),
+    supervisor: supervisorSql(db)
 
   };
   return (key) => {

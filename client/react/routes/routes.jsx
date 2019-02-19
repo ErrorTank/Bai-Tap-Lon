@@ -27,6 +27,10 @@ import {SchoolNewRoute} from "./authen-routes/school/new/school-new-route";
 import {SchoolRoute} from "./authen-routes/school/edit/school-route";
 import {PrizeNewRoute} from "./authen-routes/prize/new/prize-new-route";
 import {PrizeRoute} from "./authen-routes/prize/edit/prize-route";
+import {PrizeListRoute} from "./authen-routes/prize/list/prize-list-route";
+import {SupervisorListRoute} from "./authen-routes/supervisor/list/supervisor-list-route";
+import {SupervisorNewRoute} from "./authen-routes/supervisor/new/supervisor-new-route";
+import {SupervisorRoute} from "./authen-routes/supervisor/edit/supervisor-route";
 
 const NotFoundRoute = () => {
   let getComp = (props) => {
@@ -74,16 +78,20 @@ export class MainRoute extends KComponent {
             <AuthenRoute exact path='/account/new' component={AccountNewRoute} excludeRoles={[2, 3]}/>
             <AuthenRoute exact path='/prize/new' component={PrizeNewRoute} excludeRoles={[2, 3]}/>
             <AuthenRoute exact path='/school/new' component={SchoolNewRoute} excludeRoles={[2, 3]}/>
+            <AuthenRoute exact path='/supervisor/new' component={SupervisorNewRoute} excludeRoles={[2, 3]}/>
             <AuthenRoute exact path='/school/:schoolID/edit' component={SchoolRoute} excludeRoles={[3]}/>
             <AuthenRoute exact path='/candidate/:candidateID/edit' component={CandidateRoute} excludeRoles={[3]}/>
             <AuthenRoute exact path='/sp/:spID/edit' component={SchoolPresenterRoute} excludeRoles={[3]}/>
             <AuthenRoute exact path='/user/:userID/edit' component={UserRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/prize/:prizeID/edit' component={PrizeRoute} excludeRoles={[2, 3]}/>
+            <AuthenRoute exact path='/supervisor/:supervisorID/edit' component={SupervisorRoute} excludeRoles={[2, 3]}/>
             <AuthenRoute exact path='/users' component={UserListRoute} excludeRoles={[2,3, 1]}/>
             <AuthenRoute exact path='/accounts' component={AccountListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/candidates' component={CandidateListRoute} excludeRoles={[3]}/>
             <AuthenRoute exact path='/school-presenters' component={SpListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/schools' component={SchoolListRoute} excludeRoles={[2,3]}/>
+            <AuthenRoute exact path='/prizes' component={PrizeListRoute} excludeRoles={[2,3]}/>
+            <AuthenRoute exact path='/supervisors' component={SupervisorListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/account/:accountID/edit' component={AccountRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/change-password' component={ChangePassword}/>
             <GuestRoute exact path='/forgot-password' component={ForgotPassword}/>
