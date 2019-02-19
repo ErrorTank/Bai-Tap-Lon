@@ -37,8 +37,12 @@ export class InitialRoomInfoForm extends React.Component {
 
   handleClickRow = (e, room) => {
     roomInfoModal.open({
+      onChange(info){
 
-    }).then
+      },
+      value: room,
+      confirmText: "Lưu thay đổi"
+    });
   };
 
   render() {
