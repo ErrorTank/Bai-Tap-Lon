@@ -56,6 +56,20 @@ const schoolSchema = yup.object().shape({
 
 });
 
+const orgLocationSchema = yup.object().shape({
+  name: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
+  phone: yup.string().required("SĐT không được để trống").isPhone("SĐT không hợp lệ"),
+  address: yup.string().max(200, "Địa chỉ không được vượt quá 200 ký tự").required(),
+  room: yup.array()
+
+});
+
+const roomSchema = yup.object.shape({
+  name: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
+  locate: yup.string().max(200, "Vị trí không được vượt quá 200 ký tự").required("Vị trí không được để trống"),
+  maxSeat: yup.number().integer("Sức chứa phải là số nguyên").max(200, "Sức chứa phải nhỏ hơn 200").required("Sức chứa không được để trống")
+});
+
 export
 {
   accountSchema,
@@ -64,5 +78,7 @@ export
   candidateSchema,
   schoolPresenterSchema,
   schoolSchema,
-  supervisorSchema
+  supervisorSchema,
+  orgLocationSchema,
+  roomSchema
 }

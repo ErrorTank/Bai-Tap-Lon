@@ -20,7 +20,7 @@ export class MultipleStepsTabs extends React.Component {
                     {steps.map((each, i) => (
                       <div className={classnames("m-wizard__step", {
                         "m-wizard__step--current": currentStep === each.step,
-                        "m-wizard__step--done": each.step < currentStep
+                        "m-wizard__step--done": each.hasOwnProperty("isDone") ? each.isDone(each) : each.step < currentStep
                       })}
                            key={i}
                            onClick={() => onClickLabel(each.step)}

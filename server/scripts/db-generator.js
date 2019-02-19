@@ -39,7 +39,7 @@ const dbUtils = [{
     query: "CREATE TABLE `olympic`.`orgLocation` ( `orgLocationID` NVARCHAR(10) NOT NULL ,`phone` NVARCHAR(20) NOT NULL, `name` NVARCHAR(100) NOT NULL , `address` NVARCHAR(200) NOT NULL , PRIMARY KEY (`orgLocationID`)) ENGINE = InnoDB;"
   }, {
     name: "Create room table",
-    query: "CREATE TABLE `olympic`.`room` ( `roomID` NVARCHAR(10) NOT NULL , `orgLocationID` NVARCHAR(10) NOT NULL ,`name` NVARCHAR(50) NOT NULL , PRIMARY KEY (`roomID`)) ENGINE = InnoDB;"
+    query: "CREATE TABLE `olympic`.`room` ( `roomID` NVARCHAR(10) NOT NULL , `orgLocationID` NVARCHAR(10) NOT NULL ,`name` NVARCHAR(50) NOT NULL , `locate` NVARCHAR(200) NOT NULL , `maxSeat` INT(3) NOT NULL , PRIMARY KEY (`roomID`)) ENGINE = InnoDB;"
   }, {
     name: "Create candidate table",
     query: "CREATE TABLE `olympic`.`candidate`(`cID` NVARCHAR(10) NOT NULL, `accountID` NVARCHAR(10) NOT NULL , `address` NVARCHAR(200) NOT NULL, `sID` NVARCHAR(10) NOT NULL, `name` NVARCHAR(50) NOT NULL, `phone` NVARCHAR(20) NOT NULL, `email` NVARCHAR(100) NOT NULL, `CMT` NVARCHAR(20) NOT NULL , `gender` INT(1) NOT NULL  ,  `dob` DATETIME NOT NULL, PRIMARY KEY(`cID`), UNIQUE (`accountID`), UNIQUE (`CMT`), UNIQUE (`email`)) ENGINE = InnoDB;"
