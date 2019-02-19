@@ -31,10 +31,11 @@ import {PrizeListRoute} from "./authen-routes/prize/list/prize-list-route";
 import {SupervisorListRoute} from "./authen-routes/supervisor/list/supervisor-list-route";
 import {SupervisorNewRoute} from "./authen-routes/supervisor/new/supervisor-new-route";
 import {SupervisorRoute} from "./authen-routes/supervisor/edit/supervisor-route";
+import {OrgLocationListRoute} from "./authen-routes/org-location/list/org-location-list-route";
 
 const NotFoundRoute = () => {
   let getComp = (props) => {
-    console.log(props);
+
     if (!userInfo.getState()) {
       return (
         <NotFoundPage isLogin = {false} path={props.location.pathname}/>
@@ -90,6 +91,7 @@ export class MainRoute extends KComponent {
             <AuthenRoute exact path='/candidates' component={CandidateListRoute} excludeRoles={[3]}/>
             <AuthenRoute exact path='/school-presenters' component={SpListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/schools' component={SchoolListRoute} excludeRoles={[2,3]}/>
+            <AuthenRoute exact path='/org-locations' component={OrgLocationListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/prizes' component={PrizeListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/supervisors' component={SupervisorListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/account/:accountID/edit' component={AccountRoute} excludeRoles={[2,3]}/>

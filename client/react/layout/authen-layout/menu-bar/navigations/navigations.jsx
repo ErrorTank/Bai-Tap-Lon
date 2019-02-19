@@ -90,6 +90,15 @@ export class Navigations extends React.Component {
       linkTo: () => customHistory.push(`/supervisors`),
       roles: [0, 1],
       active: ["/supervisor/:supervisorID/edit", "/supervisor/new", "/supervisors"]
+    }, {
+      icon: (
+        <i className="fas fa-map-marked-alt"></i>
+      ),
+      label: "Quản lý địa điểm tổ chức",
+      url: `/org-locations`,
+      linkTo: () => customHistory.push(`/org-locations`),
+      roles: [0, 1],
+      active: ["/org-location/:orgLocationID/edit", "/org-location/new", "/org-locations"]
     }
   ];
 

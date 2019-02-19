@@ -5,6 +5,7 @@ const candidateSql = require("../db/candidate-sql");
 const schoolSql = require("../db/school-sql");
 const prizeSql = require("../db/prize-sql");
 const supervisorSql = require("../db/supervisor-sql");
+const orgLocationSql = require("../db/org-location-sql");
 
 const createDbManager = (db) => {
   const dbs = {
@@ -14,7 +15,8 @@ const createDbManager = (db) => {
     candidate: candidateSql(db),
     school: schoolSql(db),
     prize: prizeSql(db),
-    supervisor: supervisorSql(db)
+    supervisor: supervisorSql(db),
+    orgLocation: orgLocationSql(db),
 
   };
   return (key) => {
