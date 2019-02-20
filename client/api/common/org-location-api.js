@@ -5,11 +5,11 @@ export const orgLocationApi = {
   createOrgLocation(orgLocation){
     return authenApi.post(`/org-location/create`, {orgLocation})
   },
-  get(supervisorID){
-    return authenApi.get("/supervisor/" + supervisorID);
+  get(orgLocationID){
+    return authenApi.get("/org-location/" + orgLocationID);
   },
-  delete(supervisorID){
-    return authenApi.delete("/supervisor/" + supervisorID)
+  delete(orgLocationID){
+    return authenApi.delete("/org-location/" + orgLocationID)
   },
   checkSupervisorExisted(supervisor) {
     return authenApi.post("/supervisor/check", {supervisor})

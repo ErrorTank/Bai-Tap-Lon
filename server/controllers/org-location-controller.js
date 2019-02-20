@@ -17,6 +17,13 @@ module.exports = (db, dbManager) => {
     }).catch(err => next(err));
 
   });
+  router.get("/org-location/:orgLocationID", authMiddleware, (req, res, next) => {
+
+    orgLocationManager.getOrgLocation(req.params.orgLocationID).then((data) => {
+      res.status(200).json(data);
+    }).catch(err => next(err));
+
+  });
 
   router.post("/org-location/create", authMiddleware, (req,res, next) =>{
     orgLocationManager.createOrgLocation(req.body.orgLocation).then((orgLocationID) => {
@@ -25,7 +32,13 @@ module.exports = (db, dbManager) => {
     }).catch(err => next(err))
 
   });
+  router.delete("/org-location/:orgLocationID", authMiddleware, (req, res, next) => {
 
+    orgLocationManager.deleteOrgLocation(req.params.orgLocationID).then(() => {
+      res.status(200).end();
+    }).catch(err => next(err));
+
+  });
 
 
   return router;

@@ -49,9 +49,46 @@ const orgLocationSql = (db) => {
       }
     )
   };
+
+  const getOrgLocation = (orgLocationID) => {
+    return new Promise((resolve, reject) => {
+      if (isNil(orgLocationID)) {
+        reject(new Error("Cannot find org location with ID: " + orgLocationID));
+      } else {
+        const getInfo = `SELECT * FROM orglocation where orgLocationID = '${orgLocationID}'`;
+        const getRooms = `SELECT * From room where orgLocationID = '${orgLocationID}'`;
+        let promises = [query(getInfo), query(getRooms)];
+        Promise.all(promises).then(([result, result2]) => {
+          if (result.length) {
+            resolve({...result[0], rooms: [...result2]});
+          } else {
+            reject(new Error("org location not found"));
+          }
+        }).catch(err => {
+          reject(err)
+        })
+      }
+    });
+  };
+  const deleteOrgLocation = (orgLocationID) => {
+
+    var deleteInfo = `DELETE FROM orglocation WHERE orgLocationID = '${orgLocationID}'`;
+    let deleteRooms = `DELETE from room where orgLocationID = '${orgLocationID}'`;
+    let promises = [query(deleteInfo), query(deleteRooms)];
+    return new Promise((resolve, reject) => {
+        Promise.all(promises).then(() => {
+          resolve();
+        }).catch(err => {
+          reject(err)
+        })
+      }
+    )
+  };
   return {
     getOrgLocationBriefWithCondition,
-    createOrgLocation
+    createOrgLocation,
+    getOrgLocation,
+    deleteOrgLocation
     //define function name here
   }
 };

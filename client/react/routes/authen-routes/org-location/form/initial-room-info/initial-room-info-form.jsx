@@ -1,5 +1,6 @@
 import React from "react";
 import {DataTable} from "../../../../../common/data-table/data-table";
+import uniquid from "uniquid";
 
 import {roomSchema} from "../../../schema";
 import {roomInfoModal} from "../../../../../common/modal/room-info-modal/room-info-modal";
@@ -25,11 +26,11 @@ export class InitialRoomInfoForm extends React.Component {
           {room.locate}
         </p>
       ),
-    },{
+    }, {
       label: "",
       cellDisplay: room => (
         <div className="actions">
-          {room.locate}
+          <i className="fas fa-trash" onClick={() => this.removeRoom(room)}></i>
         </div>
       ),
     },
@@ -42,13 +43,13 @@ export class InitialRoomInfoForm extends React.Component {
   );
 
 
-  handleClickRow = (e, room, index) => {
-    console.log(e)
+  handleClickRow = (e, room) => {
+
     let handleUpdate = (info) => {
       let {form, onChange} = this.props;
       onChange();
-      form.updatePathData("rooms", form.getPathData("rooms").map((each, i) => {
-        if (i === index)
+      form.updatePathData("rooms", form.getPathData("rooms").map((each) => {
+        if (each.keyID === info.keyID)
           return {...info};
         return each;
       }));
@@ -76,7 +77,7 @@ export class InitialRoomInfoForm extends React.Component {
       onChange(info) {
 
         return new Promise((resolve) => {
-          handleCreate(info);
+          handleCreate({info, keyID: uniquid()});
 
           resolve();
         })
@@ -116,6 +117,7 @@ export class InitialRoomInfoForm extends React.Component {
                     renderHeaderCell={this.renderHeader}
                     placeholder={"Không có phòng nào"}
                     rows={value}
+                    _rowTrackBy={(row) => row.keyID}
                     clickRow={this.handleClickRow}
                     onClickRow={true}
                   />
@@ -133,7 +135,6 @@ export class InitialRoomInfoForm extends React.Component {
                 Tạo phòng
               </button>
             </div>
-
 
 
           </div>

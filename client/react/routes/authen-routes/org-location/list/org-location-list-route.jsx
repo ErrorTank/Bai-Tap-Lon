@@ -97,7 +97,7 @@ export class OrgLocationListRoute extends React.Component {
                   filter={{
                     keyword
                   }}
-                  rowLinkTo={(row) => `/orgLocation/${row.orgLocationID}/edit`}
+                  rowLinkTo={(row) => `/org-location/${row.orgLocationID}/edit`}
                   api={api}
                   pageSize={10}
                   placeholder={"Không có địa điểm nào"}

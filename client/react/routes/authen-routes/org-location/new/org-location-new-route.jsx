@@ -2,7 +2,7 @@ import React from "react";
 import {PageTitle} from "../../../../common/page-title/page-title";
 import {RouteTitle} from "../../../../layout/route-title/route-title";
 import {KComponent} from "../../../../common/k-component";
-import * as yup from "yup";
+import omit from "lodash/omit"
 import {createSimpleForm} from "../../../../common/form-validator/form-validator";
 import {orgLocationSchema} from "../../schema";
 import {customHistory} from "../../../routes";
@@ -44,7 +44,7 @@ export class OrgLocationNewRoute extends KComponent {
       location
     });
 
-    orgLocationApi.createOrgLocation(location).then(({orgLocationID}) => {
+    orgLocationApi.createOrgLocation({...location, rooms: location.rooms.map(each => omit(each, 'keyID'))}).then(({orgLocationID}) => {
       customHistory.push(`/org-location/${orgLocationID}/edit`)
     }).catch(err => this.setState({err, saving: false}))
 
