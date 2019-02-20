@@ -43,7 +43,7 @@ const orgLocationSql = (db) => {
 
           resolve(orgLocationID);
         }).catch(err => {
-              console.log("cc")
+          console.log("cc")
           reject(err)
         })
       }
@@ -60,6 +60,7 @@ const orgLocationSql = (db) => {
         let promises = [query(getInfo), query(getRooms)];
         Promise.all(promises).then(([result, result2]) => {
           if (result.length) {
+
             resolve({...result[0], rooms: [...result2]});
           } else {
             reject(new Error("org location not found"));
@@ -84,11 +85,54 @@ const orgLocationSql = (db) => {
       }
     )
   };
+
+  const updateOrgLocation = (orgLocationID, orgLocation) => {
+    return new Promise((resolve, reject) => {
+      if (isNil(orgLocationID)) {
+        reject(new Error("Cannot find orgLocation with ID: " + orgLocationID));
+      } else {
+
+        let {name, address, phone, deleted, created, old} = orgLocation;
+        let parseDeleted = JSON.parse(deleted);
+        let parseCreated = JSON.parse(created);
+        let parseOld = JSON.parse(old);
+        let promises = [];
+        if (parseDeleted && parseDeleted.length) {
+          let rmStr = parseDeleted.reduce((total, cur) => {
+            return total + ` roomID = '${cur.roomID}' or`
+          }, 'where');
+          console.log(rmStr);
+          promises.push(query(`DELETE FROM room ${rmStr} 1=0`));
+        }
+        if (parseCreated && parseCreated.length) {
+          parseCreated.forEach(each => {
+            let key = uniquid();
+
+            promises.push(query(`INSERT INTO room (roomID, orgLocationID, name, locate, maxSeat) VALUES('${key.slice(-6, -1) + key.slice(-1)}',  '${orgLocationID}','${each.name}', '${each.locate}', '${each.maxSeat}')`));
+          });
+        }
+        if (parseOld && parseOld.length) {
+          parseOld.forEach(each => {
+
+            promises.push(query(`Update room set name = '${each.name}', locate = '${each.locate}', maxSeat = '${each.maxSeat}' where roomID = '${each.roomID}'`));
+          });
+        }
+        promises.push(query(`Update  orglocation set name = '${name}', address = '${address}', phone = '${phone}' where orgLocationID = '${orgLocationID}'`));
+        Promise.all(promises).then(() => {
+          resolve()
+        }).catch(err => reject(err));
+
+      }
+
+    });
+  };
+
   return {
     getOrgLocationBriefWithCondition,
     createOrgLocation,
     getOrgLocation,
-    deleteOrgLocation
+    deleteOrgLocation,
+    updateOrgLocation
     //define function name here
   }
 };

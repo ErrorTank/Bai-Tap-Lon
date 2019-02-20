@@ -139,7 +139,7 @@ export class OrgLocationNewRoute extends KComponent {
 
   render() {
     let {activeTab} = this.state;
-    console.log(this.form.getInvalidPaths())
+
     return (
       <PageTitle title="Tạo địa điểm tổ chức mới">
         <RouteTitle content="Tạo địa điểm tổ chức mới">

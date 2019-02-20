@@ -16,7 +16,7 @@ export class RoomInfoModal extends KComponent {
       initData: props.value ? {...props.value} : {
         name: "",
         locate: "",
-        maxSeat: ""
+        maxSeat: 0
       }
     });
     this.onUnmount(this.form.on("change", () => this.forceUpdate()));
@@ -32,8 +32,8 @@ export class RoomInfoModal extends KComponent {
   };
 
   render() {
-    let {onChange, onClose, confirmText} = this.props;
-    let canSave = this.form.isValid() && !this.state.loading;
+    let {disabled = () => false, onClose, confirmText} = this.props;
+    let canSave = this.form.isValid() && !this.state.loading && !disabled(this.form.getData());
     return (
       <div className="room-info-modal">
         <div className="modal-header">
@@ -54,7 +54,6 @@ export class RoomInfoModal extends KComponent {
                   id={"name"}
                   onKeyDown={onEnter}
                   onChange={e => {
-                    console.log(e.target.value)
                     onChange(e);
                   }}
                   type={"text"}
@@ -90,7 +89,8 @@ export class RoomInfoModal extends KComponent {
                   id={"maxSeat"}
                   onKeyDown={onEnter}
                   onChange={e => {
-                    onChange(e);
+
+                    onChange(Number(e.target.value));
                   }}
                   type={"number"}
                   label={"Sức chứa"}
@@ -115,7 +115,7 @@ export class RoomInfoModal extends KComponent {
 }
 
 export const roomInfoModal = {
-  open({onChange, value, confirmText}){
+  open({onChange, value, confirmText, disabled}){
     const modal = modals.openModal({
       content: (
         <RoomInfoModal
@@ -123,6 +123,7 @@ export const roomInfoModal = {
           onClose={() => modal.close()}
           value={value}
           confirmText={confirmText}
+          disabled={disabled}
         />
       )
     });

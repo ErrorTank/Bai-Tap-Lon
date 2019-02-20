@@ -1,7 +1,7 @@
 import React from "react";
 import {DataTable} from "../../../../../common/data-table/data-table";
-import uniquid from "uniquid";
-
+import {uid} from 'react-uid';
+import isEqual from "lodash/isEqual"
 import {roomSchema} from "../../../schema";
 import {roomInfoModal} from "../../../../../common/modal/room-info-modal/room-info-modal";
 
@@ -30,11 +30,21 @@ export class InitialRoomInfoForm extends React.Component {
       label: "",
       cellDisplay: room => (
         <div className="actions">
-          <i className="fas fa-trash" onClick={() => this.removeRoom(room)}></i>
+          <i className="fas fa-trash rm-room"
+             onClick={(e) => {
+               e.stopPropagation();
+               this.removeRoom(room)
+             }}/>
         </div>
       ),
     },
   ];
+
+  removeRoom = room => {
+    let {form, onChange} = this.props;
+    onChange();
+    form.updatePathData("rooms", form.getPathData("rooms").filter(each => each.keyID !== room.keyID));
+  };
 
   renderHeader = (column, index) => (
     <th className={column.cellClass} key={index}>
@@ -55,6 +65,10 @@ export class InitialRoomInfoForm extends React.Component {
       }));
     };
     roomInfoModal.open({
+      disabled: (data) => {
+
+        return isEqual(data, room)
+      },
       onChange(info) {
         return new Promise((resolve) => {
           handleUpdate(info);
@@ -77,7 +91,7 @@ export class InitialRoomInfoForm extends React.Component {
       onChange(info) {
 
         return new Promise((resolve) => {
-          handleCreate({info, keyID: uniquid()});
+          handleCreate({...info, keyID: uid(info)});
 
           resolve();
         })
@@ -88,6 +102,7 @@ export class InitialRoomInfoForm extends React.Component {
 
   render() {
     let {form, err} = this.props;
+    console.log()
     return (
       <div className="initial-room-info-form">
         <div className="m-form m-form--fit m-form--label-align-right m-form--state">

@@ -27,10 +27,17 @@ module.exports = (db, dbManager) => {
 
   router.post("/org-location/create", authMiddleware, (req,res, next) =>{
     orgLocationManager.createOrgLocation(req.body.orgLocation).then((orgLocationID) => {
-      console.log(orgLocationID)
+
       res.status(200).json({orgLocationID});
     }).catch(err => next(err))
 
+  });
+  router.put("/org-location/:orgLocationID",  authMiddleware, (req,res, next) => {
+    console.log(req.params.orgLocationID);
+    console.log(req.body.orgLocation)
+    orgLocationManager.updateOrgLocation(req.params.orgLocationID, req.body.orgLocation).then(() => {
+      res.status(200).end();
+    }).catch(err => next(err));
   });
   router.delete("/org-location/:orgLocationID", authMiddleware, (req, res, next) => {
 

@@ -71,7 +71,7 @@ const prizeSql = (db) => {
       let rmStr = parse.reduce((total, cur) => {
         return total + ` imgID = '${cur}' or`
       }, 'where');
-      console.log(rmStr)
+      console.log(rmStr);
       promises.push(query(`DELETE FROM prizeimg ${rmStr} 1=0`));
     }
     if(files && files.length){

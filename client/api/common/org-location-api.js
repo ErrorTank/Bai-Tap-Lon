@@ -14,8 +14,8 @@ export const orgLocationApi = {
   checkSupervisorExisted(supervisor) {
     return authenApi.post("/supervisor/check", {supervisor})
   },
-  update(supervisor){
-    return authenApi.put(`/supervisor/${supervisor.supervisorID}`, {supervisor});
+  update(orgLocation){
+    return authenApi.put(`/org-location/${orgLocation.orgLocationID}`, {orgLocation: {...orgLocation}});
   },
   getBrief(filters){
     let {skip, take, filter = {}, sort} = filters || {};

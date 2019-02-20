@@ -16,13 +16,11 @@ import isEqual from "lodash/isEqual"
 import uniquid from "uniquid";
 import omit from "lodash/omit"
 import {orgLocationSchema} from "../../schema";
-import {authenCache} from "../../../../../common/cache/authen-cache";
-import {schoolPresenterApi} from "../../../../../api/common/school-presenter-api";
+import {uid} from 'react-uid';
 import {appModal} from "../../../../common/modal/modals";
 import {orgLocationApi} from "../../../../../api/common/org-location-api";
 import {OrgLocationInfoForm} from "../form/org-location-info/org-location-info-form";
 import {InitialRoomInfoForm} from "../form/initial-room-info/initial-room-info-form";
-import {prizeApi} from "../../../../../api/common/prize-api";
 
 
 export class OrgLocationRoute extends KComponent {
@@ -57,7 +55,11 @@ export class OrgLocationRoute extends KComponent {
   fetchOrgLocation = (orgLocationID) => {
     orgLocationApi.get(orgLocationID).then(data => {
       let info = pick(data, ["orgLocationID", "name", "address", "phone"]);
-      this.form.updateData({...info, rooms: info.rooms ? info.rooms.map(each => each.keyID = uniquid()) : []}).then(() => this.setState({loading: false, draft: {...info}}));
+      let rooms =  data.rooms ? data.rooms.map(each => {
+        each.keyID = uid(each);
+        return each;
+      }) : [];
+      this.form.updateData({...info, rooms: [...rooms]}).then(() => this.setState({loading: false, saving: false , draft: {...info, rooms: [...rooms]}}));
     }).catch(err => customHistory.push(toDefaultRoute()))
   };
 
@@ -66,13 +68,12 @@ export class OrgLocationRoute extends KComponent {
     this.setState({saving: true});
     let {draft} = this.state;
     let orgLocation = this.form.getData();
-    let rooms = orgLocation.rooms;
+    let rooms = orgLocation.rooms.map(each => omit(each, "keyID"));
     let old = rooms.filter(each => each.hasOwnProperty("roomID"));
     let created = rooms.filter(each => !each.hasOwnProperty("roomID"));
     let deleted = draft.rooms.filter(each => !old.find(item => item.roomID === each.roomID));
-    orgLocationApi.update({deleted: [...deleted], created: [...created], ...omit(orgLocation, "rooms")}).then((data) => {
-      this.form.updateData({...data});
-      this.setState({draft: {...data}, saving: false});
+    orgLocationApi.update({deleted: JSON.stringify(deleted), created: JSON.stringify(created),old: JSON.stringify(old), ...omit(orgLocation, "rooms")}).then(() => {
+      this.fetchOrgLocation(orgLocation.orgLocationID);
     }).catch(err => {
       this.setState({err, saving: false});
     })
@@ -122,6 +123,7 @@ export class OrgLocationRoute extends KComponent {
   render() {
     let {activeTab, loading, saving, draft, deleting} = this.state;
     let canSave = !this.form.getInvalidPaths().length && !saving && !isEqual(draft, this.form.getData());
+
     return (
       <PageTitle
         title="Thông tin địa điểm tổ chức"
