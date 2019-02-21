@@ -8,7 +8,7 @@ const dbUtils = [{
   query: "CREATE TABLE `olympic`.`User` ( `userID` NVARCHAR(10) NOT NULL , `name` NVARCHAR(50) NOT NULL , `CMT` NVARCHAR(20) NOT NULL , `address` NVARCHAR(200) NULL , `phone` NVARCHAR(50) NULL , `email` NVARCHAR(50) NOT NULL , `accountID` NVARCHAR(10) NOT NULL , `employeeID` NVARCHAR(10) NOT NULL , `gender` INT(1) NOT NULL , PRIMARY KEY (`userID`), UNIQUE (`email`), UNIQUE (`accountID`), UNIQUE (`employeeID`), UNIQUE (`CMT`)) ENGINE = InnoDB;"
 },{
   name: "Create pending candidate Table",
-  query: "CREATE TABLE `olympic`.`registrationcandidate`(`rcID` NVARCHAR(10) NOT NULL,  `address` NVARCHAR(200) NOT NULL, `sID` NVARCHAR(10) NOT NULL, `name` NVARCHAR(50) NOT NULL, `phone` NVARCHAR(20) NOT NULL, `email` NVARCHAR(100) NOT NULL, `contentID` NVARCHAR(10) NOT NULL, `CMT` NVARCHAR(20) NOT NULL , `gender` INT(1) NOT NULL  , `username` NVARCHAR(50) NULL  ,  `dob` DATETIME NOT NULL, PRIMARY KEY(`rcID`)) ENGINE = InnoDB;"
+  query: "CREATE TABLE `olympic`.`registrationcandidate`(`rcID` NVARCHAR(10) NOT NULL,  `address` NVARCHAR(200) NOT NULL, `sID` NVARCHAR(10) NOT NULL, `name` NVARCHAR(50) NOT NULL, `phone` NVARCHAR(20) NOT NULL, `email` NVARCHAR(100) NOT NULL, `contest` NVARCHAR(10) NOT NULL, `CMT` NVARCHAR(20) NOT NULL , `gender` INT(1) NOT NULL  , `username` NVARCHAR(50) NULL  ,  `dob` DATETIME NOT NULL, PRIMARY KEY(`rcID`)) ENGINE = InnoDB;"
 }, {
   name: "Create Admin",
   query: "INSERT INTO `account` (`accountID`,  `username`, `password`, `role`, `canLogin`) VALUES ('1',  'kappa2', '123123qwe', '0', '1');"
