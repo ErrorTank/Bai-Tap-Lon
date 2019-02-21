@@ -3,7 +3,7 @@ import {PageTitle} from "../../../../common/page-title/page-title";
 import {RouteTitle} from "../../../../layout/route-title/route-title";
 import {KComponent} from "../../../../common/k-component";
 import {createSimpleForm} from "../../../../common/form-validator/form-validator";
-import {schoolSchema} from "../../schema";
+import {subjectSchema} from "../../schema";
 
 import {customHistory} from "../../../routes";
 import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
@@ -11,11 +11,11 @@ import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
 import {MultipleStepsTabs} from "../../../../common/multiple-steps-tabs/multiple-steps-tabs";
 
 
-import {SupervisorInfoForm} from "../supervisor-info-form/supervisor-info-form";
-import {supervisorApi} from "../../../../../api/common/supervisor-api";
+import {subjectApi} from "../../../../../api/common/subject-api";
+import {SubjectInfoForm} from "../subject-info-form/subject-info-form";
 
 
-export class SupervisorNewRoute extends KComponent {
+export class SubjectNewRoute extends KComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,12 +23,9 @@ export class SupervisorNewRoute extends KComponent {
       activeTab: 0,
       saving: false
     };
-    this.form = createSimpleForm(schoolSchema, {
+    this.form = createSimpleForm(subjectSchema, {
       initData: {
         name: "",
-        phone: "",
-        email: "",
-        address: ""
       }
     });
 
@@ -37,16 +34,14 @@ export class SupervisorNewRoute extends KComponent {
     this.form.validateData();
   };
 
-  createNewSupervisor = () => {
+  createNewSubject = () => {
     this.setState({saving: true});
     let info = this.form.getData();
     console.log({
       info
     });
-    supervisorApi.checkSupervisorExisted(info).then(()=> {
-      supervisorApi.create(info).then((result) => {
-        customHistory.push(`/supervisor/${result.supervisorID}/edit`)
-      }).catch(err => this.setState({err, saving: false}));
+    subjectApi.create(info).then((result) => {
+      customHistory.push(`/subject/${result.subjectID}/edit`)
     }).catch(err => this.setState({err, saving: false}));
 
 
@@ -63,7 +58,7 @@ export class SupervisorNewRoute extends KComponent {
       render: () => (
         <div className="row justify-content-center">
           <div className="col-12">
-            <SupervisorInfoForm
+            <SubjectInfoForm
               form={this.form}
               onChange={() => this.setState({err: ""})}
               err={this.state.err}
@@ -78,12 +73,12 @@ export class SupervisorNewRoute extends KComponent {
 
         return (
           <div className="">
-            <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/supervisors")}>Hủy bỏ
+            <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/subjects")}>Hủy bỏ
             </button>
             <button type="button"
                     className="btn btn-primary"
                     disabled={!canFinish}
-                    onClick={this.createNewSupervisor}
+                    onClick={this.createNewSubject}
             >
               Hoàn thành
               {this.state.saving && (
@@ -99,9 +94,9 @@ export class SupervisorNewRoute extends KComponent {
   render() {
     let {activeTab} = this.state;
     return (
-      <PageTitle title="Tạo giám thị mới">
-        <RouteTitle content="Tạo giám thị mới">
-          <div className="supervisor-new-route">
+      <PageTitle title="Tạo môn thi mới">
+        <RouteTitle content="Tạo môn thi mới">
+          <div className="subject-new-route">
             <MultipleStepsTabs
               currentStep={activeTab}
               steps={this.steps}

@@ -34,6 +34,7 @@ import {SupervisorRoute} from "./authen-routes/supervisor/edit/supervisor-route"
 import {OrgLocationListRoute} from "./authen-routes/org-location/list/org-location-list-route";
 import {OrgLocationNewRoute} from "./authen-routes/org-location/new/org-location-new-route";
 import {OrgLocationRoute} from "./authen-routes/org-location/edit/org-location-route";
+import {SubjectListRoute} from "./authen-routes/subject/list/subject-list-route";
 
 const NotFoundRoute = () => {
   let getComp = (props) => {
@@ -94,6 +95,7 @@ export class MainRoute extends KComponent {
             <AuthenRoute exact path='/users' component={UserListRoute} excludeRoles={[2,3, 1]}/>
             <AuthenRoute exact path='/accounts' component={AccountListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/candidates' component={CandidateListRoute} excludeRoles={[3]}/>
+            <AuthenRoute exact path='/subjects' component={SubjectListRoute} excludeRoles={[2, 3]}/>
             <AuthenRoute exact path='/school-presenters' component={SpListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/schools' component={SchoolListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/org-locations' component={OrgLocationListRoute} excludeRoles={[2,3]}/>

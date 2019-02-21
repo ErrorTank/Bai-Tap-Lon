@@ -70,6 +70,10 @@ const roomSchema = yup.object().shape({
   maxSeat: yup.number().integer("Sức chứa phải là số nguyên").max(200, "Sức chứa phải nhỏ hơn 200").required("Sức chứa không được để trống")
 });
 
+const subjectSchema = yup.object().shape({
+  name: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
+});
+
 export
 {
   accountSchema,
@@ -80,5 +84,7 @@ export
   schoolSchema,
   supervisorSchema,
   orgLocationSchema,
-  roomSchema
+  roomSchema,
+  subjectSchema
+
 }
