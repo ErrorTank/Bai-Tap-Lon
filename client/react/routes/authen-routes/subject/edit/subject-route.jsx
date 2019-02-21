@@ -14,13 +14,13 @@ import {createSimpleForm} from "../../../../common/form-validator/form-validator
 import {KComponent} from "../../../../common/k-component";
 import pick from "lodash/pick"
 import isEqual from "lodash/isEqual"
-import {supervisorSchema} from "../../schema";
-import {supervisorApi} from "../../../../../api/common/supervisor-api";
-import {SupervisorInfoForm} from "../supervisor-info-form/supervisor-info-form";
+import {subjectSchema} from "../../schema";
+import {subjectApi} from "../../../../../api/common/subject-api";
 import {appModal} from "../../../../common/modal/modals";
+import {SubjectInfoForm} from "../subject-info-form/subject-info-form";
 
 
-export class SupervisorRoute extends KComponent {
+export class SubjectRoute extends KComponent {
   constructor(props) {
     super(props);
 
@@ -33,21 +33,22 @@ export class SupervisorRoute extends KComponent {
       deleting: false
     };
 
-    this.form = createSimpleForm(supervisorSchema);
+    this.form = createSimpleForm(subjectSchema);
     this.onUnmount(this.form.on("change", () => this.forceUpdate()));
-    let {supervisorID} = props.match.params;
-    if(supervisorID ){
+    let {subjectID} = props.match.params;
+    console.log(subjectID)
+    if(subjectID ){
 
-      this.fetchSupervisor(supervisorID)
+      this.fetchSubject(subjectID)
     }else{
       customHistory.push(toDefaultRoute());
     }
 
   };
 
-  fetchSupervisor = (supervisorID) => {
-    supervisorApi.get(supervisorID).then(data => {
-      let info = pick(data, ["supervisorID", "name", "address", "phone", "email"]);
+  fetchSubject = (subjectID) => {
+    subjectApi.get(subjectID).then(data => {
+      let info = pick(data, ["subjectID", "name"]);
       this.form.updateData({...info}).then(() =>  this.setState({loading: false, draft: {...info}}));
     }).catch(err => customHistory.push(toDefaultRoute()))
   };
@@ -56,32 +57,32 @@ export class SupervisorRoute extends KComponent {
     this.form.validateData();
   }
 
-  editSupervisor = () => {
+  editSubject = () => {
     this.setState({saving: true});
-    let supervisor = this.form.getData();
+    let subject = this.form.getData();
 
-    supervisorApi.update(supervisor).then(() => {
+    subjectApi.update(subject).then(() => {
 
-      this.setState({draft: {...supervisor}, saving: false});
+      this.setState({draft: {...subject}, saving: false});
     }).catch(err =>{
       this.setState({err, saving: false});
     })
   };
 
-  deleteSupervisor = () => {
-    let {supervisorID} = this.props.match.params;
+  deleteSubject = () => {
+    let {subjectID} = this.props.match.params;
     this.setState({deleting: true});
     appModal.confirm({
       title: "Xác nhận",
-      text: "Bạn có muốn xóa giám thị này?",
+      text: "Bạn có muốn xóa môn thi này?",
       btnText: "Đồng ý",
       cancelText: "Hủy bỏ"
     }).then((result) => {
       if (result) {
 
-        supervisorApi.delete(supervisorID).then(() => {
+        subjectApi.delete(subjectID).then(() => {
 
-          customHistory.push("/supervisors");
+          customHistory.push("/subjects");
 
         }).catch(err => {
 
@@ -99,7 +100,7 @@ export class SupervisorRoute extends KComponent {
     {
       label: "Thông tin cơ bản",
       render: () => (
-        <SupervisorInfoForm
+        <SubjectInfoForm
           form={this.form}
           err={this.state.err}
           onChange={() => this.setState({err: ""})}
@@ -112,47 +113,41 @@ export class SupervisorRoute extends KComponent {
   render() {
     let {activeTab, loading, saving, draft, err, deleting} = this.state;
 
-
     let canSave = !this.form.getInvalidPaths().length && !saving && !isEqual(draft, this.form.getData()) && !err;
     console.log(canSave)
     return (
       <PageTitle
-        title="Thông tin giám thị"
+        title="Thông tin môn thi"
       >
         <RouteTitle
-          content={"Thông tin giám thị"}
+          content={"Thông tin môn thi"}
         >
-          <div className="supervisor-route">
+          <div className="subject-route">
             {loading ? (
               <div className="loading-wrapper">
                 <LoadingInline/>
               </div>
             ) : (
               <div className="row">
-                <div className="col-xl-3 col-lg-4">
-                  <UserViewCol
-                    info={draft}
-                  />
 
-                </div>
-                <div className="col-xl-9 col-lg-8">
+                <div className="col">
                   <FormTabs
                     tabs={this.tabs}
                     activeTab={activeTab}
                     onChangeTab={tab => this.setState({activeTab: tab})}
                     renderActions={() => (
                       <div className="row justify-content-end s-actions">
-                        <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/supervisors")}>Hủy bỏ</button>
-                        <button type="button" className="btn btn-danger" onClick={this.deleteSupervisor} disabled={deleting}>
+                        <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/subjects")}>Hủy bỏ</button>
+                        <button type="button" className="btn btn-danger" onClick={this.deleteSubject} disabled={deleting}>
                           {deleting && (
                             <LoadingInline/>
                           )}
-                          Xóa giám thị
+                          Xóa môn thi
                         </button>
                         <button type="button"
                                 className="btn btn-primary"
                                 disabled={!canSave}
-                                onClick={this.editSupervisor}
+                                onClick={this.editSubject}
                         >
                           {saving && (
                             <LoadingInline/>

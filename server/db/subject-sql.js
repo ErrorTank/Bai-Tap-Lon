@@ -47,24 +47,17 @@ const subjectSql = (db) => {
 
   const updateSubject = (subjectID, subjectObj) => {
     return new Promise((resolve, reject) => {
-      if(isNil(subjectID)){
+      if (isNil(subjectID)) {
         reject(new Error("Cannot find subject with ID: " + subjectID));
-      }else{
+      } else {
 
-        let {name,  address, phone, email}  = subjectObj;
-        const checkExist = `SELECT email from subject where not subjectID = '${subjectID}' and email = '${email}'`;
-        const getInfo = `UPDATE subject SET  name = '${name}', email = '${email}', phone = '${phone}', address = '${address}' WHERE subjectID = '${subjectID}'`;
-        query(checkExist).then((result) => {
-          if(result && result.length){
-            reject(new Error("email_existed"));
-          }else{
-            query(getInfo).then(() => {
-              resolve();
-            }).catch(err => {
-              reject(err)
-            })
-          }
-        }).catch(err => reject(err));
+        let {name} = subjectObj;
+        const getInfo = `UPDATE subject SET  name = '${name}' WHERE subjectID = '${subjectID}'`;
+        query(getInfo).then(() => {
+          resolve();
+        }).catch(err => {
+          reject(err)
+        })
 
       }
 
