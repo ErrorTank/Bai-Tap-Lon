@@ -48,7 +48,7 @@ export class SubjectRoute extends KComponent {
 
   fetchSubject = (subjectID) => {
     subjectApi.get(subjectID).then(data => {
-      let info = pick(data, ["subjectID", "name"]);
+      let info = pick(data, ["subjectID", "name", "content"]);
       this.form.updateData({...info}).then(() =>  this.setState({loading: false, draft: {...info}}));
     }).catch(err => customHistory.push(toDefaultRoute()))
   };

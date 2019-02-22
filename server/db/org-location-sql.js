@@ -9,7 +9,7 @@ const orgLocationSql = (db) => {
   const getOrgLocationBriefWithCondition = (obj) => {
     let {keyword, skip, take, orderAsc, orderBy} = obj;
 
-    const sql = `Select  SQL_CALC_FOUND_ROWS * from orglocation where ${keyword ? `(name like '%${keyword}%' or phone like '%${keyword}%'` : "1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
+    const sql = `Select  SQL_CALC_FOUND_ROWS *, count(r.roomID) as count from orglocation ol inner join room r on r.orgLocationID = ol.orgLocationID where ${keyword ? `(name like '%${keyword}%' or phone like '%${keyword}%'` : "1=1"} group by ol.orgLocationID ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
 
     return new Promise((resolve, reject) => {
       query(sql).then(result => {

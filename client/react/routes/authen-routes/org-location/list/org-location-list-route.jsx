@@ -38,6 +38,9 @@ export class OrgLocationListRoute extends React.Component {
           {orgLocation.address}
         </p>
       ),
+    }, {
+      label: "Số lượng phòng",
+      cellDisplay: orgLocation => orgLocation.count,
     }
   ];
 

@@ -55,6 +55,25 @@ export class SubjectInfoForm extends React.Component {
             </div>
 
           </div>
+          <div className="row justify-content-center">
+            <div className="col-6">
+              {form.enhanceComponent("content", ({error, onEnter, onChange, ...others}) => (
+                <InputBase
+                  className="s-input pt-0"
+                  error={error}
+                  id={"content"}
+                  onKeyDown={onEnter}
+                  inputType={"textarea"}
+                  onChange={e => {
+                    propsOnChange();
+                    onChange(e);
+                  }}
+                  label={"Mô tả"}
+                  {...others}
+                />
+              ), true)}
+            </div>
+          </div>
 
 
         </div>

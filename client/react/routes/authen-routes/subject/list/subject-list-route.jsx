@@ -28,6 +28,9 @@ export class SubjectListRoute extends React.Component {
     {
       label: "Tên môn",
       cellDisplay: subject => subject.name,
+    },  {
+      label: "Mô tả",
+      cellDisplay: subject => subject.content,
     }
   ];
 

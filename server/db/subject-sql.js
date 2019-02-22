@@ -51,8 +51,8 @@ const subjectSql = (db) => {
         reject(new Error("Cannot find subject with ID: " + subjectID));
       } else {
 
-        let {name} = subjectObj;
-        const getInfo = `UPDATE subject SET  name = '${name}' WHERE subjectID = '${subjectID}'`;
+        let {name, content} = subjectObj;
+        const getInfo = `UPDATE subject SET  name = '${name}', content = '${content}' WHERE subjectID = '${subjectID}'`;
         query(getInfo).then(() => {
           resolve();
         }).catch(err => {
@@ -82,18 +82,7 @@ const subjectSql = (db) => {
 
   };
 
-  const checkSubjectExisted = ({email}) => {
-    const check = `Select * from subject where email = '${email}' `;
-    return new Promise((resolve, reject) => {
-      query(check).then(result => {
-        if (result.length) {
-          reject(new Error("email_existed"));
-        } else {
-          resolve();
-        }
-      }).catch(err => reject(err));
-    })
-  };
+
 
   //delete location
   const deleteSubject = (subjectID) => {
@@ -114,7 +103,6 @@ const subjectSql = (db) => {
     getSubject,
     updateSubject,
     deleteSubject,
-    checkSubjectExisted,
     getSubjectBriefWithCondition
     //define function name here
   }

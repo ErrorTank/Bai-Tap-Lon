@@ -72,6 +72,13 @@ const roomSchema = yup.object().shape({
 
 const subjectSchema = yup.object().shape({
   name: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
+  content: yup.string().max(200, "Mô tả không được vượt quá 50 ký tự").required("Tên không được để trống"),
+});
+
+const contestSchema = yup.object().shape({
+  contestName: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
+  content: yup.string().max(200, "Mô tả không được vượt quá 50 ký tự"),
+  subjectID: yup.string().required("Môn thi là bắt buộc")
 });
 
 export
@@ -85,6 +92,7 @@ export
   supervisorSchema,
   orgLocationSchema,
   roomSchema,
-  subjectSchema
+  subjectSchema,
+
 
 }

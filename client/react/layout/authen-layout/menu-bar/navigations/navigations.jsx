@@ -108,6 +108,15 @@ export class Navigations extends React.Component {
       linkTo: () => customHistory.push(`/subjects`),
       roles: [0, 1],
       active: ["/subject/:subjectsID/edit", "/subject/new", "/subjects"]
+    }, {
+      icon: (
+        <i className="fas fa-book"></i>
+      ),
+      label: "Quản lý kì thi",
+      url: `/contests`,
+      linkTo: () => customHistory.push(`/contests`),
+      roles: [0, 1],
+      active: ["/contest/:contestID/edit", "/contest/new", "/contests"]
     }
   ];
 

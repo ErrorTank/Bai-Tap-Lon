@@ -6,11 +6,13 @@ const schoolSql = require("../db/school-sql");
 const prizeSql = require("../db/prize-sql");
 const supervisorSql = require("../db/supervisor-sql");
 const orgLocationSql = require("../db/org-location-sql");
+const contestSql = require("../db/contest-sql");
 const subjectSql = require("../db/subject-sql");
 
 const createDbManager = (db) => {
   const dbs = {
     user: userSql(db),
+    contest: contestSql(db),
     account: accountSql(db),
     sp: spSql(db),
     candidate: candidateSql(db),
