@@ -63,8 +63,16 @@ const dbUtils = [{
   }, {
     name: "Create prize - contest table",
     query: "CREATE TABLE `olympic`.`prizecontest` (`prizeID` NVARCHAR(10) NOT NULL ,`contestID` NVARCHAR(10) NOT NULL , `max` INT(20) NOT NULL , `content` NVARCHAR(100) NULL , PRIMARY KEY (`prizeID`,`contestID`)) ENGINE = InnoDB;"
-  }
+  },
 
+  //create db info
+  {
+    name: "Insert subjects",
+    query: "INSERT INTO `subject` (`subjectID`, `name`, `content`) VALUES ('1', 'Toán cao cấp', 'môn toán ?'), ('2', 'Triết học', 'môn triết học ?'), ('3', 'Đường lối cách mạng', 'môn đường lối ?'), ('4', 'Tin học', 'môn tin ?'), ('5', 'Giáo dục quốc phòng', 'môn giáo dục quốc phòng ?'), ('6', 'Cờ vua', 'môn cờ vua ?'), ('7', 'Bóng chuyền', 'môn bóng chuyền ?'), ('8', 'Bóng đá', 'môn bóng đá ?')"
+  }, {
+    name: "Insert locations",
+    query: "INSERT INTO `orgLocation` (`orgLocationID`, `phone`, `name`, `address`) VALUES ('1', '02438587346', 'Trường đại học Thăng Long', '69 Nguyễn Xiển, Thanh Xuân, Hà Nội'), ('2', '0240924545', 'Đại học Ngoại Thương Hà Nội', '91 Chùa Láng, Láng Thượng, Đống Đa, Hà Nội'), ('3', '0240931232', 'Đại học Kinh tế Quốc dân', '207 Giải Phóng, Đồng Tâm, Hai Bà Trưng, Hà Nội'), ('4', '02438489293', 'Trung tâm huấn luyện và thi đấu TDTT Hà Nội', 'Nguyễn Cơ Thạch, P. Mỹ Đình 2, Q. Nam Từ Liêm, Hà Nội'), ('5', '02438587346', 'Trường Đại Học Sư Phạm Hà Nội', 'Số 136 Xuân Thủy, Dịch Vọng Hậu, Cầu Giấy, Hà Nội')"
+  },
 ];
 
 const queryController = (util, db) => new Promise((res, rej) => {
