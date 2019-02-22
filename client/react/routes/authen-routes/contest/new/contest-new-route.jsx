@@ -150,8 +150,8 @@ export class ContestNewRoute extends KComponent {
     let {activeTab} = this.state;
 
     return (
-      <PageTitle title="Tạo địa điểm tổ chức mới">
-        <RouteTitle content="Tạo địa điểm tổ chức mới">
+      <PageTitle title="Tạo kì thi mới">
+        <RouteTitle content="Tạo kì thi mới">
           <div className="contest-new-route">
             <MultipleStepsTabs
               onClickLabel={this.handleClickLabel}
