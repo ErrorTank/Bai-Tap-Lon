@@ -27,7 +27,7 @@ const roomSql = (db) => {
   };
   const createRoom = (roomObj) => {
     var id = uniquid();
-    var roomID = id.slice(-6,-1) + id.slice(-1);
+    var roomID = id.slice(-6, -1) + id.slice(-1);
 
     var {orgLocationID} = roomObj;
 
@@ -42,7 +42,7 @@ const roomSql = (db) => {
   };
 
   const updateRoom = (roomID, roomObj) => {
-    var {orgLocationID,name} = roomObj;
+    var {orgLocationID, name} = roomObj;
     var updateInfo = `UPDATE room SET name = '${name}' WHERE roomID = '${roomID}'`;
     return new Promise((resolve, reject) =>
       query(updateInfo).then((result) => {
@@ -65,20 +65,27 @@ const roomSql = (db) => {
   }
 
   //
-const getRoomByorgLocationID = (obj) => {
-    let {keyword, skip, take, orderAsc, orderBy} = obj;
-
-    const sql = `Select  SQL_CALC_FOUND_ROWS * from room where ${keyword ? `(orgLocation like '%${keyword}%') ` : "1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
-
+  const getRoomByOrgLocationID = (orgLocationID) => {
+    const sql = `Select * from room where orgLocationID = '${orgLocationID}'`;
     return new Promise((resolve, reject) => {
-      query(sql).then(result => {
-        query(`Select FOUND_ROWS() as count`).then((result2) => {
-
-          resolve({supervisors: result, total: result2[0].count});
-        }).catch(err => reject(err));
-
-      }).catch(err => reject(err));
-    })
+      query(sql).then((result) => {
+        resolve(result);
+      }).catch((err) => reject(err))
+    });
+    //Sai
+    // let {keyword, skip, take, orderAsc, orderBy} = obj;
+    //
+    // const sql = `Select  * from room where ${keyword ? `(orgLocation like '%${keyword}%') ` : "1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
+    //
+    // return new Promise((resolve, reject) => {
+    //   query(sql).then(result => {
+    //     query(`Select FOUND_ROWS() as count`).then((result2) => {
+    //
+    //       resolve({supervisors: result, total: result2[0].count});
+    //     }).catch(err => reject(err));
+    //
+    //   }).catch(err => reject(err));
+    // })
 
   };
   return {
@@ -86,7 +93,7 @@ const getRoomByorgLocationID = (obj) => {
     createRoom,
     updateRoom,
     deleteRoom,
-    getRoomByorgLocationID
+    getRoomByOrgLocationID,
     //define function name here
   }
 };
