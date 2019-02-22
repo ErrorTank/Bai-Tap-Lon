@@ -50,7 +50,7 @@ const dbUtils = [{
     query: "CREATE TABLE `olympic`.`contest` (`contestID` NVARCHAR(10) NOT NULL , `contestName` NVARCHAR(50) NOT NULL , `subjectID` NVARCHAR(10) NOT NULL , `fee` DECIMAL(20) NOT NULL , `orgLocationID` NVARCHAR(10) NOT NULL , `content` NVARCHAR(200) NULL , `canSeeResult` BOOLEAN NOT NULL , PRIMARY KEY (`contestID`)) ENGINE = InnoDB;"
   }, {
     name: "Create examDate table",
-    query: "CREATE TABLE `olympic`.`examDate` (`examDateID` NVARCHAR(10) NOT NULL , `start` DATETIME NOT NULL ,`stop` DATETIME NOT NULL, `content` NVARCHAR(200) NULL , `contestID` NVARCHAR(10) NOT NULL , `roomID` NVARCHAR(10) NOT NULL , `supervisorID` NVARCHAR(10) NOT NULL , PRIMARY KEY (`examDateID`)) ENGINE = InnoDB;"
+    query: "CREATE TABLE `olympic`.`examDate` (`examDateID` NVARCHAR(10) NOT NULL , `start` DATETIME NOT NULL ,`stop` DATETIME NOT NULL, `content` NVARCHAR(200) NULL , `contestID` NVARCHAR(10) NOT NULL , `roomID` NVARCHAR(10) NOT NULL ,  PRIMARY KEY (`examDateID`)) ENGINE = InnoDB;"
   }, {
     name: "Create examDate - candidate table",
     query: "CREATE TABLE `olympic`.`examDatecandidate`(`examDateID` VARCHAR(10) NOT NULL, `candidateID` VARCHAR(10) NOT NULL, `SBD` VARCHAR(10) NOT NULL, PRIMARY KEY(`examDateID`, `candidateID`)) ENGINE = InnoDB;"

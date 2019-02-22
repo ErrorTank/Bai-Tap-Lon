@@ -28,7 +28,7 @@ const userSchema = yup.object().shape({
   gender: yup.boolean().required(),
   employeeID: yup.string().max(10, "Mã nhân viên không được vượt quá 10 ký tự").required("Mã nhân viên không được để trống")
 });
-
+//TODO add date validate to all date input
 const candidateSchema = yup.object().shape({
   sID: yup.string().required("Trường không được để trống"),
   name: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
@@ -37,7 +37,7 @@ const candidateSchema = yup.object().shape({
   email: yup.string().email("Email không hợp lệ").required("Email không được để trống"),
   CMT: yup.string().max(20, "CMT không được vượt quá 20 ký tự").onlyWord("CMT không được có ký tự đặc biệt").required("CMT không được để trống"),
   gender: yup.boolean().required(),
-  dob: yup.string().required("Ngày sinh không được để trống")
+  dob: yup.date().required("Ngày sinh không được để trống")
 });
 
 const schoolPresenterSchema = yup.object().shape({
@@ -72,13 +72,27 @@ const roomSchema = yup.object().shape({
 
 const subjectSchema = yup.object().shape({
   name: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
-  content: yup.string().max(200, "Mô tả không được vượt quá 50 ký tự").required("Tên không được để trống"),
+  content: yup.string().max(200, "Mô tả không được vượt quá 50 ký tự"),
 });
 
 const contestSchema = yup.object().shape({
   contestName: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
-  content: yup.string().max(200, "Mô tả không được vượt quá 50 ký tự"),
-  subjectID: yup.string().required("Môn thi là bắt buộc")
+  content: yup.string().max(200, "Mô tả không được vượt quá 200 ký tự"),
+  subjectID: yup.string().required("Môn thi là bắt buộc"),
+  fee:yup.number().required("Phí dự thi không được để trống"),
+  orgLocationID: yup.string().required(),
+  canSeeResult: yup.boolean().required(),
+  examDates: yup.array().of(examDateSchema).min(0).required()
+
+});
+
+const examDateSchema = yup.object().shape({
+  start: yup.date().required("Thời gian bắt đầu không được để trống"),
+  stop: yup.date().min(yup.ref("start"), "Thời gian kết thúc phải sau khi bắt đầu").required("Thời gian kết thúc không được để trống"),
+  content: yup.string().max(200, "Mô tả không được vượt quá 200 ký tự"),
+  roomID: yup.string().required("Địa điểm thi không được để trống"),
+  supervisors: yup.array().of(supervisorSchema).min(0),
+  candidates: yup.array().of(candidateSchema).min(0),
 });
 
 export
@@ -93,6 +107,7 @@ export
   orgLocationSchema,
   roomSchema,
   subjectSchema,
-
+  contestSchema,
+  examDateSchema
 
 }

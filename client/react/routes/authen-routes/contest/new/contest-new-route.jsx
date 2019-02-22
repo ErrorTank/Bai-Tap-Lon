@@ -4,14 +4,13 @@ import {RouteTitle} from "../../../../layout/route-title/route-title";
 import {KComponent} from "../../../../common/k-component";
 import omit from "lodash/omit"
 import {createSimpleForm} from "../../../../common/form-validator/form-validator";
-import {orgLocationSchema} from "../../schema";
+import {contestSchema} from "../../schema";
 import {customHistory} from "../../../routes";
 
 import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
 import {MultipleStepsTabs} from "../../../../common/multiple-steps-tabs/multiple-steps-tabs";
-import {OrgLocationInfoForm} from "../form/org-location-info/org-location-info-form";
-import {InitialRoomInfoForm} from "../form/initial-room-info/initial-room-info-form";
-import {orgLocationApi} from "../../../../../api/common/org-location-api";
+import {contestApi} from "../../../../../api/common/contest-api";
+import {ContestInfoForm} from "../form/contest-info/contest-info-form";
 
 
 export class ContestNewRoute extends KComponent {
@@ -23,12 +22,13 @@ export class ContestNewRoute extends KComponent {
       saving: false,
       loading: false
     };
-    this.form = createSimpleForm(orgLocationSchema, {
+    this.form = createSimpleForm(contestSchema, {
       initData: {
-        name: "",
-        address: "",
-        phone: "",
-        rooms: []
+        contestName: "",
+        content: "",
+        fee: 0,
+        canSeeResult: 0,
+        examDates: []
       }
     });
 
@@ -37,15 +37,15 @@ export class ContestNewRoute extends KComponent {
     this.form.validateData();
   };
 
-  createNewOrgLocation = () => {
+  createNewContest = () => {
     this.setState({saving: true});
     let location = this.form.getData();
     console.log({
       location
     });
 
-    orgLocationApi.createOrgLocation({...location, rooms: location.rooms.map(each => omit(each, 'keyID'))}).then(({orgLocationID}) => {
-      customHistory.push(`/org-location/${orgLocationID}/edit`)
+    contestApi.createContest({...location, rooms: location.rooms.map(each => omit(each, 'keyID'))}).then(({contestID}) => {
+      customHistory.push(`/contest/${contestID}/edit`)
     }).catch(err => this.setState({err, saving: false}))
 
   };
@@ -64,7 +64,7 @@ export class ContestNewRoute extends KComponent {
       render: () => (
         <div className="row justify-content-center">
           <div className="col-12 col-lg-10 p-0">
-            <OrgLocationInfoForm
+            <ContestInfoForm
               form={this.form}
               onChange={() => this.setState({err: ""})}
               err={this.state.err}
@@ -81,12 +81,12 @@ export class ContestNewRoute extends KComponent {
         let canFinish = !this.form.getInvalidPaths().length && !this.state.err;
         return (
           <div className="">
-            <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/org-locations")}>Hủy bỏ
+            <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/contests")}>Hủy bỏ
             </button>
             <button type="button"
                     className="btn btn-primary"
                     disabled={!canFinish}
-                    onClick={this.createNewOrgLocation}
+                    onClick={this.createNewContest}
             >
               Hoàn thành
               {this.state.saving && (
@@ -102,7 +102,7 @@ export class ContestNewRoute extends KComponent {
       render: () => (
         <div className="row justify-content-center">
           <div className="col-12 p-0">
-            <InitialRoomInfoForm
+            <ContestInfoForm
               form={this.form}
               onChange={() => this.setState({err: ""})}
               err={this.state.err}
@@ -119,12 +119,12 @@ export class ContestNewRoute extends KComponent {
         let canFinish = !this.form.getInvalidPaths().length && !this.state.err;
         return (
           <div className="">
-            <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/org-locations")}>Hủy bỏ
+            <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/contests")}>Hủy bỏ
             </button>
             <button type="button"
                     className="btn btn-primary"
                     disabled={!canFinish}
-                    onClick={this.createNewOrgLocation}
+                    onClick={this.createNewContest}
             >
               Hoàn thành
               {this.state.saving && (
@@ -143,7 +143,7 @@ export class ContestNewRoute extends KComponent {
     return (
       <PageTitle title="Tạo địa điểm tổ chức mới">
         <RouteTitle content="Tạo địa điểm tổ chức mới">
-          <div className="org-location-new-route">
+          <div className="contest-new-route">
             <MultipleStepsTabs
               onClickLabel={this.handleClickLabel}
               currentStep={activeTab}

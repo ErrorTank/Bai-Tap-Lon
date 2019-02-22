@@ -39,6 +39,7 @@ import {SubjectNewRoute} from "./authen-routes/subject/new/subject-new-route";
 import {SubjectRoute} from "./authen-routes/subject/edit/subject-route";
 import {CandidateRegistration} from "./authen-routes/candidate-registration/candidate-registration";
 import {ContestListRoute} from "./authen-routes/contest/list/contest-list-route";
+import {ContestNewRoute} from "./authen-routes/contest/new/contest-new-route";
 
 const NotFoundRoute = () => {
   let getComp = (props) => {
@@ -87,6 +88,7 @@ export class MainRoute extends KComponent {
             <AuthenRoute exact path='/prize/new' component={PrizeNewRoute} excludeRoles={[2, 3]}/>
             <AuthenRoute exact path='/school/new' component={SchoolNewRoute} excludeRoles={[2, 3]}/>
             <AuthenRoute exact path='/supervisor/new' component={SupervisorNewRoute} excludeRoles={[2, 3]}/>
+            <AuthenRoute exact path='/contest/new' component={ContestNewRoute} excludeRoles={[2, 3]}/>
             <AuthenRoute exact path='/subject/new' component={SubjectNewRoute} excludeRoles={[2, 3]}/>
             <AuthenRoute exact path='/org-location/new' component={OrgLocationNewRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/school/:schoolID/edit' component={SchoolRoute} excludeRoles={[3]}/>

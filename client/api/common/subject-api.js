@@ -8,6 +8,9 @@ export const subjectApi = {
   get(subjectID){
     return authenApi.get("/subject/" + subjectID);
   },
+  getSubjectsBrief() {
+    return authenApi.get("/subjects/brief-no-con");
+  },
   delete(subjectID){
     return authenApi.delete("/subject/" + subjectID)
   },

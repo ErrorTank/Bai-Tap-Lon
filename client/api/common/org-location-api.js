@@ -11,6 +11,9 @@ export const orgLocationApi = {
   delete(orgLocationID){
     return authenApi.delete("/org-location/" + orgLocationID)
   },
+  getOrgLocationsBrief() {
+    return authenApi.get("/org-locations/brief-no-con");
+  },
   checkSupervisorExisted(supervisor) {
     return authenApi.post("/supervisor/check", {supervisor})
   },
