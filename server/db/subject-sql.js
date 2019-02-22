@@ -68,7 +68,7 @@ const subjectSql = (db) => {
   const getSubjectBriefWithCondition = (obj) => {
     let {keyword, skip, take, orderAsc, orderBy} = obj;
 
-    const sql = `Select  SQL_CALC_FOUND_ROWS * from subject where ${keyword ? `(name like '%${keyword}%'` : "1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
+    const sql = `Select  SQL_CALC_FOUND_ROWS * from subject where ${keyword ? `(name like '%${keyword}%' or subjectID = '${keyword}')` : "1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
 
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
@@ -82,7 +82,16 @@ const subjectSql = (db) => {
 
   };
 
-
+  const getSubjectsBrief = () => {
+    let getInfo = `SELECT subjectID, name, content FROM subject`;
+    return new Promise((resolve, reject) =>
+      query(getInfo).then((result) => {
+        resolve(result);
+      }).catch(err => {
+        reject(err)
+      })
+    )
+  };
 
   //delete location
   const deleteSubject = (subjectID) => {
@@ -99,6 +108,7 @@ const subjectSql = (db) => {
   };
 
   return {
+    getSubjectsBrief,
     createSubject,
     getSubject,
     updateSubject,

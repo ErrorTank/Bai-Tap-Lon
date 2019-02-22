@@ -113,7 +113,7 @@ const prizeSql = (db) => {
   const getPrizeBriefWithCondition = (obj) => {
     let {keyword, skip, take, orderAsc, orderBy} = obj;
 
-    const sql = `Select  SQL_CALC_FOUND_ROWS * from prize where ${keyword ? `(name like '%${keyword}%' or content  like '%${keyword}%')` : "1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
+    const sql = `Select  SQL_CALC_FOUND_ROWS * from prize where ${keyword ? `(name like '%${keyword}%' or content  like '%${keyword}%' or prizeID = '${keyword}')` : "1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
     console.log(sql)
     return new Promise((resolve, reject) => {
       query(sql).then(result => {

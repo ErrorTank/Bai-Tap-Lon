@@ -11,6 +11,7 @@ import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
 import {MultipleStepsTabs} from "../../../../common/multiple-steps-tabs/multiple-steps-tabs";
 import {contestApi} from "../../../../../api/common/contest-api";
 import {ContestInfoForm} from "../form/contest-info/contest-info-form";
+import {subjectApi} from "../../../../../api/common/subject-api";
 
 
 export class ContestNewRoute extends KComponent {
@@ -56,6 +57,13 @@ export class ContestNewRoute extends KComponent {
   };
 
 
+  nextStep = () => {
+    this.setState({activeTab: this.state.activeTab ++});
+    // let subjectID = this.form.getPathData("subjectID");
+    // subjectApi.getRoomsBySubjectID(subjectID).then(rooms => {
+    //
+    // });
+  };
 
   steps = [
     {
@@ -78,17 +86,18 @@ export class ContestNewRoute extends KComponent {
         return this.form.isValid();
       },
       renderActions: () => {
-        let canFinish = !this.form.getInvalidPaths().length && !this.state.err;
+        let invalids = this.form.getInvalidPaths();
+        let canNext = (!invalids.length || (invalids.length === 1 && invalids[0] === 'examDates')) && !this.state.err && !this.state.loading;
         return (
           <div className="">
             <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/contests")}>Hủy bỏ
             </button>
             <button type="button"
                     className="btn btn-primary"
-                    disabled={!canFinish}
-                    onClick={this.createNewContest}
+                    disabled={!canNext}
+                    onClick={this.nextStep}
             >
-              Hoàn thành
+              Tiếp theo
               {this.state.saving && (
                 <LoadingInline/>
               )}

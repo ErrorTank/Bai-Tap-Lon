@@ -17,6 +17,11 @@ module.exports = (db, dbManager) => {
     }).catch(err => next(err));
 
   });
+  router.get("/subjects/brief-no-con", authMiddleware, (req, res, next) => {
+    subjectManager.getSubjectsBrief().then(subjects => {
+      res.status(200).json(subjects);
+    }).catch(err => next(err))
+  });
   router.get("/subject/:subjectID", authMiddleware, (req, res, next) => {
 
     subjectManager.getSubject(req.params.subjectID).then((data) => {

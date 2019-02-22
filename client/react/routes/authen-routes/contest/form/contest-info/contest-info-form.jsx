@@ -4,6 +4,7 @@ import {LoadingInline} from "../../../../../common/loading-inline/loading-inline
 import {orgLocationsBriefCache, subjectsBriefCache} from "../../../../../../common/api-cache/common-cache";
 import {InputBase} from "../../../../../common/base-input/base-input";
 import {Select} from "../../../../../common/select/select";
+import {SwitchBtn} from "../../../../../common/switch/switch-btn";
 
 
 export class ContestInfoForm extends KComponent {
@@ -44,37 +45,37 @@ export class ContestInfoForm extends KComponent {
 
             <div className="row ">
               <div className="col-6">
-                {form.enhanceComponent("name", ({error, onEnter, onChange, ...others}) => (
+                {form.enhanceComponent("contestName", ({error, onEnter, onChange, ...others}) => (
                   <InputBase
                     className="con-input pt-0"
                     error={error}
-                    id={"name"}
+                    id={"contestName"}
                     onKeyDown={onEnter}
                     onChange={e => {
                       propsOnChange();
                       onChange(e);
                     }}
                     type={"text"}
-                    label={"Tên đầy đủ"}
+                    label={"Tên kì thi "}
                     {...others}
                   />
                 ), true)}
               </div>
               <div className="col-6">
 
-                {form.enhanceComponent("sID", ({value, onChange}) => (
+                {form.enhanceComponent("subjectID", ({value, onChange}) => (
                   <Select
-                    className="contest-input pt-0"
-                    options={this.state.schools}
+                    className="con-input pt-0"
+                    options={this.state.subjects}
                     value={value}
-                    displayAs={(each) => each.name + " (" + each.address + ")"}
-                    getValue={each => each.sID}
+                    displayAs={(each) => each.name + " (" + each.subjectID + ")"}
+                    getValue={each => each.subjectID}
                     onChange={e => {
                       propsOnChange();
                       onChange(e.target.value)
                     }}
-                    label={"Học trường"}
-                    placeholder="Chọn trường"
+                    label={"Môn thi"}
+                    placeholder="Chọn môn thi"
                   />
 
                 ), true)}
@@ -84,113 +85,79 @@ export class ContestInfoForm extends KComponent {
             </div>
             <div className="row">
               <div className="col-6">
-                {form.enhanceComponent("address", ({error, onEnter, onChange, ...others}) => (
+                {form.enhanceComponent("fee", ({error, onEnter, onChange, ...others}) => (
                   <InputBase
-                    className="contest-input pt-0"
+                    className="con-input pt-0"
                     error={error}
-                    id={"address"}
+                    id={"fee"}
                     onKeyDown={onEnter}
                     onChange={e => {
                       propsOnChange();
-                      onChange(e);
+                      onChange(Number(e.target.value));
                     }}
-                    type={"text"}
-                    label={"Địa chỉ"}
+                    type={"number"}
+                    label={"Phí dự thi"}
                     {...others}
                   />
                 ), true)}
               </div>
               <div className="col-6">
-                {form.enhanceComponent("phone", ({error, onEnter, onChange, ...others}) => (
-                  <InputBase
-                    className="contest-input pt-0"
-                    error={error}
-                    id={"phone"}
-                    onKeyDown={onEnter}
+                {form.enhanceComponent("Địa điểm tổ chức", ({error, onEnter, onChange, value, ...others}) => (
+                  <Select
+                    className="con-input pt-0"
+                    options={this.state.orgLocations}
+                    value={value}
+                    getValue={each => each.orgLocationID}
+                    displayAs={each => each.name}
                     onChange={e => {
                       propsOnChange();
-                      onChange(e);
+                      onChange(e)
                     }}
-                    type={"text"}
-                    label={"Số điện thoại"}
-                    {...others}
+                    label={"Địa điểm"}
+                    placeholder="Chọn địa điểm"
                   />
+
                 ), true)}
               </div>
 
             </div>
             <div className="row">
-              <div className="col-6">
-                {form.enhanceComponent("email", ({error, onEnter, onChange, ...others}) => (
+              <div className="col-10">
+                {form.enhanceComponent("content", ({error, onEnter, onChange, ...others}) => (
                   <InputBase
-                    className="contest-input pt-0"
+                    className="con-input pt-0"
                     error={error}
-                    id={"email"}
+                    inputType={"textarea"}
+                    id={"content"}
                     onKeyDown={onEnter}
                     onChange={e => {
                       propsOnChange();
                       onChange(e);
                     }}
-                    type={"text"}
                     label={"Email"}
                     {...others}
                   />
                 ), true)}
               </div>
-              <div className="col-6">
-                {form.enhanceComponent("CMT", ({error, onEnter, onChange, ...others}) => (
-                  <InputBase
-                    className="contest-input pt-0"
-                    error={error}
-                    id={"cmt"}
-                    onKeyDown={onEnter}
-                    onChange={e => {
-                      propsOnChange();
-                      onChange(e);
-                    }}
-                    type={"text"}
-                    label={"Chứng minh thư"}
-                    {...others}
-                  />
-                ), true)}
-              </div>
             </div>
             <div className="row">
-              <div className="col-6">
+              <div className="col-10">
 
-                {form.enhanceComponent("gender", ({value, onChange}) => (
-                  <Select
-                    className="contest-input pt-0"
-                    options={[{label: "Nam", value: 0}, {label: "Nữ", value: 1}]}
+                {form.enhanceComponent("canSeeResult", ({value, onChange}) => (
+                  <SwitchBtn
+                    className="con-input pt-0 mt-4"
                     value={value}
-                    onChange={e => {
+                    onToggle={value => {
                       propsOnChange();
-                      onChange(Number(e.target.value))
+                      onChange(value ? 1 : 0)
                     }}
-                    label={"Giới tính"}
-                    placeholder="Chọn giới tính"
+                    label={"Được xem kết quả"}
                   />
 
                 ), true)}
 
               </div>
-              <div className="col-6">
-                {form.enhanceComponent("dob", ({error, onEnter, onChange, ...others}) => (
-                  <InputBase
-                    className="contest-input pt-0"
-                    error={error}
-                    id={"dob"}
-                    onKeyDown={onEnter}
-                    onChange={e => {
-                      propsOnChange();
-                      onChange(e);
-                    }}
-                    type={"date"}
-                    label={"Ngày sinh"}
-                    {...others}
-                  />
-                ), true)}
-              </div>
+
             </div>
             <div className="row">
               <div className="col optional-nav">

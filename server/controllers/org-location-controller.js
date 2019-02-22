@@ -17,6 +17,12 @@ module.exports = (db, dbManager) => {
     }).catch(err => next(err));
 
   });
+  router.get("/org-locations/brief-no-con", authMiddleware, (req, res, next) => {
+    orgLocationManager.getOrgLocationsBrief().then(orgLocations => {
+      res.status(200).json(orgLocations);
+    }).catch(err => next(err))
+  });
+
   router.get("/org-location/:orgLocationID", authMiddleware, (req, res, next) => {
 
     orgLocationManager.getOrgLocation(req.params.orgLocationID).then((data) => {

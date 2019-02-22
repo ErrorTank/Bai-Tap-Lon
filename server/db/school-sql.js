@@ -30,11 +30,7 @@ const schoolSql = (db) => {
     let getInfo = `SELECT sID, name, address FROM school`;
     return new Promise((resolve, reject) =>
       query(getInfo).then((result) => {
-        if(result.length){
-          resolve(result);
-        }else{
-          reject(new Error("Empty school"));
-        }
+        resolve(result);
       }).catch(err => {
         reject(err)
       })
@@ -121,7 +117,7 @@ const schoolSql = (db) => {
 
   const getSchoolBriefWithCondition = (obj) => {
     let {keyword, skip, take, orderAsc, orderBy} = obj;
-    const sql = `Select SQL_CALC_FOUND_ROWS * from school where ${keyword ? `(name like '%${keyword}%' or address like '%${keyword}%'  or email like '%${keyword}%')` : "1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
+    const sql = `Select SQL_CALC_FOUND_ROWS * from school where ${keyword ? `(name like '%${keyword}%' or address like '%${keyword}%'  or email like '%${keyword}%' or sID = '${keyword}' )` : "1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
     console.log(sql)
     return new Promise((resolve, reject) => {
       query(sql).then(result => {

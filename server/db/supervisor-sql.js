@@ -75,7 +75,7 @@ const supervisorSql = (db) => {
   const getSupervisorBriefWithCondition = (obj) => {
     let {keyword, skip, take, orderAsc, orderBy} = obj;
 
-    const sql = `Select  SQL_CALC_FOUND_ROWS * from supervisor where ${keyword ? `(name like '%${keyword}%' or email  like '%${keyword}%') or phone like '%${keyword}%'` : "1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
+    const sql = `Select  SQL_CALC_FOUND_ROWS * from supervisor where ${keyword ? `(name like '%${keyword}%' or email  like '%${keyword}%' or phone like '%${keyword}%' or supervisorID = '${keyword}') ` : "1=1"} ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
 
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
