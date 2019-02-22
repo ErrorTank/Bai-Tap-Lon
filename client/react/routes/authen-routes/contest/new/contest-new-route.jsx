@@ -29,7 +29,9 @@ export class ContestNewRoute extends KComponent {
         content: "",
         fee: 0,
         canSeeResult: 0,
-        examDates: []
+        examDates: [],
+        subjectID: "",
+        orgLocationID: ""
       }
     });
 

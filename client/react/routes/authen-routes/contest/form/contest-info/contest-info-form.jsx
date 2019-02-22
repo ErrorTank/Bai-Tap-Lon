@@ -24,6 +24,7 @@ export class ContestInfoForm extends KComponent {
 
   render() {
     let {form, err, onChange: propsOnChange, renderNavigate = () => null} = this.props;
+    console.log(form.getData())
     return (
       <div className="contest-info-form">
         {this.state.loading ? (
@@ -102,7 +103,7 @@ export class ContestInfoForm extends KComponent {
                 ), true)}
               </div>
               <div className="col-6">
-                {form.enhanceComponent("Địa điểm tổ chức", ({error, onEnter, onChange, value, ...others}) => (
+                {form.enhanceComponent("orgLocationID", ({error, onEnter, onChange, value, ...others}) => (
                   <Select
                     className="con-input pt-0"
                     options={this.state.orgLocations}
@@ -134,7 +135,7 @@ export class ContestInfoForm extends KComponent {
                       propsOnChange();
                       onChange(e);
                     }}
-                    label={"Email"}
+                    label={"Mô tả"}
                     {...others}
                   />
                 ), true)}
