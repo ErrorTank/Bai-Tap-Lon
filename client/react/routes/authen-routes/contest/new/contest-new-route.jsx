@@ -12,6 +12,7 @@ import {MultipleStepsTabs} from "../../../../common/multiple-steps-tabs/multiple
 import {contestApi} from "../../../../../api/common/contest-api";
 import {ContestInfoForm} from "../form/contest-info/contest-info-form";
 import {subjectApi} from "../../../../../api/common/subject-api";
+import {ContestExamDate} from "../form/contest-exam-date/contest-exam-date";
 
 
 export class ContestNewRoute extends KComponent {
@@ -70,7 +71,7 @@ export class ContestNewRoute extends KComponent {
   steps = [
     {
       step: 0,
-      label: "Thiết lập thông tin",
+      label: "Thông tin",
       render: () => (
         <div className="row justify-content-center">
           <div className="col-12 col-lg-10 p-0">
@@ -84,9 +85,7 @@ export class ContestNewRoute extends KComponent {
 
 
       ),
-      isDone: () => {
-        return this.form.isValid();
-      },
+
       renderActions: () => {
         let invalids = this.form.getInvalidPaths();
         let canNext = (!invalids.length || (invalids.length === 1 && invalids[0] === 'examDates')) && !this.state.err && !this.state.loading;
@@ -109,11 +108,11 @@ export class ContestNewRoute extends KComponent {
       }
     }, {
       step: 1,
-      label: "Thiết lập phòng",
+      label: "Buổi thi",
       render: () => (
         <div className="row justify-content-center">
           <div className="col-12 p-0">
-            <ContestInfoForm
+            <ContestExamDate
               form={this.form}
               onChange={() => this.setState({err: ""})}
               err={this.state.err}
@@ -123,9 +122,7 @@ export class ContestNewRoute extends KComponent {
 
 
       ),
-      isDone: () => {
-        return this.form.isValid();
-      },
+
       renderActions: () => {
         let canFinish = !this.form.getInvalidPaths().length && !this.state.err;
         return (
