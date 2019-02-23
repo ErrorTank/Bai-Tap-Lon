@@ -79,7 +79,7 @@ const subjectSchema = yup.object().shape({
 
 const examDateSchema = yup.object().shape({
   start: yup.date().required("Thời gian bắt đầu không được để trống"),
-  stop: yup.date().min(yup.ref("start"), "Thời gian kết thúc phải sau khi bắt đầu").required("Thời gian kết thúc không được để trống"),
+  stop: yup.date().required("Thời gian kết thúc không được để trống"),
   content: yup.string().max(200, "Mô tả không được vượt quá 200 ký tự"),
   roomID: yup.string().required("Địa điểm thi không được để trống"),
   supervisors: yup.array().of(supervisorSchema).min(0),

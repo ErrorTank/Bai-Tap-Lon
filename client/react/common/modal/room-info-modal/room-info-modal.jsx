@@ -45,61 +45,64 @@ export class RoomInfoModal extends KComponent {
           />
         </div>
         <div className="modal-body">
-          <div className="row justify-content-center">
-            <div className="col-10">
-              {this.form.enhanceComponent("name", ({error, onEnter, onChange, ...others}) => (
-                <InputBase
-                  className="r-input pt-0"
-                  error={error}
-                  id={"name"}
-                  onKeyDown={onEnter}
-                  onChange={e => {
-                    onChange(e);
-                  }}
-                  type={"text"}
-                  label={"Tên phòng"}
-                  {...others}
-                />
-              ), true)}
-            </div>
-            <div className="col-10">
+          <div className="m-form m-form--fit m-form--label-align-right m-form--state">
+            <div className="row justify-content-center">
+              <div className="col-10">
+                {this.form.enhanceComponent("name", ({error, onEnter, onChange, ...others}) => (
+                  <InputBase
+                    className="r-input pt-0"
+                    error={error}
+                    id={"name"}
+                    onKeyDown={onEnter}
+                    onChange={e => {
+                      onChange(e);
+                    }}
+                    type={"text"}
+                    label={"Tên phòng"}
+                    {...others}
+                  />
+                ), true)}
+              </div>
+              <div className="col-10">
 
-              {this.form.enhanceComponent("locate", ({error, onEnter, onChange, ...others}) => (
-                <InputBase
-                  className="r-input pt-0"
-                  error={error}
-                  id={"locate"}
-                  onKeyDown={onEnter}
-                  onChange={e => {
-                    onChange(e);
-                  }}
-                  type={"text"}
-                  label={"Địa điểm"}
-                  {...others}
-                />
-              ), true)}
+                {this.form.enhanceComponent("locate", ({error, onEnter, onChange, ...others}) => (
+                  <InputBase
+                    className="r-input pt-0"
+                    error={error}
+                    id={"locate"}
+                    onKeyDown={onEnter}
+                    onChange={e => {
+                      onChange(e);
+                    }}
+                    type={"text"}
+                    label={"Địa điểm"}
+                    {...others}
+                  />
+                ), true)}
 
-            </div>
-            <div className="col-10">
+              </div>
+              <div className="col-10">
 
-              {this.form.enhanceComponent("maxSeat", ({error, onEnter, onChange, ...others}) => (
-                <InputBase
-                  className="r-input pt-0"
-                  error={error}
-                  id={"maxSeat"}
-                  onKeyDown={onEnter}
-                  onChange={e => {
+                {this.form.enhanceComponent("maxSeat", ({error, onEnter, onChange, ...others}) => (
+                  <InputBase
+                    className="r-input pt-0"
+                    error={error}
+                    id={"maxSeat"}
+                    onKeyDown={onEnter}
+                    onChange={e => {
 
-                    onChange(Number(e.target.value));
-                  }}
-                  type={"number"}
-                  label={"Sức chứa"}
-                  {...others}
-                />
-              ), true)}
+                      onChange(Number(e.target.value));
+                    }}
+                    type={"number"}
+                    label={"Sức chứa"}
+                    {...others}
+                  />
+                ), true)}
 
+              </div>
             </div>
           </div>
+
         </div>
         <div className="modal-footer">
           <button type="button" className="btn btn-danger" onClick={() => onClose()}>

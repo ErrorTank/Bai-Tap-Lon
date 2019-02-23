@@ -33,6 +33,7 @@ export class ContestExamDate extends React.Component {
         })
       },
       confirmText: "Tạo buổi thi",
+      rooms: this.state.rooms
     })
   };
 
@@ -41,6 +42,7 @@ export class ContestExamDate extends React.Component {
     let examDates = form.getPathData("examDates");
     return (
       <div className="contest-exam-date">
+
         {this.state.loading ? (
           <LoadingInline/>
         ) : (

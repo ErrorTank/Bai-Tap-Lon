@@ -18,7 +18,7 @@ export class ExamDateModal extends KComponent {
       initData: props.value ? {...props.value} : {
         start: "",
         stop: "",
-        content: 0,
+        content: "",
         roomID: ""
       }
     });
@@ -48,79 +48,82 @@ export class ExamDateModal extends KComponent {
           />
         </div>
         <div className="modal-body">
-          <div className="row justify-content-center">
-            <div className="col-10">
-              {this.form.enhanceComponent("start", ({error, onEnter, onChange, ...others}) => (
-                <InputBase
-                  className="ed-input pt-0"
-                  error={error}
-                  id={"start"}
-                  onKeyDown={onEnter}
-                  onChange={e => {
-                    onChange(e);
-                  }}
-                  type={"date"}
-                  label={"Thời gian bắt đầu"}
-                  {...others}
-                />
-              ), true)}
-            </div>
-            <div className="col-10">
+          <div className="m-form m-form--fit m-form--label-align-right m-form--state">
+            <div className="row justify-content-center">
+              <div className="col-10">
+                {this.form.enhanceComponent("start", ({error, onEnter, onChange, ...others}) => (
+                  <InputBase
+                    className="ed-input pt-0"
+                    error={error}
+                    id={"start"}
+                    onKeyDown={onEnter}
+                    onChange={e => {
+                      onChange(e);
+                    }}
+                    type={"date"}
+                    label={"Thời gian bắt đầu"}
+                    {...others}
+                  />
+                ), true)}
+              </div>
+              <div className="col-10">
 
-              {this.form.enhanceComponent("stop", ({error, onEnter, onChange, ...others}) => (
-                <InputBase
-                  className="ed-input pt-0"
-                  error={error}
-                  id={"stop"}
-                  onKeyDown={onEnter}
-                  onChange={e => {
-                    onChange(e);
-                  }}
-                  type={"date"}
-                  label={"Thời gian kết thúc"}
-                  {...others}
-                />
-              ), true)}
+                {this.form.enhanceComponent("stop", ({error, onEnter, onChange, ...others}) => (
+                  <InputBase
+                    className="ed-input pt-0"
+                    error={error}
+                    id={"stop"}
+                    onKeyDown={onEnter}
+                    onChange={e => {
+                      onChange(e);
+                    }}
+                    type={"date"}
+                    label={"Thời gian kết thúc"}
+                    {...others}
+                  />
+                ), true)}
 
-            </div>
-            <div className="col-10">
+              </div>
+              <div className="col-10">
 
-              {this.form.enhanceComponent("roomID", ({error, onEnter, onChange, ...others}) => (
-                <Select
-                  className="ed-input pt-0"
-                  options={this.props.rooms}
-                  value={value}
-                  getValue={item => item.roomID}
-                  displayAs={item => item.name + " (" + item.locate + ")"}
-                  onChange={e => {
-                    onChange(e.target.value)
-                  }}
-                  label={"Phòng thi"}
-                  placeholder={"Chọn phòng thi"}
-                />
-              ), true)}
+                {this.form.enhanceComponent("roomID", ({error, onEnter, onChange, value, ...others}) => (
+                  <Select
+                    className="ed-input pt-0"
+                    options={this.props.rooms}
+                    value={value}
+                    getValue={item => item.roomID}
+                    displayAs={item => item.name + " (" + item.locate + ")"}
+                    onChange={e => {
+                      onChange(e.target.value)
+                    }}
+                    label={"Phòng thi"}
+                    placeholder={"Chọn phòng thi"}
+                  />
+                ), true)}
 
-            </div>
-            <div className="col-10">
+              </div>
+              <div className="col-10">
 
-              {this.form.enhanceComponent("content", ({error, onEnter, onChange, ...others}) => (
-                <InputBase
-                  className="ed-input pt-0"
-                  error={error}
-                  id={"content"}
-                  onKeyDown={onEnter}
-                  onChange={e => {
-                    onChange(e);
-                  }}
-                  inputType={"textarea"}
-                  type={"text"}
-                  label={"Mô tả"}
-                  {...others}
-                />
-              ), true)}
+                {this.form.enhanceComponent("content", ({error, onEnter, onChange, ...others}) => (
+                  <InputBase
+                    className="ed-input pt-0"
+                    error={error}
+                    id={"content"}
+                    onKeyDown={onEnter}
+                    onChange={e => {
+                      onChange(e);
+                    }}
+                    inputType={"textarea"}
+                    type={"text"}
+                    label={"Mô tả"}
+                    {...others}
+                  />
+                ), true)}
 
+              </div>
             </div>
           </div>
+
         </div>
         <div className="modal-footer">
           <button type="button" className="btn btn-danger" onClick={() => onClose()}>

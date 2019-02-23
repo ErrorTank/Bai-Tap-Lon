@@ -86,7 +86,7 @@ export class ContestListRoute extends React.Component {
               <div className="m-portlet__body">
                 <div className="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
                   <div className="row align-items-end">
-                    <div className="col-8 order-2 order-xl-1 p-0">
+                    <div className="col-8  p-0">
                       <div className="form-group m-form__group row align-items-end">
 
                         <div className="col-5 pl-0">
@@ -118,7 +118,7 @@ export class ContestListRoute extends React.Component {
                         </div>
                       </div>
                     </div>
-                    <div className="col-4 order-1 order-xl-2 m--align-right p-0">
+                    <div className="col-4  m--align-right p-0">
                       <button type="button" className="btn btn-primary create-contest"
                               onClick={() => customHistory.push("/contest/new")}
                       >
