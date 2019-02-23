@@ -3,6 +3,7 @@ import {roomApi} from "../../../../../../api/common/room-api";
 import {uid} from 'react-uid';
 import {LoadingInline} from "../../../../../common/loading-inline/loading-inline";
 import {ExamDateCard} from "./exam-date-card/exam-date-card";
+import {examDateModal} from "../../../../../common/modal/exam-date-modal/exam-date-modal";
 
 export class ContestExamDate extends React.Component {
   constructor(props) {
@@ -13,6 +14,25 @@ export class ContestExamDate extends React.Component {
     };
     roomApi.getRoomByOrgLocationID(props.form.getPathData("orgLocationID")).then(rooms => {
       this.setState({rooms, loading: false});
+    })
+  };
+
+  openExamDateModal = () => {
+    let handleCreate = (info) => {
+      let {form, onChange} = this.props;
+      onChange();
+      form.updatePathData("examDates", form.getPathData("examDates").concat({...info}));
+    };
+    examDateModal.open({
+      onChange(info) {
+
+        return new Promise((resolve) => {
+          handleCreate({...info, cardID: uid(info)});
+
+          resolve();
+        })
+      },
+      confirmText: "Tạo buổi thi",
     })
   };
 
@@ -38,7 +58,8 @@ export class ContestExamDate extends React.Component {
 
             }
             <div className="exam-date-header">
-              Tìm thấy {this.state.rooms.length} phòng
+              <p className="room-length"> Tìm thấy {this.state.rooms.length} phòng</p>
+
             </div>
             <div className="exam-date-body">
               <div className="exam-date-list">
@@ -55,7 +76,7 @@ export class ContestExamDate extends React.Component {
               </div>
               <div className="exam-date-footer">
                 <div className="row p-0 justify-content-end">
-                  <button type="button" className="btn btn-success" onClick={this.openExamDateModal}>Tạo buổi thi</button>
+                  <button type="button" className="btn btn-success create-exam-date" onClick={this.openExamDateModal}>Tạo buổi thi</button>
                 </div>
               </div>
             </div>

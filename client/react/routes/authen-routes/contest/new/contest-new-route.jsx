@@ -13,6 +13,7 @@ import {contestApi} from "../../../../../api/common/contest-api";
 import {ContestInfoForm} from "../form/contest-info/contest-info-form";
 import {subjectApi} from "../../../../../api/common/subject-api";
 import {ContestExamDate} from "../form/contest-exam-date/contest-exam-date";
+import {appModal} from "../../../../common/modal/modals";
 
 
 export class ContestNewRoute extends KComponent {
@@ -24,16 +25,17 @@ export class ContestNewRoute extends KComponent {
       saving: false,
       loading: false
     };
+    this.initData = {
+      contestName: "",
+      content: "",
+      fee: 0,
+      canSeeResult: 0,
+      examDates: [],
+      subjectID: "",
+      orgLocationID: ""
+    };
     this.form = createSimpleForm(contestSchema, {
-      initData: {
-        contestName: "",
-        content: "",
-        fee: 0,
-        canSeeResult: 0,
-        examDates: [],
-        subjectID: "",
-        orgLocationID: ""
-      }
+      initData: this.initData
     });
 
 
@@ -54,14 +56,64 @@ export class ContestNewRoute extends KComponent {
 
   };
 
+  switchTabActions = (step) => {
+    let matcher = {
+      0: {
+        act: () => {
+          this.form.resetData({...this.initData});
+
+        },
+        label: "Quay trở về bước này sẽ tự động xóa toàn bộ dữ liệu về buổi thi, bạn có muốn tiếp tục?"
+      },
+
+    };
+    return matcher[step];
+  };
+
+  handleBackToFirst = () => {
+    let action = this.switchTabActions(0);
+    let {act, label } = action;
+    appModal.confirm({
+      text: label,
+      title: "Xác nhận",
+      btnText: "Đồng ý",
+      cancelText: "Hủy bỏ"
+    }).then((result) => {
+      if(result){
+        act();
+        this.setState({activeTab: 0});
+      }
+    })
+
+  };
 
   handleClickLabel = (step) => {
-    this.setState({activeTab: step});
+    let currentStep = this.state.activeTab;
+    if(step < currentStep){
+      if(step === 0)
+        this.handleBackToFirst();
+      else{
+        this.setState({activeTab: step});
+      }
+    }else{
+      if(step !== 0 && this.form.getPathData("examDates").length){
+        this.setState({activeTab: step});
+      }
+    }
+
+
+
   };
 
 
-  nextStep = () => {
-    this.setState({activeTab: this.state.activeTab ++});
+  nextStep = (step) => {
+    let {activeTab} = this.state;
+    if(activeTab === 1 && step === -1){
+      this.handleBackToFirst();
+    }else{
+      this.setState({activeTab: this.state.activeTab + step});
+    }
+
     // let subjectID = this.form.getPathData("subjectID");
     // subjectApi.getRoomsBySubjectID(subjectID).then(rooms => {
     //
@@ -85,7 +137,10 @@ export class ContestNewRoute extends KComponent {
 
 
       ),
-
+      isDone: () => {
+        let invalids = this.form.getInvalidPaths();
+        return (!invalids.length || (invalids.length === 1 && invalids[0] === 'examDates')) && !this.state.err && !this.state.loading;
+      },
       renderActions: () => {
         let invalids = this.form.getInvalidPaths();
         let canNext = (!invalids.length || (invalids.length === 1 && invalids[0] === 'examDates')) && !this.state.err && !this.state.loading;
@@ -94,14 +149,11 @@ export class ContestNewRoute extends KComponent {
             <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/contests")}>Hủy bỏ
             </button>
             <button type="button"
-                    className="btn btn-primary"
+                    className="btn btn-success"
                     disabled={!canNext}
-                    onClick={this.nextStep}
+                    onClick={() => this.nextStep(1)}
             >
               Tiếp theo
-              {this.state.saving && (
-                <LoadingInline/>
-              )}
             </button>
           </div>
         )
@@ -124,20 +176,31 @@ export class ContestNewRoute extends KComponent {
       ),
 
       renderActions: () => {
-        let canFinish = !this.form.getInvalidPaths().length && !this.state.err;
+        let canNext = this.form.getPathData("examDates").length;
+        let canFinish = !this.form.getInvalidPaths().length && !this.state.error && !this.state.saving && !this.state.loading;
         return (
           <div className="">
             <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/contests")}>Hủy bỏ
             </button>
             <button type="button"
+                    className="btn btn-danger"
+                    onClick={() => this.nextStep(-1)}
+            >
+              Trở về
+            </button>
+            <button type="button"
+                    className="btn btn-success"
+                    disabled={!canNext}
+                    onClick={() => this.nextStep(1)}
+            >
+              Tiếp theo
+            </button>
+            <button type="button"
                     className="btn btn-primary"
                     disabled={!canFinish}
-                    onClick={this.createNewContest}
+                    onClick={() => this.createNewContest()}
             >
               Hoàn thành
-              {this.state.saving && (
-                <LoadingInline/>
-              )}
             </button>
           </div>
         )

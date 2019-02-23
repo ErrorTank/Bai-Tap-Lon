@@ -9,7 +9,7 @@ const omit = require("lodash/omit");
 module.exports = (db, dbManager) => {
   const roomManager = dbManager("room");
 
-  router.get("/school/org-location/:orgLocationID", authMiddleware, (req, res, next) => {
+  router.get("/room/org-location/:orgLocationID", authMiddleware, (req, res, next) => {
     roomManager.getRoomByOrgLocationID(req.params.orgLocationID).then(rooms => {
       res.status(200).json(rooms);
     }).catch(err => next(err))
