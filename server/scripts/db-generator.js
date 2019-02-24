@@ -53,7 +53,7 @@ const dbUtils = [{
     query: "CREATE TABLE `olympic`.`examDate` (`examDateID` NVARCHAR(10) NOT NULL , `start` DATETIME NOT NULL ,`stop` DATETIME NOT NULL, `content` NVARCHAR(200) NULL , `contestID` NVARCHAR(10) NOT NULL , `roomID` NVARCHAR(10) NOT NULL ,  PRIMARY KEY (`examDateID`)) ENGINE = InnoDB;"
   }, {
     name: "Create examDate - candidate table",
-    query: "CREATE TABLE `olympic`.`examDatecandidate`(`examDateID` VARCHAR(10) NOT NULL, `candidateID` VARCHAR(10) NOT NULL, `SBD` VARCHAR(10) NOT NULL, PRIMARY KEY(`examDateID`, `candidateID`)) ENGINE = InnoDB;"
+    query: "CREATE TABLE `olympic`.`examDatecandidate`(`examDateID` VARCHAR(10) NOT NULL, `cID` VARCHAR(10) NOT NULL, `SBD` VARCHAR(10) NOT NULL, PRIMARY KEY(`examDateID`, `cID`)) ENGINE = InnoDB;"
   }, {
     name: "Create examDate - supervisor table",
     query: "CREATE TABLE `olympic`.`examDatesupervisor` (`examDateID` NVARCHAR(10) NOT NULL , `supervisorID` NVARCHAR(10) NOT NULL , PRIMARY KEY (`examDateID`,`supervisorID`)) ENGINE = InnoDB;"

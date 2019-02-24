@@ -10,6 +10,9 @@ export const candidateApi = {
   update(candidate){
     return authenApi.put(`/candidate/${candidate.cID}`, {candidate});
   },
+  getCandidatesBrief() {
+    return authenApi.get("/candidates/brief-no-con");
+  },
   getCandidateBrief(filters){
     let {skip, take, filter = {}, sort} = filters || {};
     let {key, asc} = sort || {};

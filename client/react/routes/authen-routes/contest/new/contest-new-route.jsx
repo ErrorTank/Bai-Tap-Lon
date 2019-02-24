@@ -14,6 +14,7 @@ import {ContestInfoForm} from "../form/contest-info/contest-info-form";
 import {subjectApi} from "../../../../../api/common/subject-api";
 import {ContestExamDate} from "../form/contest-exam-date/contest-exam-date";
 import {appModal} from "../../../../common/modal/modals";
+import {ExamDateCandidate} from "../form/exam-date-candidate/exam-date-candidate";
 
 
 export class ContestNewRoute extends KComponent {
@@ -32,7 +33,9 @@ export class ContestNewRoute extends KComponent {
       canSeeResult: 0,
       examDates: [],
       subjectID: "",
-      orgLocationID: ""
+      orgLocationID: "",
+      candidates: [],
+      supervisors: []
     };
     this.form = createSimpleForm(contestSchema, {
       initData: this.initData
@@ -205,12 +208,59 @@ export class ContestNewRoute extends KComponent {
           </div>
         )
       }
+    },{
+      step: 2,
+      label: "Thí sinh",
+      render: () => (
+        <div className="row justify-content-center">
+          <div className="col-12 p-0">
+            <ExamDateCandidate
+              form={this.form}
+              onChange={() => this.setState({err: ""})}
+              err={this.state.err}
+            />
+          </div>
+        </div>
+
+
+      ),
+
+      renderActions: () => {
+        let canNext = true;
+        let canFinish = !this.form.getInvalidPaths().length && !this.state.error && !this.state.saving && !this.state.loading;
+        return (
+          <div className="">
+            <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/contests")}>Hủy bỏ
+            </button>
+            <button type="button"
+                    className="btn btn-danger"
+                    onClick={() => this.nextStep(-1)}
+            >
+              Trở về
+            </button>
+            <button type="button"
+                    className="btn btn-success"
+                    disabled={!canNext}
+                    onClick={() => this.nextStep(1)}
+            >
+              Tiếp theo
+            </button>
+            <button type="button"
+                    className="btn btn-primary"
+                    disabled={!canFinish}
+                    onClick={() => this.createNewContest()}
+            >
+              Hoàn thành
+            </button>
+          </div>
+        )
+      }
     },
   ];
 
   render() {
     let {activeTab} = this.state;
-
+    console.log(this.form.getData())
     return (
       <PageTitle title="Tạo kì thi mới">
         <RouteTitle content="Tạo kì thi mới">

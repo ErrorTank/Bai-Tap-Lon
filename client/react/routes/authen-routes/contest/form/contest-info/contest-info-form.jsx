@@ -24,7 +24,7 @@ export class ContestInfoForm extends KComponent {
 
   render() {
     let {form, err, onChange: propsOnChange, renderNavigate = () => null} = this.props;
-    console.log(form.getData())
+
     return (
       <div className="contest-info-form">
         {this.state.loading ? (

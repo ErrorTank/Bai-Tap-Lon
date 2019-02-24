@@ -82,8 +82,13 @@ const examDateSchema = yup.object().shape({
   stop: yup.date().required("Thời gian kết thúc không được để trống"),
   content: yup.string().max(200, "Mô tả không được vượt quá 200 ký tự"),
   roomID: yup.string().required("Địa điểm thi không được để trống"),
-  supervisors: yup.array().of(supervisorSchema).min(0),
-  candidates: yup.array().of(candidateSchema).min(0),
+
+});
+
+const examDateCandidateSchema = yup.object().shape({
+  cID: yup.string().required("SBD không được để trống"),
+  SBD: yup.string().max(10).required("SBD không được để trống"),
+  examDate: examDateSchema.required("Buổi thi là bắt buộc")
 });
 
 const contestSchema = yup.object().shape({
@@ -93,7 +98,9 @@ const contestSchema = yup.object().shape({
   fee:yup.number().required("Phí dự thi không được để trống"),
   orgLocationID: yup.string().required(),
   canSeeResult: yup.boolean().required(),
-  examDates: yup.array().of(examDateSchema).min(0).required()
+  examDates: yup.array().of(examDateSchema).min(0).required(),
+  supervisors: yup.array().min(0),
+  candidates: yup.array().min(0),
 
 });
 
@@ -110,6 +117,7 @@ export
   roomSchema,
   subjectSchema,
   contestSchema,
-  examDateSchema
+  examDateSchema,
+  examDateCandidateSchema,
 
 }

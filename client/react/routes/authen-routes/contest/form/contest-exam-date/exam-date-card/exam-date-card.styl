@@ -1,0 +1,37 @@
+.exam-date-card{
+  padding 10px 15px
+  border-left 2px solid transparent
+  .content-title{
+    font-weight 550
+  }
+  &:hover{
+    border-left-color primary
+  }
+  &:nth-child(odd){
+    background-color: white
+  }
+  &:nth-child(even){
+    background-color: darken(white, 5%)
+  }
+  .edc-header{
+    position relative
+    .rm-edc{
+      position absolute
+      right 0
+      top 0
+      color black
+      cursor pointer
+      font-size 16px !important
+    }
+    .edc-title{
+      color primary
+      font-size 20px
+      font-weight 550
+    }
+  }
+  .edc-body{
+    margin-top 20px
+    font-size 15px
+    color #1a1a1a
+  }
+}

@@ -5,6 +5,7 @@ import {createSimpleForm} from "../../form-validator/form-validator";
 import {examDateSchema} from "../../../routes/authen-routes/schema";
 import {InputBase} from "../../base-input/base-input";
 import {Select} from "../../select/select";
+import {InputDateTime} from "../../input-date-time/input-date-time";
 
 
 export class ExamDateModal extends KComponent {
@@ -51,35 +52,34 @@ export class ExamDateModal extends KComponent {
           <div className="m-form m-form--fit m-form--label-align-right m-form--state">
             <div className="row justify-content-center">
               <div className="col-10">
-                {this.form.enhanceComponent("start", ({error, onEnter, onChange, ...others}) => (
-                  <InputBase
+                {this.form.enhanceComponent("start", ({error,  onChange, value}) => (
+                  <InputDateTime
                     className="ed-input pt-0"
                     error={error}
                     id={"start"}
-                    onKeyDown={onEnter}
                     onChange={e => {
+                      console.log(e)
                       onChange(e);
                     }}
-                    type={"date"}
                     label={"Thời gian bắt đầu"}
-                    {...others}
+                    value={value}
                   />
                 ), true)}
               </div>
+
               <div className="col-10">
 
-                {this.form.enhanceComponent("stop", ({error, onEnter, onChange, ...others}) => (
-                  <InputBase
+                {this.form.enhanceComponent("stop", ({error, onEnter, onChange, value}) => (
+                  <InputDateTime
                     className="ed-input pt-0"
                     error={error}
                     id={"stop"}
-                    onKeyDown={onEnter}
                     onChange={e => {
+                      console.log(e)
                       onChange(e);
                     }}
-                    type={"date"}
                     label={"Thời gian kết thúc"}
-                    {...others}
+                    value={value}
                   />
                 ), true)}
 

@@ -133,6 +133,17 @@ const candidateSql = (db) => {
 
   };
 
+  const getCandidatesBrief = () => {
+    let getInfo = `SELECT cID, name, sID, phone, email, CMT, gender, dob, address FROM candidate`;
+    return new Promise((resolve, reject) =>
+      query(getInfo).then((result) => {
+        resolve(result);
+      }).catch(err => {
+        reject(err)
+      })
+    )
+  };
+
   return {
     createCandidate,
     getCandidate,
@@ -140,7 +151,8 @@ const candidateSql = (db) => {
     deleteCandidate,
     getCandidateByAccountID,
     checkCandidateExisted,
-    getCandidateBriefWithCondition
+    getCandidateBriefWithCondition,
+    getCandidatesBrief
     //define function name here
   }
 };

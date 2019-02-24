@@ -4,6 +4,7 @@ import {uid} from 'react-uid';
 import {LoadingInline} from "../../../../../common/loading-inline/loading-inline";
 import {ExamDateCard} from "./exam-date-card/exam-date-card";
 import {examDateModal} from "../../../../../common/modal/exam-date-modal/exam-date-modal";
+import isEqual from "lodash/isEqual";
 
 export class ContestExamDate extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ export class ContestExamDate extends React.Component {
     })
   };
 
-  openExamDateModal = () => {
+  createExamDate = () => {
     let handleCreate = (info) => {
       let {form, onChange} = this.props;
       onChange();
@@ -35,6 +36,43 @@ export class ContestExamDate extends React.Component {
       confirmText: "Tạo buổi thi",
       rooms: this.state.rooms
     })
+  };
+
+  removeExamDate = (cardID) => {
+    let handleRemove = () => {
+      let {form, onChange} = this.props;
+      onChange();
+      form.updatePathData("examDates", form.getPathData("examDates").filter(each => each.cardID !== cardID));
+    };
+    handleRemove();
+  };
+
+  editExamDate = (examDate) => {
+
+    let handleUpdate = (info) => {
+      let {form, onChange} = this.props;
+      onChange();
+      form.updatePathData("examDates", form.getPathData("examDates").map((each) => {
+        if (each.cardID === info.cardID)
+          return {...info};
+        return each;
+      }));
+    };
+    examDateModal.open({
+      disabled: (data) => {
+
+        return isEqual(data, examDate)
+      },
+      rooms: this.state.rooms,
+      onChange(info) {
+        return new Promise((resolve) => {
+          handleUpdate(info);
+          resolve();
+        })
+      },
+      value: examDate,
+      confirmText: "Lưu thay đổi"
+    });
   };
 
   render() {
@@ -69,6 +107,9 @@ export class ContestExamDate extends React.Component {
                   return (
                     <ExamDateCard
                       key={each.cardID}
+                      onClick={() => this.editExamDate(each)}
+                      onClose={() => this.removeExamDate(each.cardID)}
+                      room={this.state.rooms.find(room => room.roomID === each.roomID) || {}}
                       {...each}
                     />
                   )
@@ -78,7 +119,7 @@ export class ContestExamDate extends React.Component {
               </div>
               <div className="exam-date-footer">
                 <div className="row p-0 justify-content-end">
-                  <button type="button" className="btn btn-success create-exam-date" onClick={this.openExamDateModal}>Tạo buổi thi</button>
+                  <button type="button" className="btn btn-success create-exam-date" onClick={this.createExamDate}>Tạo buổi thi</button>
                 </div>
               </div>
             </div>
