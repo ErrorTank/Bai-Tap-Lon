@@ -115,14 +115,24 @@ const supervisorSql = (db) => {
       }
     )
   };
-
+  const getSupervisorsBrief = () => {
+    let getInfo = `SELECT * FROM supervisor`;
+    return new Promise((resolve, reject) =>
+      query(getInfo).then((result) => {
+        resolve(result);
+      }).catch(err => {
+        reject(err)
+      })
+    )
+  };
   return {
     createSupervisor,
     getSupervisor,
     updateSupervisor,
     deleteSupervisor,
     checkSupervisorExisted,
-    getSupervisorBriefWithCondition
+    getSupervisorBriefWithCondition,
+    getSupervisorsBrief
     //define function name here
   }
 };

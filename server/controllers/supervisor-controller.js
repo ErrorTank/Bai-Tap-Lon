@@ -9,6 +9,11 @@ const authMiddleware = authorization(getPublicKey(), {expiresIn: "1 day", algori
 
 module.exports = (db, dbManager) => {
   let supervisorManager = dbManager("supervisor");
+  router.get("/supervisors/brief-no-con", authMiddleware, (req, res, next) => {
+    supervisorManager.getSupervisorsBrief().then(data => {
+      res.status(200).json(data);
+    }).catch(err => next(err))
+  });
   router.post("/supervisor/check", authMiddleware, (req, res, next) => {
     supervisorManager.checkSupervisorExisted(req.body.supervisor).then(() => {
       res.status(200).end();

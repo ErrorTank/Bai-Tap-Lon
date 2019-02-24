@@ -15,6 +15,7 @@ import {subjectApi} from "../../../../../api/common/subject-api";
 import {ContestExamDate} from "../form/contest-exam-date/contest-exam-date";
 import {appModal} from "../../../../common/modal/modals";
 import {ExamDateCandidate} from "../form/exam-date-candidate/exam-date-candidate";
+import {ExamDateSupervisor} from "../form/exam-date-supervisor/exam-date-supervisor";
 
 
 export class ContestNewRoute extends KComponent {
@@ -244,6 +245,45 @@ export class ContestNewRoute extends KComponent {
                     onClick={() => this.nextStep(1)}
             >
               Tiếp theo
+            </button>
+            <button type="button"
+                    className="btn btn-primary"
+                    disabled={!canFinish}
+                    onClick={() => this.createNewContest()}
+            >
+              Hoàn thành
+            </button>
+          </div>
+        )
+      }
+    },{
+      step: 3,
+      label: "Giám thị",
+      render: () => (
+        <div className="row justify-content-center">
+          <div className="col-12 p-0">
+            <ExamDateSupervisor
+              form={this.form}
+              onChange={() => this.setState({err: ""})}
+              err={this.state.err}
+            />
+          </div>
+        </div>
+
+
+      ),
+
+      renderActions: () => {
+        let canFinish = !this.form.getInvalidPaths().length && !this.state.error && !this.state.saving && !this.state.loading;
+        return (
+          <div className="">
+            <button type="button" className="btn btn-secondary" onClick={() => customHistory.push("/contests")}>Hủy bỏ
+            </button>
+            <button type="button"
+                    className="btn btn-danger"
+                    onClick={() => this.nextStep(-1)}
+            >
+              Trở về
             </button>
             <button type="button"
                     className="btn btn-primary"

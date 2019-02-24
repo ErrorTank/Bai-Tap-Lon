@@ -11,6 +11,9 @@ export const supervisorApi = {
   delete(supervisorID){
     return authenApi.delete("/supervisor/" + supervisorID)
   },
+  getSupervisorsBrief() {
+    return authenApi.get("/supervisors/brief-no-con");
+  },
   checkSupervisorExisted(supervisor) {
     return authenApi.post("/supervisor/check", {supervisor})
   },
