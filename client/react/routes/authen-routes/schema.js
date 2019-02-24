@@ -91,6 +91,11 @@ const examDateCandidateSchema = yup.object().shape({
   examDate: examDateSchema.required("Buổi thi là bắt buộc")
 });
 
+const examDateSupervisorSchema = yup.object().shape({
+  supervisorID: yup.string().required("SBD không được để trống"),
+  examDate: examDateSchema.required("Buổi thi là bắt buộc")
+});
+
 const contestSchema = yup.object().shape({
   contestName: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
   content: yup.string().max(200, "Mô tả không được vượt quá 200 ký tự"),
@@ -119,5 +124,5 @@ export
   contestSchema,
   examDateSchema,
   examDateCandidateSchema,
-
+  examDateSupervisorSchema
 }

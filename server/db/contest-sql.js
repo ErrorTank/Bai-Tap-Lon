@@ -9,19 +9,36 @@ const contestSql = (db) => {
   //create location
   const createContest = (contestObj) => {
     //generate random ID for location
-    var id = uniquid();
-    var contestID = id.slice(-6, -1) + id.slice(-1);
+    let id = uniquid();
+    let contestID = id.slice(-6, -1) + id.slice(-1);
 
     //destruct object for further use
-    var {name, email, phone, address} = contestObj;
+    let {canSeeResult, content, contestName, fee, orgLocationID, subjectID, examDates: rootDates} = contestObj;
+    let examDates = JSON.parse(rootDates);
+    console.log(examDates);
+    let promises = [query(`INSERT INTO contest (contestID, content, contestName, fee, orgLocationID, subjectID, canSeeResult) VALUES('${contestID}', '${content}', '${contestName}','${Number(fee)}','${orgLocationID}','${subjectID}','${Number(canSeeResult)}')`)];
+    examDates.forEach(examDate => {
+      let {start, stop, content, roomID, candidates, supervisors} = examDate;
+      let id = uniquid();
+      let examDateID = id.slice(-6, -1) + id.slice(-1);
 
-    var createInfo = `INSERT INTO contest (contestID, name, email, phone, address) VALUES('${contestID}', '${name}', '${email}','${phone}','${address}')`;
-    return new Promise((resolve, reject) =>
-      query(createInfo).then((result) => {
-        resolve(contestID);
-      }).catch(err => {
-        reject(err)
-      })
+      promises.push(query(`INSERT INTO examdate (examDateID, start, stop, content, contestID, roomID)  VALUES('${examDateID}', '${start}', '${stop}','${content}','${contestID}','${roomID}')`));
+      candidates.forEach(can => {
+        let {SBD, cID} = can;
+        promises.push(query(`INSERT INTO examdatecandidate (examDateID, SBD, cID)  VALUES('${examDateID}', '${SBD}', '${cID}')`));
+      });
+      supervisors.forEach(s => {
+        let {supervisorID} = s;
+        promises.push(query(`INSERT INTO examdatesupervisor (supervisorID, examDateID)  VALUES('${supervisorID}', '${examDateID}')`));
+      });
+    });
+    return new Promise((resolve, reject) => {
+        Promise.all(promises).then((result) => {
+          resolve(contestID);
+        }).catch(err => {
+          reject(err)
+        })
+      }
     )
   };
 
@@ -47,17 +64,17 @@ const contestSql = (db) => {
 
   const updateContest = (contestID, contestObj) => {
     return new Promise((resolve, reject) => {
-      if(isNil(contestID)){
+      if (isNil(contestID)) {
         reject(new Error("Cannot find contest with ID: " + contestID));
-      }else{
+      } else {
 
-        let {name,  address, phone, email}  = contestObj;
+        let {name, address, phone, email} = contestObj;
         const checkExist = `SELECT email from contest where not contestID = '${contestID}' and email = '${email}'`;
         const getInfo = `UPDATE contest SET  name = '${name}', email = '${email}', phone = '${phone}', address = '${address}' WHERE contestID = '${contestID}'`;
         query(checkExist).then((result) => {
-          if(result && result.length){
+          if (result && result.length) {
             reject(new Error("email_existed"));
-          }else{
+          } else {
             query(getInfo).then(() => {
               resolve();
             }).catch(err => {

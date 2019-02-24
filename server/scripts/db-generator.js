@@ -74,9 +74,9 @@ const dbUtils = [{
     query: "INSERT INTO `orgLocation` (`orgLocationID`, `phone`, `name`, `address`) VALUES ('1', '02438587346', 'Trường đại học Thăng Long', '69 Nguyễn Xiển, Thanh Xuân, Hà Nội'), ('2', '0240924545', 'Đại học Ngoại Thương Hà Nội', '91 Chùa Láng, Láng Thượng, Đống Đa, Hà Nội'), ('3', '0240931232', 'Đại học Kinh tế Quốc dân', '207 Giải Phóng, Đồng Tâm, Hai Bà Trưng, Hà Nội'), ('4', '02438489293', 'Trung tâm huấn luyện và thi đấu TDTT Hà Nội', 'Nguyễn Cơ Thạch, P. Mỹ Đình 2, Q. Nam Từ Liêm, Hà Nội'), ('5', '02438587346', 'Trường Đại Học Sư Phạm Hà Nội', 'Số 136 Xuân Thủy, Dịch Vọng Hậu, Cầu Giấy, Hà Nội')"
   }, {
     name: "Insert supervisor",
-    query: "INSERT INTO `supervisory` (`supervisorID`, `name`, `email`, `phone`, `address`) VALUES ('1', 'Ngô Khánh Bình', 'NKB@gmail.com', '0590891441', '159 Điện Biên Phủ'), ('2', 'Cao Hải Nguyên', 'CKN@gmail.com', '02193768035', '204/6B Lạc Long Quân'), ('3', 'Hồ Cát Uy', 'HCU@gmail.com', '+841994328819', '105/119 Giáp Bát'), ('4', 'Hà Thạch Tùng', 'HTT@gmail.com', '0966314004', '584 Nguyễn Văn Cừ'), ('5', 'Hoàng Trọng Tấn', 'HTT2@gmail.com', '+84393017222', '1 Nguyễn Du'), ('6', 'Hồ Thanh Thuận', 'HTT3@gmail.com', '+841241830447' , '590 Đường Nhuận Dụng')"
+    query: "INSERT INTO `supervisor` (`supervisorID`, `name`, `email`, `phone`, `address`) VALUES ('1', 'Ngô Khánh Bình', 'NKB@gmail.com', '0590891441', '159 Điện Biên Phủ'), ('2', 'Cao Hải Nguyên', 'CKN@gmail.com', '02193768035', '204/6B Lạc Long Quân'), ('3', 'Hồ Cát Uy', 'HCU@gmail.com', '+841994328819', '105/119 Giáp Bát'), ('4', 'Hà Thạch Tùng', 'HTT@gmail.com', '0966314004', '584 Nguyễn Văn Cừ'), ('5', 'Hoàng Trọng Tấn', 'HTT2@gmail.com', '+84393017222', '1 Nguyễn Du'), ('6', 'Hồ Thanh Thuận', 'HTT3@gmail.com', '+841241830447' , '590 Đường Nhuận Dụng')"
   }, {
-    name: "Insert prize"
+    name: "Insert prize",
     query: "INSERT INTO `prize` (`prizeID`, `name`, `content`) VALUES ('1', 'Giải nhất kỳ thi Oympic', 'Giải nhất kỳ thi olympic'), ('2', 'Giải nhì kỳ thi olympic', 'Giải nhì kỳ thi olympic'), ('3', 'Giải ba kỳ thi olympic', 'Giải ba kỳ thi olympic'), ('4', 'Giải khuyến khích kỳ thi olympic', 'Giải khuyến khích kỳ thi olympic')"
   }
 ];

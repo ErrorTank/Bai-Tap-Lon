@@ -16,6 +16,7 @@ import {ContestExamDate} from "../form/contest-exam-date/contest-exam-date";
 import {appModal} from "../../../../common/modal/modals";
 import {ExamDateCandidate} from "../form/exam-date-candidate/exam-date-candidate";
 import {ExamDateSupervisor} from "../form/exam-date-supervisor/exam-date-supervisor";
+import moment from "moment";
 
 
 export class ContestNewRoute extends KComponent {
@@ -49,12 +50,25 @@ export class ContestNewRoute extends KComponent {
 
   createNewContest = () => {
     this.setState({saving: true});
-    let location = this.form.getData();
+    let data = this.form.getData();
     console.log({
-      location
+      data
     });
+    let examDates = JSON.stringify(data.examDates.map(each => {
+      let cardID = each.cardID;
 
-    contestApi.createContest({...location, rooms: location.rooms.map(each => omit(each, 'keyID'))}).then(({contestID}) => {
+      return {...each, candidates: data.candidates.filter(can => {
+          return can.examDate.cardID === cardID;
+        }).map(can => omit(can ,'keyID')), supervisors: data.supervisors.filter(s => {
+          return s.examDate.cardID === cardID;
+        }).map(s => omit(s ,'keyID'))};
+    }).map(({start, stop, ...rest}) => {
+      console.log(start)
+      console.log(stop)
+      return ({...omit(rest, ['cardID']), start: moment(start).format(), stop: moment(stop).format()});
+    }));
+
+    contestApi.create({...omit(data, ['candidates', 'supervisors', 'examDates']), examDates}).then(({contestID}) => {
       customHistory.push(`/contest/${contestID}/edit`)
     }).catch(err => this.setState({err, saving: false}))
 

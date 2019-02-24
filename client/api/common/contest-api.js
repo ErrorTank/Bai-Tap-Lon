@@ -3,6 +3,7 @@ import {urlUtils} from "../../common/url-utils";
 
 export const contestApi = {
   create(contest){
+    console.log(contest)
     return authenApi.post(`/contest/create`, {contest})
   },
   get(contestID){
