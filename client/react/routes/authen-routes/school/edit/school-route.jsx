@@ -101,9 +101,9 @@ export class SchoolRoute extends KComponent {
   deleteSchool = () => {
     let {schoolID} = this.props.match.params;
     this.setState({deleting: true});
-    candidateApi.getCandidateBrief({filter: {school: {value: schoolID}}}).then((result) => {
 
-      if(!result.length){
+    Promise.all([candidateApi.getCandidateBrief({filter: {school: {value: schoolID}}}), schoolPresenterApi.getSpBrief({filter: {school: {value: schoolID}}})]).then(([result1, result2]) => {
+      if(!result1.total && !result2.total){
         appModal.confirm({
           title: "Xác nhận",
           text: "Bạn có muốn xóa trường này?",
@@ -122,7 +122,7 @@ export class SchoolRoute extends KComponent {
       }else{
         appModal.alert({
           title: "Thông báo",
-          text: "Hãy xóa hết các thí sinh của trường trước khi xóa trường!",
+          text: `Hãy xóa hết các đại diện hoặc thí sinh của trường trước khi xóa trường!`,
         }).then(() => this.setState({deleting: false}));
 
       }
