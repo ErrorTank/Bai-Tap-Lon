@@ -11,6 +11,7 @@ import {schoolsBriefCache} from "../../../../../common/api-cache/common-cache";
 import pick from "lodash/pick"
 import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
 import {schoolPresenterApi} from "../../../../../api/common/school-presenter-api";
+import {schoolApi} from "../../../../../api/common/school-api";
 
 export class SpListRoute extends React.Component {
   constructor(props) {
@@ -26,7 +27,7 @@ export class SpListRoute extends React.Component {
       ...getDefaultFilter()
     };
 
-    schoolsBriefCache.get().then(schools => this.setState({
+    schoolApi.getSchoolsBrief().then(schools => this.setState({
       schools: [{label: "Tất cả", value: null}].concat(schools.map(each => ({label: each.name, value: each.sID}))),
       loading: false
     }));

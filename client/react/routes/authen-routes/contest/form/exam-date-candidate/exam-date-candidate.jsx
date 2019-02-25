@@ -5,6 +5,7 @@ import isEqual from "lodash/isEqual"
 import {candidateBriefCache} from "../../../../../../common/api-cache/common-cache";
 import {LoadingInline} from "../../../../../common/loading-inline/loading-inline";
 import {examDateCandidateModal} from "../../../../../common/modal/exam-date-candidate/exam-date-candidate";
+import {candidateApi} from "../../../../../../api/common/candidate-api";
 
 
 export class ExamDateCandidate extends React.Component {
@@ -14,7 +15,7 @@ export class ExamDateCandidate extends React.Component {
       loading: true,
       candidates: []
     };
-    candidateBriefCache.get().then(candidates => this.setState({candidates, loading: false}))
+    candidateApi.getCandidatesBrief().then(candidates => this.setState({candidates, loading: false}))
   };
 
   removeCandidate = edCandidate => {

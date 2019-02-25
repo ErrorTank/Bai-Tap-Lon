@@ -4,6 +4,7 @@ import {InputBase} from "../../../../common/base-input/base-input";
 import {Select} from "../../../../common/select/select";
 import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
 import {schoolsBriefCache} from "../../../../../common/api-cache/common-cache";
+import {schoolApi} from "../../../../../api/common/school-api";
 
 
 export class CandidateInfoForm extends KComponent {
@@ -13,7 +14,7 @@ export class CandidateInfoForm extends KComponent {
       loading: true,
       schools: []
     };
-    schoolsBriefCache.get().then(schools => this.setState({schools, loading: false}))
+    schoolApi.getSchoolsBrief().then(schools => this.setState({schools, loading: false}))
   };
 
 

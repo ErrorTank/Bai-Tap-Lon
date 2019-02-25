@@ -5,6 +5,8 @@ import {orgLocationsBriefCache, subjectsBriefCache} from "../../../../../../comm
 import {InputBase} from "../../../../../common/base-input/base-input";
 import {Select} from "../../../../../common/select/select";
 import {SwitchBtn} from "../../../../../common/switch/switch-btn";
+import {orgLocationApi} from "../../../../../../api/common/org-location-api";
+import {subjectApi} from "../../../../../../api/common/subject-api";
 
 
 export class ContestInfoForm extends KComponent {
@@ -15,7 +17,7 @@ export class ContestInfoForm extends KComponent {
       orgLocations: [],
       subjects: []
     };
-    Promise.all([orgLocationsBriefCache.get(), subjectsBriefCache.get()]).then(([orgLocations, subjects]) => {
+    Promise.all([orgLocationApi.getBrief(), subjectApi.getBrief()]).then(([orgLocations, subjects]) => {
       this.setState({orgLocations, subjects, loading: false})
     })
 

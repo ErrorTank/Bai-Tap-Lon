@@ -14,7 +14,7 @@ export class SchoolPresenterInfoForm extends KComponent {
       loading: true,
       schools: []
     };
-    schoolsBriefCache.get().then(schools => this.setState({schools, loading: false}))
+    schoolApi.getSchoolsBrief().then(schools => this.setState({schools, loading: false}))
   };
 
 

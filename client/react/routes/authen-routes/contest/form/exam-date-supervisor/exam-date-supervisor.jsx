@@ -5,6 +5,7 @@ import isEqual from "lodash/isEqual"
 import {supervisorBriefCache} from "../../../../../../common/api-cache/common-cache";
 import {LoadingInline} from "../../../../../common/loading-inline/loading-inline";
 import {examDateSupervisorModal} from "../../../../../common/modal/exam-date-supervisor/exam-date-supervisor";
+import {supervisorApi} from "../../../../../../api/common/supervisor-api";
 
 
 
@@ -15,7 +16,7 @@ export class ExamDateSupervisor extends React.Component {
       loading: true,
       supervisors: []
     };
-    supervisorBriefCache.get().then(supervisors => this.setState({supervisors, loading: false}))
+    supervisorApi.getBrief().then(supervisors => this.setState({supervisors, loading: false}))
   };
 
   removeSupervisor = edSupervisor => {
