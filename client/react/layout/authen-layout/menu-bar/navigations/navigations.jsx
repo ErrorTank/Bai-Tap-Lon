@@ -126,6 +126,15 @@ export class Navigations extends React.Component {
       linkTo: () => customHistory.push(`/candidate-registers`),
       roles: [2],
       active: ["/candidate-register/:rcID/edit", "/candidate-register/new", "/candidate-registers"]
+    }, {
+      icon: (
+        <i className="fas fa-thumbs-up"></i>
+      ),
+      label: "Duyệt đăng ký dự thi",
+      url: `/approve-request`,
+      linkTo: () => customHistory.push(`/approve-request`),
+      roles: [0, 1],
+      active: ["/approve-request"]
     }
   ];
 

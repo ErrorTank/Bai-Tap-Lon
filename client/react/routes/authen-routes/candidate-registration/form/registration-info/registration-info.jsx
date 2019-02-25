@@ -18,10 +18,19 @@ export class RegistrationInfoForm extends React.Component {
         });
     };
 
-
+    generateError =() => {
+        let {err, form} = this.props;
+        let {username, email, CMT} = form.getData();
+        let msg = {
+            "username_existed": `Tên đăng nhập ${username} đã tồn tại!`,
+            "email_existed": `Email ${email} đã tồn tại!`,
+            "CMT_existed": `CMT ${CMT} đã tồn tại!`
+        };
+        return  (err.hasOwnProperty("message") && msg.hasOwnProperty(err.message))  ?  msg[err.message] : "Đã có lỗi xảy ra!";
+    };
 
     render() {
-        let {form, err, onChange: propsOnChange, renderNavigate = () => null} = this.props;
+        let {form, err, onChange: propsOnChange, renderNavigate = () => null, showPassword = false} = this.props;
         return (
             <div className="registration-info-form">
                 <div className="m-form m-form--fit m-form--label-align-right m-form--state">
@@ -29,7 +38,7 @@ export class RegistrationInfoForm extends React.Component {
                         <div className="row">
                             <div className="server-error pb-3 col">
                                 <p>
-                                    Đã có lỗi xảy ra!
+                                    {this.generateError()}
                                 </p>
 
                             </div>
@@ -177,7 +186,7 @@ export class RegistrationInfoForm extends React.Component {
                                         propsOnChange();
                                         onChange(e);
                                     }}
-                                    type={"password"}
+                                    type={showPassword ? 'text' : "password"}
                                     label={"Password"}
                                     {...others}
                                 />

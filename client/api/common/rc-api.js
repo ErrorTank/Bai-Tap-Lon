@@ -11,6 +11,9 @@ export const rcApi = {
   update(rc){
     return authenApi.put(`/rc/${rc.rcID}`, {rc});
   },
+  createCandidateInstance(data){
+    return authenApi.post(`/rc/create-instance`, {data});
+  },
   getRcBrief(filters){
     let {skip, take, filter = {}, sort} = filters || {};
     let {key, asc} = sort || {};
@@ -21,7 +24,7 @@ export const rcApi = {
       take,
       gender: filter.gender ? filter.gender.value : null,
       keyword: filter.keyword || null,
-      sID: filter.sID
+      sID: filter.school ? filter.school.value : null
     };
     return authenApi.get(`/rc/brief${urlUtils.buildParams(params)}`)
   },

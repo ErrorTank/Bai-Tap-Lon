@@ -21,6 +21,18 @@ module.exports = (db, dbManager) => {
             res.status(200).end();
         }).catch(err => next(err))
     });
+    router.post("/rc/create-instance", authMiddleware, (req, res, next) => {
+        let {CMT, email, username} = req.body.data;
+        candidateManager.checkCandidateExisted({CMT, email}).then(() => {
+            accManager.checkAccountExisted({username}).then(() => {
+                rcManager.createCandidateInstance(req.body.data).then(() => {
+                    res.status(200).end();
+                }).catch(err => next(err))
+            }).catch(err => next(err));
+
+        }).catch(err => next(err));
+
+    });
     router.get("/rc/brief", authMiddleware, (req,res, next) =>{
 
         rcManager.getRcBriefWithCondition({...req.query}).then((data) => {
