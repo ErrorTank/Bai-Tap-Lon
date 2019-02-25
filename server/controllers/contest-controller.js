@@ -14,6 +14,11 @@ module.exports = (db, dbManager) => {
       res.status(200).end();
     }).catch(err => next(err))
   });
+  router.get("/contests/brief-no-con", authMiddleware, (req, res, next) => {
+    contestManager.getContestsBrief().then(contests => {
+      res.status(200).json(contests);
+    }).catch(err => next(err))
+  });
   router.get("/contest/brief", authMiddleware, (req,res, next) =>{
 
     contestManager.getContestBriefWithCondition({...req.query}).then((data) => {

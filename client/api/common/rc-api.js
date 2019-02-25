@@ -4,11 +4,12 @@ import {userInfo} from "../../common/states/user-info";
 import {urlUtils} from "../../common/url-utils";
 
 export const rcApi = {
-  get(candidateID) {
-    return authenApi.get("/candidate/" + candidateID);
+
+  create(rc) {
+    return authenApi.post("/rc/create" ,{rc});
   },
-  update(candidate){
-    return authenApi.put(`/candidate/${candidate.cID}`, {candidate});
+  update(rc){
+    return authenApi.put(`/rc/${rc.rcID}`, {rc});
   },
   getRcBrief(filters){
     let {skip, take, filter = {}, sort} = filters || {};
@@ -19,20 +20,21 @@ export const rcApi = {
       skip,
       take,
       gender: filter.gender ? filter.gender.value : null,
-      keyword: filter.keyword || null
+      keyword: filter.keyword || null,
+      sID: filter.sID
     };
     return authenApi.get(`/rc/brief${urlUtils.buildParams(params)}`)
   },
-  deleteCandidate(cID){
-    return authenApi.delete(`/candidate/${cID}`)
+  delete(rcID){
+    return authenApi.delete(`/rc/${rcID}`)
   },
   getCandidateByAccountID(accountID){
     return authenApi.get(`/candidate/account/${accountID}`);
   },
-  createCandidate(candidate){
-    return authenApi.post("/candidate", {candidate})
+  checkRc(rcID, sID){
+    return authenApi.post("/rc/check", {rcID, sID})
   },
-  checkCandidateExisted(candidate){
-    return authenApi.post("/candidate/check", {candidate})
-  }
+  get(rcID){
+    return authenApi.get(`/rc/${rcID}`)
+  },
 };

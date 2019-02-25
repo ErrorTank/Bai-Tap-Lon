@@ -15,8 +15,8 @@ const prizeSchema = yup.object().shape({
 });
 
 const rcSchema = yup.object().shape({
-    rcID: yup.string().required(),
     sID: yup.string().required("Trường không được để trống"),
+    contestID: yup.string().required("Kì thi không được để trống"),
     name: yup.string().max(50, "Tên không được vượt quá 50 ký tự").required("Tên không được để trống"),
     address: yup.string().max(200, "Địa chỉ không được vượt quá 200 ký tự").required("Thí sinh không được để trống"),
     phone: yup.string().required("SĐT không được để trống").isPhone("SĐT không hợp lệ"),

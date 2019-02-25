@@ -80,9 +80,7 @@ export class CandidateRegistration extends React.Component {
     }
   ];
 
-  openCreateRcModal = () => {
 
-  };
 
   gender = [
     {
@@ -164,7 +162,8 @@ export class CandidateRegistration extends React.Component {
                       columns={this.columns}
                       filter={{
                         keyword,
-                        gender
+                        gender,
+                        sID: userInfo.getState().sID
                       }}
                       rowLinkTo={(row) => `/candidate-register/${row.rcID}/edit`}
                       api={api}

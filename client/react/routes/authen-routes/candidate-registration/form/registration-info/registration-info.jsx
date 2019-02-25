@@ -1,6 +1,7 @@
 import React from "react";
 import {InputBase} from "../../../../../common/base-input/base-input";
 import {Select} from "../../../../../common/select/select";
+import {contestApi} from "../../../../../../api/common/contest-api";
 
 
 
@@ -11,8 +12,10 @@ export class RegistrationInfoForm extends React.Component {
         super(props);
         this.state = {
             contests: []
-        }
-
+        };
+        contestApi.getContestsBrief().then((contests) => {
+            this.setState({contests});
+        });
     };
 
 
@@ -116,7 +119,7 @@ export class RegistrationInfoForm extends React.Component {
                                     className="rc-input pt-0"
                                     options={this.state.contests}
                                     value={value}
-                                    displayAs={(each) => each.name}
+                                    displayAs={(each) => each.contestName}
                                     getValue={each => each.contestID}
                                     onChange={e => {
                                         propsOnChange();
@@ -182,6 +185,23 @@ export class RegistrationInfoForm extends React.Component {
                         </div>
                     </div>
                     <div className="row">
+                        <div className="col-6">
+                            {form.enhanceComponent("dob", ({error, onEnter, onChange, ...others}) => (
+                                <InputBase
+                                    className="rc-input pt-0"
+                                    error={error}
+                                    id={"dob"}
+                                    onKeyDown={onEnter}
+                                    onChange={e => {
+                                        propsOnChange();
+                                        onChange(e);
+                                    }}
+                                    type={"date"}
+                                    label={"Ngày sinh"}
+                                    {...others}
+                                />
+                            ), true)}
+                        </div>
                         <div className="col-6">
                             {form.enhanceComponent("gender", ({value, onChange}) => (
                                 <Select

@@ -133,13 +133,25 @@ const contestSql = (db) => {
     )
   };
 
+  const getContestsBrief = () => {
+    let getInfo = `SELECT * FROM contest`;
+    return new Promise((resolve, reject) =>
+        query(getInfo).then((result) => {
+          resolve(result);
+        }).catch(err => {
+          reject(err)
+        })
+    )
+  };
+
   return {
     createContest,
     getContest,
     updateContest,
     deleteContest,
     checkContestExisted,
-    getContestBriefWithCondition
+    getContestBriefWithCondition,
+    getContestsBrief
     //define function name here
   }
 };

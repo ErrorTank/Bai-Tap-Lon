@@ -11,6 +11,7 @@ import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
 import {MultipleStepsTabs} from "../../../../common/multiple-steps-tabs/multiple-steps-tabs";
 import {RegistrationInfoForm} from "../form/registration-info/registration-info";
 import {userInfo} from "../../../../../common/states/user-info";
+import {rcApi} from "../../../../../api/common/rc-api";
 
 
 export class CandidateRegistrationNewRoute extends KComponent {
@@ -33,8 +34,8 @@ export class CandidateRegistrationNewRoute extends KComponent {
                 dob: "",
                 username: "",
                 password: "",
-                contestID: ""
-
+                contestID: "",
+                CMT: "",
             }
         });
 
@@ -45,16 +46,13 @@ export class CandidateRegistrationNewRoute extends KComponent {
 
     createNewCandidateRegistration = () => {
         this.setState({saving: true});
-        let location = this.form.getData();
-        console.log({
-            location
-        });
+        let data = this.form.getData();
 
-        orgLocationApi.createCandidateRegistration({
-            ...location,
-            rooms: location.rooms.map(each => omit(each, 'keyID'))
-        }).then(({orgLocationID}) => {
-            customHistory.push(`/rc/${orgLocationID}/edit`)
+
+        rcApi.create({
+            ...data,
+        }).then(({rcID}) => {
+            customHistory.push(`/candidate-register/${rcID}/edit`)
         }).catch(err => this.setState({err, saving: false}))
 
     };
@@ -83,7 +81,7 @@ export class CandidateRegistrationNewRoute extends KComponent {
 
             ),
             renderActions: () => {
-                let canNext = !this.form.getInvalidPaths().length && !this.state.err;
+                let canFinish = !this.form.getInvalidPaths().length && !this.state.err;
                 return (
                     <div className="">
                         <button type="button" className="btn btn-secondary"
@@ -91,47 +89,8 @@ export class CandidateRegistrationNewRoute extends KComponent {
                         </button>
                         <button type="button"
                                 className="btn btn-primary"
-                                disabled={!canNext}
-                                onClick={this.createNewCandidateRegistration}
-                        >
-                            Hoàn thành
-                            {this.state.saving && (
-                                <LoadingInline/>
-                            )}
-                        </button>
-                    </div>
-                )
-            }
-        }, {
-            step: 1,
-            label: "Thiết lập phòng",
-            render: () => (
-                <div className="row justify-content-center">
-                    <div className="col-12 p-0">
-                        <InitialRoomInfoForm
-                            form={this.form}
-                            onChange={() => this.setState({err: ""})}
-                            err={this.state.err}
-                        />
-                    </div>
-                </div>
-
-
-            ),
-            isDone: () => {
-                return this.form.isValid();
-            },
-            renderActions: () => {
-                let canFinish = !this.form.getInvalidPaths().length && !this.state.err;
-                return (
-                    <div className="">
-                        <button type="button" className="btn btn-secondary"
-                                onClick={() => customHistory.push("/rcs")}>Hủy bỏ
-                        </button>
-                        <button type="button"
-                                className="btn btn-primary"
                                 disabled={!canFinish}
-                                onClick={this.createNewCandidateRegistration}
+                                onClick={() => this.createNewCandidateRegistration()}
                         >
                             Hoàn thành
                             {this.state.saving && (
@@ -141,7 +100,7 @@ export class CandidateRegistrationNewRoute extends KComponent {
                     </div>
                 )
             }
-        },
+        }
     ];
 
     render() {

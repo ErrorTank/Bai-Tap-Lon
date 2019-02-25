@@ -15,6 +15,9 @@ export const contestApi = {
   checkContestExisted(contest) {
     return authenApi.post("/contest/check", {contest})
   },
+  getContestsBrief() {
+    return authenApi.get("/contests/brief-no-con");
+  },
   update(contest){
     return authenApi.put(`/contest/${contest.contestID}`, {contest});
   },
