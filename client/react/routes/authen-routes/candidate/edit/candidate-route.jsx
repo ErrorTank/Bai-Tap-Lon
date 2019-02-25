@@ -75,6 +75,7 @@ export class CandidateRoute extends KComponent {
       render: () => (
         <CandidateInfoForm
           form={this.form}
+          disabledSelectSchool={userInfo.getState().role === 2}
           err={this.state.err}
           onChange={() => this.setState({err: ""})}
           renderNavigate={() => {

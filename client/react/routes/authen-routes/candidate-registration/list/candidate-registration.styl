@@ -1,0 +1,48 @@
+.rc-list-route{
+  position relative
+  .m-portlet{
+    padding-bottom 50px
+  }
+
+  .gender-display{
+    font-size 13px !important
+    width 100px
+    i{
+      font-size 20px !important
+      margin-right 6px
+    }
+    .male{
+      color primary
+
+    }
+    .female{
+      color danger
+    }
+  }
+  .email-display{
+    font-size 13px !important
+    text-decoration underline
+    color primary
+    max-width 250px
+    overflow hidden
+    white-space nowrap
+    text-overflow ellipsis
+  }
+
+  .create-rc{
+    font-size 15px
+    font-weight 500
+    padding 10px 20px
+    background-color primary
+    border-color primary
+    &:hover{
+      background-color darken(primary, 20%)
+    }
+    i{
+      color white
+      font-size 20px
+      margin-right 10px
+      font-weight 550 !important
+    }
+  }
+}

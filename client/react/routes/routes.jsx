@@ -37,7 +37,7 @@ import {OrgLocationRoute} from "./authen-routes/org-location/edit/org-location-r
 import {SubjectListRoute} from "./authen-routes/subject/list/subject-list-route";
 import {SubjectNewRoute} from "./authen-routes/subject/new/subject-new-route";
 import {SubjectRoute} from "./authen-routes/subject/edit/subject-route";
-import {CandidateRegistration} from "./authen-routes/candidate-registration/candidate-registration";
+import {CandidateRegistration} from "./authen-routes/candidate-registration/list/candidate-registration";
 import {ContestListRoute} from "./authen-routes/contest/list/contest-list-route";
 import {ContestNewRoute} from "./authen-routes/contest/new/contest-new-route";
 
@@ -111,7 +111,7 @@ export class MainRoute extends KComponent {
             <AuthenRoute exact path='/supervisors' component={SupervisorListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/contests' component={ContestListRoute} excludeRoles={[2,3]}/>
             <AuthenRoute exact path='/change-password' component={ChangePassword}/>
-            <AuthenRoute exact path='/candidate-registration' component={CandidateRegistration} excludeRoles={[3]}/>
+            <AuthenRoute exact path='/candidate-registers' component={CandidateRegistration} excludeRoles={[0,1,3]}/>
             <GuestRoute exact path='/forgot-password' component={ForgotPassword}/>
             <NotFoundRoute/>
           </Switch>

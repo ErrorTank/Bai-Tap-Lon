@@ -117,6 +117,15 @@ export class Navigations extends React.Component {
       linkTo: () => customHistory.push(`/contests`),
       roles: [0, 1],
       active: ["/contest/:contestID/edit", "/contest/new", "/contests"]
+    }, {
+      icon: (
+          <i className="fas fa-registered"></i>
+      ),
+      label: "Đăng ký dự thi",
+      url: `/candidate-registers`,
+      linkTo: () => customHistory.push(`/candidate-registers`),
+      roles: [2],
+      active: ["/candidate-register/:rcID/edit", "/candidate-register/new", "/candidate-registers"]
     }
   ];
 
@@ -125,17 +134,20 @@ export class Navigations extends React.Component {
     let path = this.props.match.path;
     return (
       <div className="navigations">
-        {this.navs.filter(each => each.roles.includes(role)).map((each, i) => (
-          <div className={classnames("each-nav", {"active": each.active.find(url => path.includes(url))})}
-               key={i}
-               onClick={each.linkTo}
-          >
+        <div>
+          {this.navs.filter(each => each.roles.includes(role)).map((each, i) => (
+              <div className={classnames("each-nav", {"active": each.active.find(url => path.includes(url))})}
+                   key={i}
+                   onClick={each.linkTo}
+              >
 
-            {each.icon}{each.label}
-          </div>
-        ))
+                {each.icon}{each.label}
+              </div>
+          ))
 
-        }
+          }
+        </div>
+
       </div>
     );
   }

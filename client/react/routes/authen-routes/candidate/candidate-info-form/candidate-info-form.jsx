@@ -29,7 +29,7 @@ export class CandidateInfoForm extends KComponent {
 
 
   render() {
-    let {form, err, onChange: propsOnChange, renderNavigate = () => null} = this.props;
+    let {form, err, onChange: propsOnChange, renderNavigate = () => null, disabledSelectSchool} = this.props;
     return (
       <div className="candidate-info-form">
         {this.state.loading ? (
@@ -74,6 +74,7 @@ export class CandidateInfoForm extends KComponent {
                     className="candidate-input pt-0"
                     options={this.state.schools}
                     value={value}
+                    disabled={disabledSelectSchool}
                     displayAs={(each) => each.name + " (" + each.address + ")"}
                     getValue={each => each.sID}
                     onChange={e => {

@@ -1,13 +1,14 @@
 import React, {Fragment} from "react";
-import {userInfo} from "../../../../common/states/user-info";
-import {rcApi} from "../../../../api/common/rc-api";
-import {PageTitle} from "../../../common/page-title/page-title";
-import {RouteTitle} from "../../../layout/route-title/route-title";
-import {LoadingInline} from "../../../common/loading-inline/loading-inline";
-import {ApiDataTable} from "../../../common/data-table/api-data-table/api-data-table";
-import {DebounceSearchInput} from "../../../common/debounce-search-input/debounce-search-input";
-import {IconInput} from "../../../common/icon-input/icon-input";
-import {customHistory} from "../../routes";
+import {userInfo} from "../../../../../common/states/user-info";
+import {rcApi} from "../../../../../api/common/rc-api";
+import {PageTitle} from "../../../../common/page-title/page-title";
+import {RouteTitle} from "../../../../layout/route-title/route-title";
+import {LoadingInline} from "../../../../common/loading-inline/loading-inline";
+import {ApiDataTable} from "../../../../common/data-table/api-data-table/api-data-table";
+import {DebounceSearchInput} from "../../../../common/debounce-search-input/debounce-search-input";
+import {IconInput} from "../../../../common/icon-input/icon-input";
+import {customHistory} from "../../../routes";
+import {CustomSelect} from "../../../../common/custom-select/custom-select";
 
 
 export class CandidateRegistration extends React.Component {
@@ -16,7 +17,7 @@ export class CandidateRegistration extends React.Component {
     let getDefaultFilter = () => ({
       keyword: "",
       gender: {label: "Tất cả", value: null},
-      loading: true
+      loading: false
     });
     this.state = {
       ...getDefaultFilter()
@@ -83,8 +84,22 @@ export class CandidateRegistration extends React.Component {
 
   };
 
+  gender = [
+    {
+      label: "Tất cả",
+      value: null,
+
+    }, {
+      label: "Nam",
+      value: 0
+    }, {
+      label: "Nữ",
+      value: 1
+    },
+  ];
+
   render() {
-    let {keyword} = this.state;
+    let {keyword, loading, gender} = this.state;
 
     const api = (skip, take, filter, sort) => rcApi.getRcBrief({skip, take, filter, sort})
       .then(({rcs, total}) => ({rows: rcs, total}));
@@ -104,10 +119,18 @@ export class CandidateRegistration extends React.Component {
                   <Fragment>
                     <div className="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
                       <div className="row align-items-end">
-                        <div className="col-xl-8 order-2 order-xl-1 p-0">
+                        <div className="col-8 p-0">
                           <div className="form-group m-form__group row align-items-end">
-
-                            <div className="col-md-4 pl-0">
+                            <div className="col-5 pl-0">
+                              <CustomSelect
+                                  label="Giới tính"
+                                  list={this.gender}
+                                  value={gender}
+                                  compare={item => item.value === gender.value}
+                                  onChange={each => this.setState({gender: {...each}})}
+                              />
+                            </div>
+                            <div className="col-5 pl-0">
                               <DebounceSearchInput
                                 timeout={1000}
                                 value={keyword}
@@ -127,9 +150,9 @@ export class CandidateRegistration extends React.Component {
                             </div>
                           </div>
                         </div>
-                        <div className="col-xl-4 order-1 order-xl-2 m--align-right p-0">
+                        <div className="col-4 m--align-right p-0">
                           <button type="button" className="btn btn-primary create-rc"
-                                  onClick={this.openCreateRcModal}
+                                  onClick={() => customHistory.push("/candidate-register/new")}
                           >
                             <i className="fas fa-plus"></i> Tạo đăng ký dự thi
                           </button>
@@ -137,12 +160,13 @@ export class CandidateRegistration extends React.Component {
                       </div>
                     </div>
                     <ApiDataTable
-                      className="supervisor-list-table"
+                      className="rc-list-table"
                       columns={this.columns}
                       filter={{
-                        keyword
+                        keyword,
+                        gender
                       }}
-                      rowLinkTo={(row) => `/supervisor/${row.supervisorID}/edit`}
+                      rowLinkTo={(row) => `/candidate-register/${row.rcID}/edit`}
                       api={api}
                       pageSize={10}
                       placeholder={"Không có giám thị nào"}
