@@ -14,6 +14,11 @@ module.exports = (db, dbManager) => {
       res.status(200).end();
     }).catch(err => next(err))
   });
+  router.get(`/exam-dates/contest/:contestID`, authMiddleware, (req, res, next) => {
+    contestManager.getExamDatesByContestID(req.params.contestID).then((examDates) => {
+      res.status(200).json({examDates});
+    }).catch(err => next(err))
+  });
   router.get("/contests/brief-no-con", authMiddleware, (req, res, next) => {
     contestManager.getContestsBrief().then(contests => {
       res.status(200).json(contests);

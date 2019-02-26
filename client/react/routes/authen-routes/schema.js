@@ -40,6 +40,8 @@ const rcApproveSchema = yup.object().shape({
     dob: yup.date().required("Ngày sinh không được để trống"),
     username: yup.string().min(6, "Tên đăng nhập lớn hơn 6 kí tự").max(20, "Tên đăng nhập nhỏ hơn 20 kí tự").onlyWord("Tên đăng nhập không được có kí tự đặc biệt").haveChar("Tên đăng nhập phải có kí tự alphabet").haveNumber("Tên đăng nhập phải có chữ số"),
     password: yup.string().min(6, "Mật khẩu bắt buộc từ 6 ký tự trở lên").onlyWord("Mật khẩu không được có kí tự đặc biệt"),
+    SBD: yup.string().max(10).required("SBD không được để trống"),
+    examDateID: yup.string().required("Buổi thi là bắt buộc")
 });
 
 const supervisorSchema = yup.object().shape({

@@ -15,7 +15,7 @@ export class ExamDateCandidate extends React.Component {
       loading: true,
       candidates: []
     };
-    candidateApi.getCandidatesBrief().then(candidates => this.setState({candidates, loading: false}))
+    candidateApi.getCandidatesBrief().then((candidates) => this.setState({candidates, loading: false}))
   };
 
   removeCandidate = edCandidate => {

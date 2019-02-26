@@ -6,6 +6,9 @@ export const contestApi = {
     console.log(contest)
     return authenApi.post(`/contest/create`, {contest})
   },
+  getExamDatesByContestID(contestID){
+    return authenApi.get(`/exam-dates/contest/${contestID}`)
+  },
   get(contestID){
     return authenApi.get("/contest/" + contestID);
   },

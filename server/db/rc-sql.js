@@ -133,12 +133,18 @@ const supervisorSql = (db) => {
   };
 
   const createCandidateInstance = (data) => {
-    let {address, sID, name, phone, email, contestID, CMT, gender, username, password, dob} = data;
+    let {address, sID, name, phone, email, SBD, examDateID, CMT, gender, username, password, dob} = data;
     let id1 = uniquid();
     let accountID = id1.slice(-6, -1) + id1.slice(-1);
     let id2 = uniquid();
     let cID = id2.slice(-6, -1) + id2.slice(-1);
-    let promises = [query(`INSERT INTO candidate (cID, accountID, sID, name, phone, email, dob, CMT, address, gender) VALUES('${cID}', '${accountID}', '${sID}', '${name}', '${phone}','${email}', '${dob}', '${CMT}', '${address}', '${gender}')`), query(`INSERT INTO account (accountID, username, password, role, canLogin) VALUES('${accountID}', '${username}', '${password}', '${3}', '${1}')`),query()];
+    let promises = [query(`INSERT INTO candidate (cID, accountID, sID, name, phone, email, dob, CMT, address, gender) VALUES('${cID}', '${accountID}', '${sID}', '${name}', '${phone}','${email}', '${dob}', '${CMT}', '${address}', '${gender}')`), query(`INSERT INTO account (accountID, username, password, role, canLogin) VALUES('${accountID}', '${username}', '${password}', '${3}', '${1}')`),query(`INSERT INTO examdatecandidate (examDateID, cID, SBD) VALUES ('${examDateID}', '${cID}', '${SBD}')`)];
+    return new Promise((resolve, reject) => {
+      Promise.all(promises).then(() => {
+        resolve();
+      }).catch(err => reject(err))
+    });
+
   };
 
   return {

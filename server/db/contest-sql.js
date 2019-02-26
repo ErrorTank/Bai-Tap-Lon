@@ -144,6 +144,14 @@ const contestSql = (db) => {
     )
   };
 
+  const getExamDatesByContestID = (contestID) => {
+    return new Promise((resolve, reject) => {
+      query(`SELECT * FROM examdate where contestID = '${contestID}'`).then((result) => {
+        resolve(result);
+      }).catch(err => reject(err));
+    })
+  };
+
   return {
     createContest,
     getContest,
@@ -151,7 +159,8 @@ const contestSql = (db) => {
     deleteContest,
     checkContestExisted,
     getContestBriefWithCondition,
-    getContestsBrief
+    getContestsBrief,
+    getExamDatesByContestID
     //define function name here
   }
 };

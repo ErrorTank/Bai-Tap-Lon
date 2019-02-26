@@ -18,7 +18,7 @@ module.exports = (db, dbManager) => {
 
   });
   router.get("/org-locations/brief-no-con", authMiddleware, (req, res, next) => {
-    orgLocationManager.getOrgLocationsBrief().then(orgLocations => {
+    orgLocationManager.getOrgLocationsBrief().then((orgLocations) => {
       res.status(200).json(orgLocations);
     }).catch(err => next(err))
   });

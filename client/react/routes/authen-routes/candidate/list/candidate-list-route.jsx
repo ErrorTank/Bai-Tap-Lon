@@ -29,7 +29,7 @@ export class CandidateListRoute extends React.Component {
       ...getDefaultFilter()
     };
     if (role !== 2)
-      schoolApi.getSchoolsBrief().then(schools => this.setState({
+      schoolApi.getSchoolsBrief().then((schools) => this.setState({
         schools: [{label: "Tất cả", value: null}].concat(schools.map(each => ({label: each.name, value: each.sID}))),
         loading: false
       }));

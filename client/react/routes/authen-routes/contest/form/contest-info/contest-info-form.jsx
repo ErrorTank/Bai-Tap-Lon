@@ -17,9 +17,9 @@ export class ContestInfoForm extends KComponent {
       orgLocations: [],
       subjects: []
     };
-    Promise.all([orgLocationApi.getBrief(), subjectApi.getBrief()]).then(([orgLocations, subjects]) => {
+    Promise.all([orgLocationApi.getOrgLocationsBrief(), subjectApi.getSubjectsBrief()]).then(([orgLocations, subjects]) => {
       this.setState({orgLocations, subjects, loading: false})
-    })
+    }).catch(err => console.log(err))
 
   };
 

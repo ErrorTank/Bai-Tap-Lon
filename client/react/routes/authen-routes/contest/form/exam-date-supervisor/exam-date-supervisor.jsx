@@ -16,7 +16,7 @@ export class ExamDateSupervisor extends React.Component {
       loading: true,
       supervisors: []
     };
-    supervisorApi.getBrief().then(supervisors => this.setState({supervisors, loading: false}))
+    supervisorApi.getSupervisorsBrief().then(supervisors => this.setState({supervisors, loading: false}))
   };
 
   removeSupervisor = edSupervisor => {

@@ -27,7 +27,7 @@ export class SpListRoute extends React.Component {
       ...getDefaultFilter()
     };
 
-    schoolApi.getSchoolsBrief().then(schools => this.setState({
+    schoolApi.getSchoolsBrief().then((schools) => this.setState({
       schools: [{label: "Tất cả", value: null}].concat(schools.map(each => ({label: each.name, value: each.sID}))),
       loading: false
     }));
