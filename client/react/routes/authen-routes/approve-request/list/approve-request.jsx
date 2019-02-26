@@ -108,7 +108,7 @@ export class ApproveRequest extends React.Component {
     console.log(row)
     approveModal.open({
       value: {...row}
-    }).then(() => this.forceUpdate());
+    }).then(() => this.dataTable.loadData());
   };
 
 
@@ -175,6 +175,7 @@ export class ApproveRequest extends React.Component {
                         keyword,
                         school
                       }}
+                      ref={dataTable => this.dataTable = dataTable}
                       // rowLinkTo={(row) => `/supervisor/${row.supervisorID}/edit`}
                       onClickRow={this.approveCandidate}
 

@@ -13,7 +13,7 @@ export class InitContestRoom extends React.Component{
           loading: true,
           examDates: []
         };
-      contestApi.getExamDatesByContestID(props.form.getPathData("contestID")).then((examDates) => {
+      contestApi.getExamDatesByContestID(props.form.getPathData("contestID")).then(({examDates}) => {
         this.setState({loading: false, examDates})
       })
     };
@@ -22,6 +22,7 @@ export class InitContestRoom extends React.Component{
       if(nextProps.form.getPathData("contestID") !== this.props.form.getPathData("contestID")){
         this.setState({loading: true});
         contestApi.getExamDatesByContestID(nextProps.form.getPathData("contestID")).then(({examDates}) => {
+
           this.setState({loading: false, examDates})
         })
       }
