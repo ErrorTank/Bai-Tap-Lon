@@ -10,6 +10,7 @@ const contestSql = require("../db/contest-sql");
 const subjectSql = require("../db/subject-sql");
 const roomSql = require("../db/room-sql");
 const rcSql = require("../db/rc-sql");
+const resultSql = require("../db/result-sql");
 
 const createDbManager = (db) => {
   const dbs = {
@@ -25,6 +26,7 @@ const createDbManager = (db) => {
     subject: subjectSql(db),
     room: roomSql(db),
     rc: rcSql(db),
+    result: resultSql(db),
   };
   return (key) => {
     return dbs[key];

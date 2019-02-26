@@ -59,7 +59,7 @@ const dbUtils = [{
     query: "CREATE TABLE `olympic`.`examDatesupervisor` (`examDateID` NVARCHAR(10) NOT NULL , `supervisorID` NVARCHAR(10) NOT NULL , PRIMARY KEY (`examDateID`,`supervisorID`)) ENGINE = InnoDB;"
   }, {
     name: "Create reportCard table",
-    query: "CREATE TABLE `olympic`.`reportCard` (`rID` NVARCHAR(10) NOT NULL , `candidateID` NVARCHAR(10) NOT NULL ,`contestID` NVARCHAR(10) NOT NULL , `mark` REAL NOT NULL , PRIMARY KEY (`rID`)) ENGINE = InnoDB;"
+    query: "CREATE TABLE `olympic`.`reportCard` (`rID` NVARCHAR(10) NOT NULL , `cID` NVARCHAR(10) NOT NULL ,`contestID` NVARCHAR(10) NOT NULL , `mark` REAL NOT NULL , PRIMARY KEY (`rID`)) ENGINE = InnoDB;"
   }, {
     name: "Create prize - contest table",
     query: "CREATE TABLE `olympic`.`prizecontest` (`prizeID` NVARCHAR(10) NOT NULL ,`contestID` NVARCHAR(10) NOT NULL , `max` INT(20) NOT NULL , `content` NVARCHAR(100) NULL , PRIMARY KEY (`prizeID`,`contestID`)) ENGINE = InnoDB;"

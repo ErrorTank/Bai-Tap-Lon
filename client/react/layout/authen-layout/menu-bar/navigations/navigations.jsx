@@ -135,6 +135,15 @@ export class Navigations extends React.Component {
       linkTo: () => customHistory.push(`/approve-request`),
       roles: [0, 1],
       active: ["/approve-request"]
+    }, {
+      icon: (
+        <i className="fas fa-columns"></i>
+      ),
+      label: "Quản lý phiếu báo điểm",
+      url: `/results`,
+      linkTo: () => customHistory.push(`/results`),
+      roles: [0, 1],
+      active: ["/result/new", "/results", "/result/:resultID/edit"]
     }
   ];
 
