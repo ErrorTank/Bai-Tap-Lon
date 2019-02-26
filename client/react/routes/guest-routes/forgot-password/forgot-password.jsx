@@ -106,7 +106,7 @@ export class ForgotPassword extends KComponent {
                           </div>
                           <button type="button"
                                   className="btn btn-info"
-                                  disabled={!canLogin}
+                                  disabled={false}
                                   onClick={this.submit}
                           >
                             Xác nhận
@@ -119,7 +119,7 @@ export class ForgotPassword extends KComponent {
                           </div>
                           <button type="button"
                                   className="btn btn-info"
-                                  disabled={!canLogin}
+                                  disabled={false}
                                   onClick={this.submit}
                           >
                             Xác nhận
