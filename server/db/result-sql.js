@@ -10,15 +10,15 @@ const resultSql = (db) => {
   const createResult = (resultObj) => {
     //generate random ID for location
     var id = uniquid();
-    var resultID = id.slice(-6, -1) + id.slice(-1);
+    var rID = id.slice(-6, -1) + id.slice(-1);
 
     //destruct object for further use
-    var {name, email, phone, address} = resultObj;
+    var {cID, contestID, mark} = resultObj;
 
-    var createInfo = `INSERT INTO result (resultID, name, email, phone, address) VALUES('${resultID}', '${name}', '${email}','${phone}','${address}')`;
+    var createInfo = `INSERT INTO reportcard (rID, cID, contestID, mark) VALUES('${rID}', '${cID}', '${contestID}','${mark}')`;
     return new Promise((resolve, reject) =>
       query(createInfo).then((result) => {
-        resolve(resultID);
+        resolve(rID);
       }).catch(err => {
         reject(err)
       })
@@ -75,8 +75,8 @@ const resultSql = (db) => {
   const getResultBriefWithCondition = (obj) => {
     let {keyword, skip, take, orderAsc, orderBy} = obj;
 
-    const sql = `Select  SQL_CALC_FOUND_ROWS * from (select * from reportcard r left join candidate c on r.cID = c.cID)  where  ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
-
+    const sql = `Select  SQL_CALC_FOUND_ROWS * from (select rID, mark from reportcard r left join candidate c on r.cID = c.cID left join contest con on r.contestID = con.contestID) mixed   ${orderBy ? `Order By ${orderBy} ${orderAsc ? "ASC" : "DESC"}` : ""} ${(skip && take) ? `limit ${take} offset ${skip}` : ""}`;
+    console.log(sql)
     return new Promise((resolve, reject) => {
       query(sql).then(result => {
         query(`Select FOUND_ROWS() as count`).then((result2) => {

@@ -144,6 +144,16 @@ const candidateSql = (db) => {
     )
   };
 
+  const getCandidatesByContestID = contestID => {
+    return new Promise((resolve, reject) =>
+      query(`select c.contestID, can.name, ec.SBD from contest c inner join examdate e on e.contestID = c.contestID  inner join examdatecandidate ec on ec.examDateID = e.examDateID   inner join candidate can on ec.cID = can.cID where c.contestID = '${contestID}'`).then((result) => {
+        resolve(result);
+      }).catch(err => {
+        reject(err)
+      })
+    )
+  };
+
   return {
     createCandidate,
     getCandidate,
@@ -152,7 +162,8 @@ const candidateSql = (db) => {
     getCandidateByAccountID,
     checkCandidateExisted,
     getCandidateBriefWithCondition,
-    getCandidatesBrief
+    getCandidatesBrief,
+    getCandidatesByContestID
     //define function name here
   }
 };

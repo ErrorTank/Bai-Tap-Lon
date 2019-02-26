@@ -16,6 +16,12 @@ module.exports = (db, dbManager) => {
       res.status(200).end();
     }).catch(err => next(err))
   });
+  router.get("/candidates/contest/:contestID", authMiddleware, (req,res, next) =>{
+    candidateManager.getCandidatesByContestID(req.params.contestID).then((data) => {
+      res.status(200).json(data);
+    }).catch(err => next(err));
+
+  });
   router.get("/candidate/brief", authMiddleware, (req,res, next) =>{
     console.log({...req.query});
     candidateManager.getCandidateBriefWithCondition({...req.query}).then((data) => {

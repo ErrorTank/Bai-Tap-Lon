@@ -13,6 +13,9 @@ export const candidateApi = {
   getCandidatesBrief() {
     return authenApi.get("/candidates/brief-no-con");
   },
+  getCandidatesByContestID(contestID){
+    return authenApi.get("/candidates/contest/" + contestID);
+  },
   getCandidateBrief(filters){
     let {skip, take, filter = {}, sort} = filters || {};
     let {key, asc} = sort || {};

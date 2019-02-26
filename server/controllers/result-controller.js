@@ -51,8 +51,8 @@ module.exports = (db, dbManager) => {
   router.post("/result/create",  authMiddleware,  (req,res, next) => {
 
 
-    resultManager.createResult(req.body.result).then((resultID) => {
-      res.status(200).json({resultID});
+    resultManager.createResult(req.body.result).then((rID) => {
+      res.status(200).json({rID});
     }).catch(err => next(err));
   });
 

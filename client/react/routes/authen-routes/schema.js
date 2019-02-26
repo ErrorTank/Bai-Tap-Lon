@@ -14,6 +14,12 @@ const prizeSchema = yup.object().shape({
     dir: yup.array()
 });
 
+const resultSchema = yup.object().shape({
+    cID: yup.string().required(),
+    contestID: yup.string().required(),
+    mark: yup.number().required()
+});
+
 const rcSchema = yup.object().shape({
     sID: yup.string().required("Trường không được để trống"),
     contestID: yup.string().required("Kì thi không được để trống"),
@@ -158,5 +164,6 @@ export
     examDateCandidateSchema,
     rcSchema,
     examDateSupervisorSchema,
-    rcApproveSchema
+    rcApproveSchema,
+    resultSchema
 }
